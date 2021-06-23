@@ -12,7 +12,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   constructor() {}
 
   ngOnInit(): void {
-    this.matDrawer.close();
+    this.matDrawer.open();
   }
   changeStateSidenav(state: boolean) {
     this.matDrawer.toggle();
