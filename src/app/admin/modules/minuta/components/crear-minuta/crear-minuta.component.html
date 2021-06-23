@@ -1,9 +1,9 @@
-<!-- <pre>
+<pre>
   {{ formMinuta.value | json }}
 </pre>
 <pre>
-  {{ newDiscursante.value | json }}
-</pre> -->
+  {{ discursantesArr.controls[0]?.value | json }}
+</pre>
 
 <form
   [formGroup]="formMinuta"
@@ -24,10 +24,7 @@
         <div
           class="
             grid
-            md:grid-cols-3
-            md:gap-4
-            md:items-start
-            md:border-t
+            md:grid-cols-3 md:gap-4 md:items-start md:border-t
             sm:border-gray-200
             md:pt-5
           "
@@ -82,10 +79,12 @@
       <div class="space-y-6 sm:space-y-5">
         <div
           class="
-            sm:grid sm:grid-cols-2
+            sm:grid
+            sm:grid-cols-2
             sm:gap-4
             sm:items-start
-            sm:border-t sm:border-gray-200
+            sm:border-t
+            sm:border-gray-200
             sm:pt-5
           "
         >
@@ -132,10 +131,12 @@
         <!-- Anuncios -->
         <div
           class="
-            sm:grid sm:grid-cols-3
+            sm:grid
+            sm:grid-cols-3
             sm:gap-4
             sm:items-start
-            sm:border-t sm:border-gray-200
+            sm:border-t
+            sm:border-gray-200
             sm:pt-5
           "
         >
@@ -154,10 +155,12 @@
         <!-- Relevos -->
         <div
           class="
-            sm:grid sm:grid-cols-3
+            sm:grid
+            sm:grid-cols-3
             sm:gap-4
             sm:items-start
-            sm:border-t sm:border-gray-200
+            sm:border-t
+            sm:border-gray-200
             sm:pt-5
           "
         >
@@ -176,10 +179,12 @@
         <!-- Sostenimientos -->
         <div
           class="
-            sm:grid sm:grid-cols-3
+            sm:grid
+            sm:grid-cols-3
             sm:gap-4
             sm:items-start
-            sm:border-t sm:border-gray-200
+            sm:border-t
+            sm:border-gray-200
             sm:pt-5
           "
         >
@@ -198,10 +203,12 @@
         <!-- himno Sacramental -->
         <div
           class="
-            sm:grid sm:grid-cols-3
+            sm:grid
+            sm:grid-cols-3
             sm:gap-4
             sm:items-start
-            sm:border-t sm:border-gray-200
+            sm:border-t
+            sm:border-gray-200
             sm:pt-5
           "
         >
@@ -224,65 +231,81 @@
         <!-- Discursantes -->
         <div
           class="
-            sm:grid sm:grid-cols-3
+            sm:grid
+            sm:grid-cols-3
             sm:gap-4
             sm:items-start
-            sm:border-t sm:border-gray-200
+            sm:border-t
+            sm:border-gray-200
             sm:pt-5
           "
         >
           <label
             class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
           >
-            Primer Discursante
+            Discursantes
           </label>
           <!-- listado discursante -->
-          <div formArrayName="discursantes">
-            <div class="mt-1 sm:mt-0 sm:col-span-2">
-              <!-- Añadir Discursante -->
-              <mat-form-field appearance="outline" class="w-1/2">
-                <input
-                  [formControl]="newDiscursante"
-                  matInput
-                  placeholder="Placeholder"
-                  (keyup.enter)="agregarDiscursante()"
-                />
-              </mat-form-field>
-              <button
-                (click)="agregarDiscursante()"
-                type="button"
-                class="
-                  inline-flex
-                  items-center
-                  p-1
-                  ml-2
-                  border border-transparent
-                  rounded-full
-                  shadow-sm
-                  text-white
-                  bg-green-600
-                  hover:bg-green-700
-                  focus:outline-none
-                  focus:ring-2 focus:ring-offset-2 focus:ring-green-500
-                "
-              >
-                <!-- Heroicon name: solid/plus -->
-                <svg
-                  class="h-5 w-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </button>
-            </div>
 
+          <div
+            class="mt-1 sm:mt-0 sm:col-start-2 sm:col-end-4 gap-2 sm:space-x-2"
+          >
+            <!-- nombre discursante -->
+            <mat-form-field appearance="outline" class="w-full sm:w-2/5">
+              <input
+                [formControl]="newDiscursante"
+                matInput
+                placeholder="Nombre Discursante"
+              />
+            </mat-form-field>
+            <!-- tema discursante  -->
+            <mat-form-field appearance="outline" class="w-3/4 sm:w-2/5">
+              <input
+                [formControl]="temaNewDiscursante"
+                matInput
+                placeholder="Tema"
+              />
+            </mat-form-field>
+            <button
+              (click)="agregarDiscursante()"
+              type="button"
+              class="
+                w-auto
+                inline-flex
+                items-center
+                p-1
+                ml-2
+                border border-transparent
+                rounded-full
+                shadow-sm
+                text-white
+                bg-green-600
+                hover:bg-green-700
+                focus:outline-none
+                focus:ring-2
+                focus:ring-offset-2
+                focus:ring-green-500
+              "
+            >
+              <!-- Heroicon name: solid/plus -->
+              <svg
+                class="h-5 w-5"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <!-- listado de los discursantes -->
+          <ng-container formArrayName="discursantes">
             <div
               *ngFor="
                 let discursante of discursantesArr.controls;
@@ -290,59 +313,74 @@
               "
               class="mt-1 sm:mt-0 sm:col-span-2"
             >
-              <mat-form-field appearance="outline" class="w-1/2">
-                <input
-                  [formControlName]="i"
-                  matInput
-                  placeholder="Placeholder"
-                />
-              </mat-form-field>
-              <button
-                type="button"
-                class="
-                  inline-flex
-                  items-center
-                  p-1
-                  ml-2
-                  border border-transparent
-                  rounded-full
-                  shadow-sm
-                  text-white
-                  bg-red-600
-                  hover:bg-red-700
-                  focus:outline-none
-                  focus:ring-2 focus:ring-offset-2 focus:ring-red-500
-                "
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M18 12H6"
+              <ng-container [formGroupName]="i">
+                <!-- nombre discursante -->
+                <mat-form-field appearance="outline" class="w-full sm:w-2/5">
+                  <input
+                    formControlName="nombreDiscursante"
+                    matInput
+                    placeholder="Nombre Discursante"
                   />
-                </svg>
-              </button>
+                </mat-form-field>
+                <!-- tema discursante  -->
+                <mat-form-field appearance="outline" class="w-3/4 sm:w-2/5">
+                  <input
+                    formControlName="temaDiscursante"
+                    matInput
+                    placeholder="Tema"
+                  />
+                </mat-form-field>
+                <button
+                  (click)="eliminarDiscursante(i)"
+                  type="button"
+                  class="
+                    w-auto
+                    inline-flex
+                    items-center
+                    p-1
+                    ml-2
+                    border border-transparent
+                    rounded-full
+                    shadow-sm
+                    text-white
+                    bg-red-600
+                    hover:bg-red-700
+                    focus:outline-none
+                    focus:ring-2
+                    focus:ring-offset-2
+                    focus:ring-red-500
+                  "
+                >
+                  <!-- Heroicon name: solid/plus -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M18 12H6"
+                    />
+                  </svg>
+                </button>
+              </ng-container>
             </div>
-          </div>
-
-          <!-- temas -->
-          <div></div>
+          </ng-container>
         </div>
 
         <!-- Ultima oracion oracion y ultimo himno -->
         <div
           class="
-            sm:grid sm:grid-cols-2
+            sm:grid
+            sm:grid-cols-2
             sm:gap-4
             sm:items-start
-            sm:border-t sm:border-gray-200
+            sm:border-t
+            sm:border-gray-200
             sm:pt-5
           "
         >
@@ -403,12 +441,15 @@
           text-gray-700
           hover:bg-gray-50
           focus:outline-none
-          focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+          focus:ring-2
+          focus:ring-offset-2
+          focus:ring-indigo-500
         "
       >
         Cancel
       </button>
       <button
+        (click)="guardarMinuta()"
         type="submit"
         class="
           ml-3
@@ -425,7 +466,9 @@
           bg-indigo-600
           hover:bg-indigo-700
           focus:outline-none
-          focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+          focus:ring-2
+          focus:ring-offset-2
+          focus:ring-indigo-500
         "
       >
         Save

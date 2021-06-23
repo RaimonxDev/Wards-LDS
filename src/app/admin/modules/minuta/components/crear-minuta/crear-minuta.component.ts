@@ -16,6 +16,7 @@ export class CrearMinutaComponent implements OnInit {
   //@ts-ignore
   formMinuta: FormGroup;
   newDiscursante: FormControl = this._fb.control('');
+  temaNewDiscursante: FormControl = this._fb.control('');
 
   get discursantesArr() {
     return this.formMinuta.get('discursantes') as FormArray;
@@ -48,10 +49,21 @@ export class CrearMinutaComponent implements OnInit {
     });
   }
 
+  guardarMinuta() {
+    console.log(this.formMinuta.value);
+  }
   agregarDiscursante() {
     this.discursantesArr.controls.push(
-      this._fb.control(this.newDiscursante.value, Validators.required)
+      this._fb.group({
+        nombreDiscursante: [this.newDiscursante.value, [Validators.required]],
+        temaDiscursante: [this.temaNewDiscursante.value, [Validators.required]],
+      })
+      // this._fb.control(this.newDiscursante.value, Validators.required)
     );
     this.newDiscursante.reset();
+    this.temaNewDiscursante.reset();
+  }
+  eliminarDiscursante(index: number) {
+    this.discursantesArr.removeAt(index);
   }
 }
