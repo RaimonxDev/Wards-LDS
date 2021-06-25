@@ -267,7 +267,7 @@
               />
             </mat-form-field>
             <button
-              (click)="agregarDiscursante()"
+              (click)="addDiscursantes()"
               type="button"
               class="
                 w-auto
@@ -367,6 +367,10 @@
                     />
                   </svg>
                 </button>
+                <pre>
+  {{ discursantesArr.controls[i]?.value | json }}
+</pre
+                >
               </ng-container>
             </div>
           </ng-container>
