@@ -15,7 +15,6 @@ import { CoreModule } from './core/core.module';
 @NgModule({
   declarations: [
     AppComponent,
-    LayoutComponent,
     FooterComponent,
     HeaderComponent,
     SidebarComponent,
