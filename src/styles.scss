@@ -31,3 +31,10 @@ mat-form-field.mat-form-field.mat-form-field-appearance-outline
   transform: translateY(-1.1em) scale(0.75);
   width: 133.33333%;
 }
+
+.activeLink {
+  @apply border-l-2 bg-indigo-50 border-indigo-600 text-indigo-600 rounded-none;
+  svg {
+    @apply text-indigo-600;
+  }
+}

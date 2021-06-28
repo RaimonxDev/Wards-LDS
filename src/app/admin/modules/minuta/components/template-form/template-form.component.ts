@@ -1,4 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
+import { ActionForm } from '../../models/minuta.models';
 import {
   FormArray,
   FormBuilder,
@@ -8,13 +16,18 @@ import {
 } from '@angular/forms';
 
 @Component({
-  selector: 'app-crear-minuta',
-  templateUrl: './crear-minuta.component.html',
-  styleUrls: ['./crear-minuta.component.scss'],
+  selector: 'template-form',
+  templateUrl: './template-form.component.html',
+  styleUrls: ['./template-form.component.scss'],
 })
-export class CrearMinutaComponent implements OnInit {
-  tipoMinuta!: string[];
+export class TemplateFormComponent implements OnInit, AfterViewInit {
+  // Outpus Inputs
+  @Input() ActionForm!: ActionForm;
 
+  @Output() DataForm = new EventEmitter<any>();
+
+  // Variables
+  tipoMinuta!: string[];
   formMinuta!: FormGroup;
   newDiscursante: FormControl = this._fb.control('');
   temaNewDiscursante: FormControl = this._fb.control('');
@@ -26,10 +39,19 @@ export class CrearMinutaComponent implements OnInit {
   constructor(private _fb: FormBuilder) {
     this.tipoMinuta = ['sacramental'];
   }
-
   ngOnInit(): void {
     this.initFormMinuta();
+    if (this.ActionForm === 'crear') {
+      // Formulario Vacio
+      // this.formMinuta.patchValue({});
+    }
+    if (this.ActionForm === 'editar') {
+      // Data a editar
+      // this.formMinuta.patchValue({})
+    }
   }
+  ngAfterViewInit() {}
+
   initFormMinuta() {
     this.formMinuta = this._fb.group({
       tipoMinuta: ['', [Validators.required]],

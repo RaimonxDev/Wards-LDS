@@ -10,6 +10,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
 @NgModule({
   declarations: [],
   imports: [
@@ -23,7 +24,8 @@ import { MatButtonModule } from '@angular/material/button';
     MatSlideToggleModule,
     MatNativeDateModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSelectModule,
   ],
   exports: [
     ReactiveFormsModule,
@@ -35,7 +37,8 @@ import { MatButtonModule } from '@angular/material/button';
     MatSlideToggleModule,
     MatNativeDateModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSelectModule,
   ],
 })
 export class EssentialReactiveFormModule {}
