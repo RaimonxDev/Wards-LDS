@@ -10,6 +10,7 @@ import { LayoutComponent } from './core/layout/layout.component';
 import { FooterComponent } from './core/layout/components/footer/footer.component';
 import { HeaderComponent } from './core/layout/components/header/header.component';
 import { SidebarComponent } from './core/layout/components/sidebar/sidebar.component';
+import { CoreModule } from './core/core.module';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { SidebarComponent } from './core/layout/components/sidebar/sidebar.compo
     BrowserAnimationsModule,
     MatButtonModule,
     MatSidenavModule,
+    CoreModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
