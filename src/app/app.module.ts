@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
 import { CoreModule } from './core/core.module';
 import { LayoutModule } from './layout/layout.module';
+import { AlertModule } from './ui/alert/alert.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,6 +18,7 @@ import { LayoutModule } from './layout/layout.module';
     MatButtonModule,
     CoreModule,
     LayoutModule,
+    AlertModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
