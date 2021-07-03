@@ -11,9 +11,7 @@ const routes: Routes = [
     redirectTo: 'dashboards/finance',
   },
 
-
   {
-
     path: '',
     canActivate: [AuthGuard],
     canActivateChild: [AuthGuard],
@@ -35,12 +33,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-<<<<<<< HEAD
     redirectTo: 'login',
-=======
-    redirectTo: '/login',
-    pathMatch: 'full',
->>>>>>> deb7080042cefeb7f90986476bca7760345115d0
   },
 ];
 
