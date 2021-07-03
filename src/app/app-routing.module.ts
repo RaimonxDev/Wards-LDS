@@ -24,8 +24,8 @@ const routes: Routes = [
   },
   {
     path: '',
-    // canActivate: [AuthGuard],
-    // canActivateChild: [AuthGuard],
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     component: LayoutComponent,
     children: [
       {
@@ -44,7 +44,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'home',
+    redirectTo: 'login',
     pathMatch: 'full',
   },
 ];
