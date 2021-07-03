@@ -1,17 +1,17 @@
 <!-- success -->
 <div
   [ngClass]="{
-    'bg-green-50': data.typeAlert === 'success',
-    'bg-red-50': data.typeAlert === 'error',
-    'bg-yellow-50': data.typeAlert === 'warning',
-    'bg-blue-50': data.typeAlert === 'info'
+    'bg-green-50': data.type === 'success',
+    'bg-red-50': data.type === 'error',
+    'bg-yellow-50': data.type === 'warning',
+    'bg-blue-50': data.type === 'info'
   }"
   class="rounded-md p-4"
 >
   <div class="flex">
     <div class="flex-shrink-0">
       <!-- icon suscess -->
-      <ng-container *ngIf="data.typeAlert === 'success'">
+      <ng-container *ngIf="data.type === 'success'">
         <svg
           class="h-5 w-5 text-green-400"
           xmlns="http://www.w3.org/2000/svg"
@@ -27,7 +27,7 @@
         </svg>
       </ng-container>
       <!-- icon warning -->
-      <ng-container *ngIf="data.typeAlert === 'warning'">
+      <ng-container *ngIf="data.type === 'warning'">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-5 w-5 text-yellow-400"
@@ -44,7 +44,7 @@
         </svg>
       </ng-container>
       <!-- icon error -->
-      <ng-container *ngIf="data.typeAlert === 'error'">
+      <ng-container *ngIf="data.type === 'error'">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-5 w-5 text-red-400"
@@ -62,7 +62,7 @@
       </ng-container>
 
       <!-- icon info -->
-      <ng-container *ngIf="data.typeAlert === 'info'">
+      <ng-container *ngIf="data.type === 'info'">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-5 w-5 text-blue-400"
@@ -82,21 +82,21 @@
     <div class="ml-3">
       <p
         [ngClass]="{
-          'text-green-800': data.typeAlert === 'success',
-          'text-red-800': data.typeAlert === 'error',
-          'text-yellow-800': data.typeAlert === 'warning',
-          'text-blue-800': data.typeAlert === 'info'
+          'text-green-800': data.type === 'success',
+          'text-red-800': data.type === 'error',
+          'text-yellow-800': data.type === 'warning',
+          'text-blue-800': data.type === 'info'
         }"
-        class="text-sm font-medium"
+        class="text-sm font-medium capitalize"
       >
-        {{ data.titleMessage }}
+        {{ data.title }}
       </p>
       <p
         [ngClass]="{
-          'text-green-700': data.typeAlert === 'success',
-          'text-red-700': data.typeAlert === 'error',
-          'text-yellow-700': data.typeAlert === 'warning',
-          'text-blue-700': data.typeAlert === 'info'
+          'text-green-700': data.type === 'success',
+          'text-red-700': data.type === 'error',
+          'text-yellow-700': data.type === 'warning',
+          'text-blue-700': data.type === 'info'
         }"
         class="text-xs font-medium mt-2"
       >
@@ -109,13 +109,13 @@
           type="button"
           [ngClass]="{
             'bg-green-50 text-green-500 hover:bg-green-100 focus:ring-offset-green-50 focus:ring-green-600 ':
-              data.typeAlert === 'success',
+              data.type === 'success',
             'bg-red-50 text-red-500 hover:bg-red-100 focus:ring-offset-red-50 focus:ring-red-600':
-              data.typeAlert === 'error',
+              data.type === 'error',
             'bg-yellow-50 text-yellow-500 hover:bg-yellow-100 focus:ring-offset-yellow-50 focus:ring-yellow-600':
-              data.typeAlert === 'warning',
+              data.type === 'warning',
             'bg-blue-50 text-blue-500 hover:bg-blue-100 focus:ring-offset-blue-50 focus:ring-blue-600':
-              data.typeAlert === 'info'
+              data.type === 'info'
           }"
           class="
             inline-flex

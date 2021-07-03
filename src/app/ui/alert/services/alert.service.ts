@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertComponent } from '../components/alert/alert.component';
-import { dataAlert } from '../components/alert/model/alertModel';
+import {
+  dataAlert,
+  TypeAlert,
+  VerticalPosition,
+  HorizontalPosition,
+} from '../components/alert/model/alertModel';
 
 @Injectable({
   providedIn: 'root',
@@ -9,17 +14,25 @@ import { dataAlert } from '../components/alert/model/alertModel';
 export class AlertService {
   constructor(private snackBar: MatSnackBar) {}
 
-  opendAlert(params: dataAlert) {
+  opendAlert(
+    title: string,
+    message: string,
+    type: TypeAlert,
+    duration: number = 2500,
+    buttonText?: string,
+    verticalPosition: VerticalPosition = 'top',
+    horizontalPosition: HorizontalPosition = 'center'
+  ) {
     this.snackBar.openFromComponent(AlertComponent, {
       data: {
-        titleMessage: params.titleMessage,
-        message: params.message,
-        buttonText: params.buttonText,
-        typeAlert: params.typeAlert,
+        title,
+        message,
+        buttonText,
+        type,
       },
-      verticalPosition: (params.verticalPosition = 'top'),
-      horizontalPosition: (params.horizontalPosition = 'center'),
-      duration: params.duration,
+      verticalPosition,
+      horizontalPosition,
+      duration,
       panelClass: 'transparent',
     });
   }

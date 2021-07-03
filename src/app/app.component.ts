@@ -10,11 +10,13 @@ export class AppComponent {
   title = 'BarrioCentro';
   constructor(private alert: AlertService) {}
   openAlert() {
-    this.alert.opendAlert({
-      message: 'MENSAJE',
-      titleMessage: 'TITULO',
-      typeAlert: 'info',
-      duration: 3000,
-    });
+    this.alert.opendAlert(
+      'titulos',
+      'mensje',
+      'info'
+      // duration: 3000,
+      // verticalPosition: 'top',
+      // horizontalPosition: 'center',
+    );
   }
 }

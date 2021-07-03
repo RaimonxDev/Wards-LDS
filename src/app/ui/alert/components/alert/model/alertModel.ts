@@ -1,6 +1,6 @@
 export type TypeAlert = 'success' | 'warning' | 'info' | 'error';
 export type VerticalPosition = 'top' | 'bottom';
-export type HorizontalPosition = 'center' | 'left' | 'right' | 'bottom';
+export type HorizontalPosition = 'start' | 'center' | 'end' | 'left' | 'right';
 
 export interface dataAlert {
   message: string;
