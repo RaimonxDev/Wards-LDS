@@ -8,7 +8,7 @@ const routes: Routes = [
   {
     path: 'signed-in-redirect',
     pathMatch: 'full',
-    redirectTo: 'dashboards/finance',
+    redirectTo: 'home',
   },
   {
     path: 'login',
