@@ -2,30 +2,28 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './core/auth/guards/auth-guard.guard';
 import { LayoutComponent } from './layout/layout.component';
+import { NoAuthGuard } from './core/auth/guards/no-guard.guard';
 
 const routes: Routes = [
   {
+    path: 'login',
+    canActivate: [NoAuthGuard],
+    canActivateChild: [NoAuthGuard],
+    loadChildren: () =>
+      import('./admin/modules/auth/components/login/login.module').then(
+        (m) => m.LoginModule
+      ),
+  },
+  {
     path: 'signed-in-redirect',
     pathMatch: 'full',
-    redirectTo: 'home',
+    redirectTo: 'dashboards/finance',
   },
 
   {
     path: '',
-    children: [
-      {
-        path: 'login',
-        loadChildren: () =>
-          import('./admin/modules/auth/components/login/login.module').then(
-            (m) => m.LoginModule
-          ),
-      },
-    ],
-  },
-  {
-    path: '',
-    // canActivate: [AuthGuard],
-    // canActivateChild: [AuthGuard],
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     component: LayoutComponent,
     children: [
       {
@@ -44,8 +42,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'home',
-    pathMatch: 'full',
+    redirectTo: 'login',
   },
 ];
 
