@@ -11,21 +11,14 @@ const routes: Routes = [
   },
 
   {
-    path: '',
-    children: [
-      {
-        path: 'login',
-        loadChildren: () =>
-          import('./admin/modules/auth/components/login/login.module').then(
-            (m) => m.LoginModule
-          ),
-      },
-    ],
+    path: 'login',
+    loadChildren: () =>
+      import('./auth/components/login/login.module').then((m) => m.LoginModule),
   },
   {
     path: '',
-    // canActivate: [AuthGuard],
-    // canActivateChild: [AuthGuard],
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     component: LayoutComponent,
     children: [
       {
@@ -44,7 +37,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'home',
+    redirectTo: '/login',
     pathMatch: 'full',
   },
 ];

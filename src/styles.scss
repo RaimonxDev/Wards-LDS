@@ -38,3 +38,30 @@ mat-form-field.mat-form-field.mat-form-field-appearance-outline
     @apply text-indigo-600;
   }
 }
+// progress bar
+ng-progress {
+  // host element
+}
+
+.ng-progress-bar {
+  // bar wrapper
+}
+
+.ng-bar-placeholder {
+  // bar placeholder
+
+  // change the height of the progress bar
+  height: 0.2rem !important;
+}
+
+.ng-bar {
+  // the actual bar that translates with when the progress increments
+}
+
+.ng-spinner {
+  // Spinner wrapper
+}
+
+.ng-spinner-icon {
+  // The actual spinner where defines the radius size and animation
+}

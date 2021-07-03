@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { LoginRoutingModule } from './login-routing.module';
 
 import { LoginComponent } from './login.component';
-import { EssentialReactiveFormModule } from '../../../../../shared/modules/essential-reactive-form/essential-reactive-form.module';
+import { EssentialReactiveFormModule } from 'src/app/shared/modules/essential-reactive-form/essential-reactive-form.module';
 
 @NgModule({
   declarations: [LoginComponent],
