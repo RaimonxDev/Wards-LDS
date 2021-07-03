@@ -17,17 +17,17 @@ import { AuthService } from '../services/auth.service';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
-  constructor(private _authService: AuthService, private _router: Router) {}
+export class NoAuthGuard implements CanActivate, CanActivateChild, CanLoad {
+  constructor(private _router: Router, private _authService: AuthService) {}
 
-  private _check(redirectURL: string): Observable<boolean> {
+  private _check(): Observable<boolean> {
     // Check the authentication status
     return this._authService.check().pipe(
-      switchMap((authenticated: boolean) => {
-        // If the user is not authenticated...
-        if (!authenticated) {
-          // Redirect to the sign-in page
-          this._router.navigate(['/login'], { queryParams: { redirectURL } });
+      switchMap((authenticated) => {
+        // If the user is authenticated...
+        if (authenticated) {
+          // Redirect to the root
+          this._router.navigate(['']);
 
           // Prevent the access
           return of(false);
@@ -38,7 +38,6 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
       })
     );
   }
-
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
@@ -47,8 +46,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    const redirectUrl = state.url === '/login' ? '/' : state.url;
-    return this._check(redirectUrl);
+    return this._check();
   }
   canActivateChild(
     childRoute: ActivatedRouteSnapshot,
@@ -58,8 +56,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    const redirectUrl = state.url === '/login' ? '/' : state.url;
-    return this._check(redirectUrl);
+    return this._check();
   }
   canLoad(
     route: Route,
@@ -69,6 +66,6 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    return this._check('/login');
+    return this._check();
   }
 }
