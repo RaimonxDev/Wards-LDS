@@ -10,6 +10,13 @@ const routes: Routes = [
     pathMatch: 'full',
     redirectTo: 'dashboards/finance',
   },
+  {
+    path: 'login',
+    canActivate: [NoAuthGuard],
+    canActivateChild: [NoAuthGuard],
+    loadChildren: () =>
+      import('./auth/components/login/login.module').then((m) => m.LoginModule),
+  },
 
   {
     path: '',
