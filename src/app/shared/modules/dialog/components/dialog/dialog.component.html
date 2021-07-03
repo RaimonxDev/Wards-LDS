@@ -1,0 +1,32 @@
+<mat-dialog-content>
+  <h1
+    class="
+      text-xl
+      md:text-2xl
+      font-extrabold
+      tracking-tight
+      leading-7
+      sm:leading-10
+    "
+  >
+    {{ data.title }}
+  </h1>
+  <p *ngIf="data.message">{{ data.message }}</p>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button color="warn" [mat-dialog-close]="false">
+    <ng-container *ngIf="!data.buttonDecline"> Cancelar </ng-container>
+
+    <ng-container *ngIf="data.buttonDecline">
+      {{ data.buttonDecline }}
+    </ng-container>
+  </button>
+
+  <button mat-button color="primary" [mat-dialog-close]="true">
+    <ng-container *ngIf="!data.buttonAccept"> Aceptar </ng-container>
+
+    <ng-container *ngIf="data.buttonAccept">
+      {{ data.buttonAccept }}
+    </ng-container>
+  </button>
+</mat-dialog-actions>

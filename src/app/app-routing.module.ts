@@ -6,21 +6,14 @@ import { NoAuthGuard } from './core/auth/guards/no-guard.guard';
 
 const routes: Routes = [
   {
-    path: 'login',
-    canActivate: [NoAuthGuard],
-    canActivateChild: [NoAuthGuard],
-    loadChildren: () =>
-      import('./admin/modules/auth/components/login/login.module').then(
-        (m) => m.LoginModule
-      ),
-  },
-  {
     path: 'signed-in-redirect',
     pathMatch: 'full',
     redirectTo: 'dashboards/finance',
   },
 
+
   {
+
     path: '',
     canActivate: [AuthGuard],
     canActivateChild: [AuthGuard],
@@ -42,7 +35,12 @@ const routes: Routes = [
   },
   {
     path: '**',
+<<<<<<< HEAD
     redirectTo: 'login',
+=======
+    redirectTo: '/login',
+    pathMatch: 'full',
+>>>>>>> deb7080042cefeb7f90986476bca7760345115d0
   },
 ];
 

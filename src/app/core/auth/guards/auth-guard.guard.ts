@@ -26,6 +26,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
       switchMap((authenticated: boolean) => {
         // If the user is not authenticated...
         if (!authenticated) {
+          console.log('no auth');
           // Redirect to the sign-in page
           this._router.navigate(['/login'], { queryParams: { redirectURL } });
 
