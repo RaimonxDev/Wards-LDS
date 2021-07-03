@@ -13,7 +13,7 @@ export class AlertService {
     this.snackBar.openFromComponent(AlertComponent, {
       data: {
         titleMessage: params.titleMessage,
-        mesagge: params.message,
+        message: params.message,
         buttonText: params.buttonText,
         typeAlert: params.typeAlert,
       },

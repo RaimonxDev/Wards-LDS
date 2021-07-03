@@ -1,4 +1,4 @@
-export type TypeAlert = 'suscces' | 'warning' | 'info' | 'error';
+export type TypeAlert = 'success' | 'warning' | 'info' | 'error';
 export type VerticalPosition = 'top' | 'bottom';
 export type HorizontalPosition = 'center' | 'left' | 'right' | 'bottom';
 

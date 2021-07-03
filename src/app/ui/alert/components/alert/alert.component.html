@@ -1,42 +1,127 @@
-<!-- This example requires Tailwind CSS v2.0+ -->
-<div class="rounded-md bg-green-50 p-4">
+<!-- success -->
+<div
+  [ngClass]="{
+    'bg-green-50': data.typeAlert === 'success',
+    'bg-red-50': data.typeAlert === 'error',
+    'bg-yellow-50': data.typeAlert === 'warning',
+    'bg-blue-50': data.typeAlert === 'info'
+  }"
+  class="rounded-md p-4"
+>
   <div class="flex">
     <div class="flex-shrink-0">
-      <!-- Heroicon name: solid/check-circle -->
-      <svg
-        class="h-5 w-5 text-green-400"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-        aria-hidden="true"
-      >
-        <path
-          fill-rule="evenodd"
-          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-          clip-rule="evenodd"
-        />
-      </svg>
+      <!-- icon suscess -->
+      <ng-container *ngIf="data.typeAlert === 'success'">
+        <svg
+          class="h-5 w-5 text-green-400"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </ng-container>
+      <!-- icon warning -->
+      <ng-container *ngIf="data.typeAlert === 'warning'">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 text-yellow-400"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+          />
+        </svg>
+      </ng-container>
+      <!-- icon error -->
+      <ng-container *ngIf="data.typeAlert === 'error'">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 text-red-400"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"
+          />
+        </svg>
+      </ng-container>
+
+      <!-- icon info -->
+      <ng-container *ngIf="data.typeAlert === 'info'">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 text-blue-400"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"
+          />
+        </svg>
+      </ng-container>
     </div>
     <div class="ml-3">
-      <p class="text-sm font-medium text-green-800">{{ data.titleMessage }}</p>
-      <p class="text-xs font-medium text-green-700">{{ data.message }}</p>
+      <p
+        [ngClass]="{
+          'text-green-800': data.typeAlert === 'success',
+          'text-red-800': data.typeAlert === 'error',
+          'text-yellow-800': data.typeAlert === 'warning',
+          'text-blue-800': data.typeAlert === 'info'
+        }"
+        class="text-sm font-medium"
+      >
+        {{ data.titleMessage }}
+      </p>
+      <p
+        [ngClass]="{
+          'text-green-700': data.typeAlert === 'success',
+          'text-red-700': data.typeAlert === 'error',
+          'text-yellow-700': data.typeAlert === 'warning',
+          'text-blue-700': data.typeAlert === 'info'
+        }"
+        class="text-xs font-medium mt-2"
+      >
+        {{ data.message }}
+      </p>
     </div>
     <div class="ml-auto pl-3">
       <div class="-mx-1.5 -my-1.5">
         <button
           type="button"
+          [ngClass]="{
+            'bg-green-50 text-green-500 hover:bg-green-100 focus:ring-offset-green-50 focus:ring-green-600 ':
+              data.typeAlert === 'success',
+            'bg-red-50 text-red-500 hover:bg-red-100 focus:ring-offset-red-50 focus:ring-red-600':
+              data.typeAlert === 'error',
+            'bg-yellow-50 text-yellow-500 hover:bg-yellow-100 focus:ring-offset-yellow-50 focus:ring-yellow-600':
+              data.typeAlert === 'warning',
+            'bg-blue-50 text-blue-500 hover:bg-blue-100 focus:ring-offset-blue-50 focus:ring-blue-600':
+              data.typeAlert === 'info'
+          }"
           class="
             inline-flex
-            bg-green-50
             rounded-md
             p-1.5
-            text-green-500
-            hover:bg-green-100
-            focus:outline-none
-            focus:ring-2
-            focus:ring-offset-2
-            focus:ring-offset-green-50
-            focus:ring-green-600
+            focus:outline-none focus:ring-2 focus:ring-offset-2
           "
         >
           <span class="sr-only">Dismiss</span>

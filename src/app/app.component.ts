@@ -11,10 +11,10 @@ export class AppComponent {
   constructor(private alert: AlertService) {}
   openAlert() {
     this.alert.opendAlert({
-      message: 'hola',
-      titleMessage: 'title',
-      typeAlert: 'suscces',
-      duration: 500000,
+      message: 'MENSAJE',
+      titleMessage: 'TITULO',
+      typeAlert: 'info',
+      duration: 3000,
     });
   }
 }
