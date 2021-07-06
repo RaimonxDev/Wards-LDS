@@ -15,6 +15,7 @@ import { MinutaService } from '../../services/minuta.service';
 import { AlertService } from '../../../../../ui/alert/services/alert.service';
 import { AuthService } from '../../../../../core/auth/services/auth.service';
 import { Observable } from 'rxjs';
+import { repeatableFields } from '../../models/minuta.models';
 import {
   FormArray,
   FormBuilder,
@@ -38,23 +39,7 @@ export class TemplateFormComponent implements OnInit, AfterViewInit {
   tipoMinuta!: Observable<tipoMinutas[]>;
   formMinuta!: FormGroup;
 
-  // Controles de Discursante
-  newDiscursante: FormControl = this._fb.control('', [Validators.required]);
-  temaNewDiscursante: FormControl = this._fb.control('', [Validators.required]);
-
-  // Controles Relevos
-
-  relevo: FormControl = this._fb.control('', [Validators.required]);
-  relevoDeLlamamiento: FormControl = this._fb.control('', [
-    Validators.required,
-  ]);
-
-  // Controles Sostenimientos
-  sostenimientos: FormControl = this._fb.control('', [Validators.required]);
-  llamamientoDeSostenimiento: FormControl = this._fb.control('', [
-    Validators.required,
-  ]);
-
+  // Getters and Setters
   get discursantesArr() {
     return this.formMinuta.get('discursantes') as FormArray;
   }
@@ -77,6 +62,7 @@ export class TemplateFormComponent implements OnInit, AfterViewInit {
   ) {}
   ngOnInit(): void {
     this.tipoMinuta = this._minutaServices.tiposDeMinuta$;
+
     this.initFormMinuta();
     if (this.ActionForm === 'crear') {
       // Formulario Vacio
@@ -89,12 +75,6 @@ export class TemplateFormComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit() {}
 
-  getErrorMessage(field: string) {
-    if (`this.${field}.hasError('required')`) {
-      return 'Campo requerido';
-    }
-    return;
-  }
   initFormMinuta() {
     this.formMinuta = this._fb.group({
       tipos_de_minuta: ['', [Validators.required]],
@@ -116,7 +96,7 @@ export class TemplateFormComponent implements OnInit, AfterViewInit {
     });
   }
 
-  processData(data: { form: any; type: string }) {
+  processData(data: { form: any; type: repeatableFields }) {
     if (data.type === 'relevos') {
       this.relevosArr.push(this._fb.group(data.form));
     }
@@ -127,43 +107,14 @@ export class TemplateFormComponent implements OnInit, AfterViewInit {
     if (data.type === 'discursantes') {
       this.discursantesArr.push(this._fb.group(data.form));
     }
-
-    console.log(data.form);
-    // this.addRelevos(data);
-    // this.relevosArr.push(this._fb.group(data));
-  }
-  addDiscursantes() {
-    const discursantesForm = this._fb.group({
-      nombre: [this.newDiscursante.value, [Validators.required]],
-      tema: [this.temaNewDiscursante.value, [Validators.required]],
-    });
-    this.discursantesArr.push(discursantesForm);
-    this.newDiscursante.reset();
-    this.temaNewDiscursante.reset();
   }
 
   addAnuncios() {
     return null;
   }
-  addRelevos(d: any) {
-    return this.relevosArr.push(d);
-  }
-  addSostenimientos() {
-    const sostenimientos = this._fb.group({
-      nombre: [this.sostenimientos.value, [Validators.required]],
-      llamamiento: [
-        this.llamamientoDeSostenimiento.value,
-        [Validators.required],
-      ],
-    });
-    this.sostenimientosArr.push(sostenimientos);
-    this.sostenimientos.reset();
-    this.llamamientoDeSostenimiento.reset();
-  }
 
   guardarMinuta() {
     console.log(this.formMinuta.value);
-    console.log('template');
     return;
     this._minutaServices
       .createMinuta(this.formMinuta.value)
@@ -172,6 +123,7 @@ export class TemplateFormComponent implements OnInit, AfterViewInit {
         this._alert.opendAlert('Creado', '', 'success');
       });
   }
+
   eliminarDiscursante(index: number) {
     this.discursantesArr.removeAt(index);
   }

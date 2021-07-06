@@ -1,10 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import {
-  FormGroup,
-  FormBuilder,
-  Validators,
-  FormControl,
-} from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { repeatableFields } from '../../models/minuta.models';
 
 @Component({
   selector: 'app-repeteable-field',
@@ -12,44 +8,53 @@ import {
   styleUrls: ['./repeteable-field.component.scss'],
 })
 export class RepeteableFieldComponent implements OnInit {
-  @Input() field: any;
-  @Input() firtsField: any;
-  @Input() SecondField: any;
-  @Input() controlName: any;
+  @Input() controlName!: repeatableFields;
 
-  @Output() data: EventEmitter<any> = new EventEmitter<any>();
+  @Output() data: EventEmitter<{ form: any; type: repeatableFields }> =
+    new EventEmitter<{ form: any; type: repeatableFields }>();
 
-  formRepeteable!: FormGroup;
+  formRepeatable!: FormGroup;
+
+  // Getters and Setters
+
+  get nombreControl() {
+    return this.formRepeatable.controls['nombre'];
+  }
+  get temaControl() {
+    return this.formRepeatable.controls['tema'];
+  }
+  get llamamientoControl() {
+    return this.formRepeatable.controls['llamamiento'];
+  }
 
   constructor(private _fb: FormBuilder) {}
 
   ngOnInit(): void {
     // fix error. No entra el if
     if (this.controlName === 'discursantes') {
-      this.formRepeteable = this._fb.group({
+      this.formRepeatable = this._fb.group({
         nombre: ['', Validators.required],
         tema: ['', Validators.required],
       });
     }
 
-    this.formRepeteable = this._fb.group({
+    this.formRepeatable = this._fb.group({
       nombre: ['', Validators.required],
       llamamiento: ['', Validators.required],
     });
   }
 
   getErrorMessage(field: string) {
-    if (`this.${field}.hasError('required')`) {
-      return 'Campo requerido';
-    }
-    return;
+    return (
+      this.formRepeatable.controls[field].hasError('required') &&
+      this.formRepeatable.controls[field].touched
+    );
   }
 
   addForm() {
     this.data.emit({
-      form: this.formRepeteable.value,
+      form: this.formRepeatable.value,
       type: `${this.controlName}`,
     });
-    // console.log(this.formRepeteable.value);
   }
 }
