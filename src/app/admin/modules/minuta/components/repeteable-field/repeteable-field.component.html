@@ -1,8 +1,8 @@
 <form
-  [formGroup]="formRepeteable"
+  [formGroup]="formRepeatable"
   class="mt-1 sm:mt-0 sm:col-start-2 sm:col-end-4 gap-2 sm:space-x-2"
 >
-  <!-- nombre relevo -->
+  <!-- nombre-->
   <mat-form-field
     appearance="outline"
     class="w-full sm:w-2/5 mb-5 md:mb-0 ml-2"
@@ -13,12 +13,12 @@
       matInput
       placeholder="Nombre del Herman@"
     />
-    <!-- <mat-error class="mt-5" *ngIf="relevo.invalid">{{
-      getErrorMessage("relevo")
-    }}</mat-error> -->
+    <mat-error class="mt-5" *ngIf="getErrorMessage('nombre')"
+      >Campo Requerido</mat-error
+    >
   </mat-form-field>
 
-  <!-- llamamiento relevo  -->
+  <!-- tema de discursante  -->
   <mat-form-field
     *ngIf="controlName === 'discursantes'"
     appearance="outline"
@@ -29,11 +29,11 @@
       matInput
       placeholder="Llamamiento a relevar"
     />
-    <!-- <mat-error class="mt-5" *ngIf="relevoDeLlamamiento.invalid">{{
-      getErrorMessage("relevoDeLlamamiento")
-    }}</mat-error> -->
+    <mat-error class="mt-5" *ngIf="getErrorMessage('tema')"
+      >Campo Requerido</mat-error
+    >
   </mat-form-field>
-
+  <!-- relevos o sostenimientos -->
   <mat-form-field
     *ngIf="controlName !== 'discursantes'"
     appearance="outline"
@@ -44,12 +44,12 @@
       matInput
       placeholder="Llamamiento a relevar"
     />
-    <!-- <mat-error class="mt-5" *ngIf="relevoDeLlamamiento.invalid">{{
-      getErrorMessage("relevoDeLlamamiento")
-    }}</mat-error> -->
+    <mat-error class="mt-5" *ngIf="getErrorMessage('llamamiento')"
+      >Campo Requerido</mat-error
+    >
   </mat-form-field>
   <button
-    [disabled]="formRepeteable.invalid"
+    [disabled]="formRepeatable.invalid"
     (click)="addForm()"
     type="button"
     class="
