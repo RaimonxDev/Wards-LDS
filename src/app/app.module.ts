@@ -10,6 +10,7 @@ import { LayoutModule } from './layout/layout.module';
 
 import { NgProgressModule } from 'ngx-progressbar';
 import { NgProgressHttpModule } from 'ngx-progressbar/http';
+import { AlertModule } from './ui/alert/alert.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,6 +23,7 @@ import { NgProgressHttpModule } from 'ngx-progressbar/http';
     LayoutModule,
     NgProgressModule,
     NgProgressHttpModule,
+    AlertModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

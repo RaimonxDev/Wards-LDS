@@ -1,0 +1,85 @@
+<form
+  [formGroup]="formRepeteable"
+  class="mt-1 sm:mt-0 sm:col-start-2 sm:col-end-4 gap-2 sm:space-x-2"
+>
+  <!-- nombre relevo -->
+  <mat-form-field
+    appearance="outline"
+    class="w-full sm:w-2/5 mb-5 md:mb-0 ml-2"
+  >
+    <input
+      class=""
+      formControlName="nombre"
+      matInput
+      placeholder="Nombre del Herman@"
+    />
+    <!-- <mat-error class="mt-5" *ngIf="relevo.invalid">{{
+      getErrorMessage("relevo")
+    }}</mat-error> -->
+  </mat-form-field>
+
+  <!-- llamamiento relevo  -->
+  <mat-form-field
+    *ngIf="controlName === 'discursantes'"
+    appearance="outline"
+    class="w-3/4 sm:w-2/5 mb-5 md:mb-0 ml-2"
+  >
+    <input
+      formControlName="tema"
+      matInput
+      placeholder="Llamamiento a relevar"
+    />
+    <!-- <mat-error class="mt-5" *ngIf="relevoDeLlamamiento.invalid">{{
+      getErrorMessage("relevoDeLlamamiento")
+    }}</mat-error> -->
+  </mat-form-field>
+
+  <mat-form-field
+    *ngIf="controlName !== 'discursantes'"
+    appearance="outline"
+    class="w-3/4 sm:w-2/5 mb-5 md:mb-0 ml-2"
+  >
+    <input
+      formControlName="llamamiento"
+      matInput
+      placeholder="Llamamiento a relevar"
+    />
+    <!-- <mat-error class="mt-5" *ngIf="relevoDeLlamamiento.invalid">{{
+      getErrorMessage("relevoDeLlamamiento")
+    }}</mat-error> -->
+  </mat-form-field>
+  <button
+    [disabled]="formRepeteable.invalid"
+    (click)="addForm()"
+    type="button"
+    class="
+      w-auto
+      inline-flex
+      items-center
+      p-1
+      ml-2
+      border border-transparent
+      rounded-full
+      shadow-sm
+      text-white
+      bg-green-600
+      hover:bg-green-700
+      focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500
+    "
+  >
+    <!-- Heroicon name: solid/plus -->
+    <svg
+      class="h-5 w-5"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 20 20"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+        clip-rule="evenodd"
+      />
+    </svg>
+  </button>
+</form>

@@ -1,3 +1,7 @@
+<pre>
+  {{ formMinuta.value | json }}
+</pre>
+
 <form
   [formGroup]="formMinuta"
   class="max-w-7xl space-y-8 divide-y divide-gray-200"
@@ -16,7 +20,7 @@
         <div
           class="
             grid
-            md:grid-cols-3 md:gap-4 md:items-start md:border-t
+            md:grid-cols-4 md:gap-4 md:items-start md:border-t
             sm:border-gray-200
             md:pt-5
             space-y-6
@@ -26,12 +30,12 @@
           <!-- tipo de reunion  -->
           <mat-form-field appearance="outline">
             <mat-label>Tipo de Reunion</mat-label>
-            <mat-select>
+            <mat-select formControlName="tipos_de_minuta">
               <mat-option
-                *ngFor="let type of tipoMinuta; let i = index"
-                [value]="i"
+                *ngFor="let type of tipoMinuta | async; let i = index"
+                [value]="type.id"
               >
-                {{ type }}
+                {{ type.minuta }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -66,11 +70,11 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Reconocimientos</mat-label>
-            <input
+            <textarea
               formControlName="reconocimientos"
               matInput
               placeholder="Placeholder"
-            />
+            ></textarea>
           </mat-form-field>
         </div>
       </div>
@@ -93,6 +97,8 @@
             sm:border-t
             sm:border-gray-200
             sm:pt-5
+            space-y-6
+            md:space-y-0
           "
         >
           <!-- Primera oracion -->
@@ -107,7 +113,7 @@
             <div class="mt-1 sm:mt-0 sm:col-span-2">
               <mat-form-field class="w-3/4" appearance="outline">
                 <input
-                  formControlName="primeraOracion"
+                  formControlName="primera_oracion"
                   matInput
                   placeholder="Placeholder"
                 />
@@ -126,7 +132,7 @@
             <div class="mt-1 sm:mt-0 sm:col-span-2">
               <mat-form-field class="w-3/4" appearance="outline">
                 <input
-                  formControlName="primerHimno"
+                  formControlName="primer_himno"
                   matInput
                   placeholder="Placeholder"
                 />
@@ -172,16 +178,102 @@
           "
         >
           <label
-            for="country"
-            class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+            class="
+              block
+              text-sm
+              font-medium
+              text-gray-700
+              sm:mt-px sm:pt-2
+              row-span-full
+            "
           >
             Relevos
           </label>
-          <div class="mt-1 sm:mt-0 sm:col-span-2">
-            <mat-form-field class="w-full">
-              <textarea formControlName="relevos" matInput></textarea>
-            </mat-form-field>
+          <!-- Relevos -->
+          <div
+            class="mt-1 sm:mt-0 sm:col-start-2 sm:col-end-4 gap-2 sm:space-x-2"
+          >
+            <app-repeteable-field
+              [controlName]="'relevos'"
+              (data)="processData($event)"
+            ></app-repeteable-field>
           </div>
+
+          <!-- listado de relevos -->
+          <ng-container formArrayName="relevos">
+            <div
+              *ngFor="let discursante of relevosArr.controls; let i = index"
+              class="
+                mt-1
+                sm:mt-0 sm:col-span-2 sm:col-start-2 sm:col-end-4
+                gap-2
+                sm:space-x-2
+              "
+            >
+              <ng-container [formGroupName]="i">
+                <!-- nombre del relevo -->
+                <div class="w-1 h-full rounded-sm"></div>
+                <mat-form-field
+                  appearance="outline"
+                  class="w-full sm:w-2/5 ml-2"
+                >
+                  <input
+                    formControlName="nombre"
+                    matInput
+                    placeholder="Nombre del Herman@"
+                  />
+                </mat-form-field>
+                <!-- llamamiento a relavar -->
+                <mat-form-field
+                  appearance="outline"
+                  class="w-3/4 sm:w-2/5 ml-2"
+                >
+                  <input
+                    formControlName="llamamiento"
+                    matInput
+                    placeholder="Llamamiento a relevar"
+                  />
+                </mat-form-field>
+                <button
+                  (click)="eliminarRelevo(i)"
+                  type="button"
+                  class="
+                    w-auto
+                    inline-flex
+                    items-center
+                    p-1
+                    ml-2
+                    border border-transparent
+                    rounded-full
+                    shadow-sm
+                    text-white
+                    bg-red-600
+                    hover:bg-red-700
+                    focus:outline-none
+                    focus:ring-2
+                    focus:ring-offset-2
+                    focus:ring-red-500
+                  "
+                >
+                  <!-- Heroicon name: solid/plus -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M18 12H6"
+                    />
+                  </svg>
+                </button>
+              </ng-container>
+            </div>
+          </ng-container>
         </div>
         <!-- Sostenimientos -->
         <div
@@ -196,16 +288,105 @@
           "
         >
           <label
-            for="street_address"
-            class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+            class="
+              block
+              text-sm
+              font-medium
+              text-gray-700
+              sm:mt-px sm:pt-2
+              row-span-full
+            "
           >
             Sostenimientos
           </label>
-          <div class="mt-1 sm:mt-0 sm:col-span-2">
-            <mat-form-field class="w-full">
-              <textarea formControlName="sostenimientos" matInput></textarea>
-            </mat-form-field>
+          <!-- Sostenimientos -->
+          <div
+            class="mt-1 sm:mt-0 sm:col-start-2 sm:col-end-4 gap-2 sm:space-x-2"
+          >
+            <app-repeteable-field
+              [controlName]="'sostenimientos'"
+              (data)="processData($event)"
+            ></app-repeteable-field>
           </div>
+          <!-- listado de Sostenimientos -->
+          <ng-container formArrayName="sostenimientos">
+            <div
+              *ngFor="
+                let discursante of sostenimientosArr.controls;
+                let i = index
+              "
+              class="
+                mt-1
+                sm:mt-0 sm:col-span-2 sm:col-start-2 sm:col-end-4
+                gap-2
+                sm:space-x-2
+                border-t-2 border-gray-300
+                pt-4
+              "
+            >
+              <ng-container [formGroupName]="i">
+                <!-- nombre del hermano a sostener -->
+                <mat-form-field
+                  appearance="outline"
+                  class="w-full sm:w-2/5 mb-5 md:mb-0 ml-2"
+                >
+                  <input
+                    formControlName="nombre"
+                    matInput
+                    placeholder="Nombre de Herman@"
+                  />
+                </mat-form-field>
+                <!-- llamamiento a sosteienr  -->
+                <mat-form-field
+                  appearance="outline"
+                  class="w-3/4 sm:w-2/5 mb-5 md:mb-0 ml-2"
+                >
+                  <input
+                    formControlName="llamamiento"
+                    matInput
+                    placeholder="Llamamiento a sostener"
+                  />
+                </mat-form-field>
+                <button
+                  (click)="eliminarSostenimiento(i)"
+                  type="button"
+                  class="
+                    w-auto
+                    inline-flex
+                    items-center
+                    p-1
+                    ml-2
+                    border border-transparent
+                    rounded-full
+                    shadow-sm
+                    text-white
+                    bg-red-600
+                    hover:bg-red-700
+                    focus:outline-none
+                    focus:ring-2
+                    focus:ring-offset-2
+                    focus:ring-red-500
+                  "
+                >
+                  <!-- Heroicon name: solid/plus -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M18 12H6"
+                    />
+                  </svg>
+                </button>
+              </ng-container>
+            </div>
+          </ng-container>
         </div>
         <!-- himno Sacramental -->
         <div
@@ -227,7 +408,7 @@
           <div class="mt-1 sm:mt-0 sm:col-span-2">
             <mat-form-field appearance="outline" class="w-1/2">
               <input
-                formControlName="himnoSacramental"
+                formControlName="himno_sacramental"
                 matInput
                 placeholder="Placeholder"
               />
@@ -264,58 +445,10 @@
           <div
             class="mt-1 sm:mt-0 sm:col-start-2 sm:col-end-4 gap-2 sm:space-x-2"
           >
-            <!-- nombre discursante -->
-            <mat-form-field appearance="outline" class="w-full sm:w-2/5">
-              <input
-                [formControl]="newDiscursante"
-                matInput
-                placeholder="Nombre Discursante"
-              />
-            </mat-form-field>
-            <!-- tema discursante  -->
-            <mat-form-field appearance="outline" class="w-3/4 sm:w-2/5">
-              <input
-                [formControl]="temaNewDiscursante"
-                matInput
-                placeholder="Tema"
-              />
-            </mat-form-field>
-            <button
-              (click)="addDiscursantes()"
-              type="button"
-              class="
-                w-auto
-                inline-flex
-                items-center
-                p-1
-                ml-2
-                border border-transparent
-                rounded-full
-                shadow-sm
-                text-white
-                bg-green-600
-                hover:bg-green-700
-                focus:outline-none
-                focus:ring-2
-                focus:ring-offset-2
-                focus:ring-green-500
-              "
-            >
-              <!-- Heroicon name: solid/plus -->
-              <svg
-                class="h-5 w-5"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-            </button>
+            <app-repeteable-field
+              [controlName]="'discursantes'"
+              (data)="processData($event)"
+            ></app-repeteable-field>
           </div>
 
           <!-- listado de los discursantes -->
@@ -338,18 +471,14 @@
                 <!-- nombre discursante -->
                 <mat-form-field appearance="outline" class="w-full sm:w-2/5">
                   <input
-                    formControlName="nombreDiscursante"
+                    formControlName="nombre"
                     matInput
                     placeholder="Nombre Discursante"
                   />
                 </mat-form-field>
                 <!-- tema discursante  -->
                 <mat-form-field appearance="outline" class="w-3/4 sm:w-2/5">
-                  <input
-                    formControlName="temaDiscursante"
-                    matInput
-                    placeholder="Tema"
-                  />
+                  <input formControlName="tema" matInput placeholder="Tema" />
                 </mat-form-field>
                 <button
                   (click)="eliminarDiscursante(i)"
@@ -415,7 +544,7 @@
             <div class="mt-1 sm:mt-0 sm:col-span-2">
               <mat-form-field class="w-3/4" appearance="outline">
                 <input
-                  formControlName="oracionFinal"
+                  formControlName="ultima_oracion"
                   matInput
                   placeholder="Placeholder"
                 />
@@ -434,7 +563,7 @@
             <div class="mt-1 sm:mt-0 sm:col-span-2">
               <mat-form-field class="w-3/4" appearance="outline">
                 <input
-                  formControlName="himnoFinal"
+                  formControlName="ultimo_himno"
                   matInput
                   placeholder="Placeholder"
                 />
@@ -481,7 +610,4 @@
       </button>
     </div>
   </div>
-  <pre>
-    <!-- {{ formMinuta.status | json }} -->
-  </pre>
 </form>
