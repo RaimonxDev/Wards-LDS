@@ -1,5 +1,8 @@
 export type ActionForm = 'crear' | 'editar';
 
+// Tipado para añadir campos repeteables en las minutas
+export type repeatableFields = 'discursantes' | 'sostenimientos' | 'relevos';
+
 // Response petition HTTP
 export interface Minuta {
   _id: string;
