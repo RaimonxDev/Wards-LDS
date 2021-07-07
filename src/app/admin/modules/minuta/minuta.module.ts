@@ -9,6 +9,7 @@ import { ListMinutaComponent } from './components/list-minuta/list-minuta.compon
 import { TemplateFormComponent } from './components/template-form/template-form.component';
 import { HttpClientModule } from '@angular/common/http';
 import { RepeteableFieldComponent } from './components/repeteable-field/repeteable-field.component';
+import { DetailsMinutaComponent } from './components/details-minuta/details-minuta.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { RepeteableFieldComponent } from './components/repeteable-field/repeteab
     ListMinutaComponent,
     TemplateFormComponent,
     RepeteableFieldComponent,
+    DetailsMinutaComponent,
   ],
   imports: [
     CommonModule,

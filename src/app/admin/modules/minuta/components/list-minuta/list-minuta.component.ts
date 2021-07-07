@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { Minuta } from '../../models/minuta.models';
 import { MinutaService } from '../../services/minuta.service';
 import { tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-minuta',
@@ -11,15 +12,14 @@ import { tap } from 'rxjs/operators';
 })
 export class ListMinutaComponent implements OnInit {
   minutas$!: Observable<Minuta[]>;
-  constructor(private _minutaService: MinutaService) {}
+  constructor(private _minutaService: MinutaService, private _router: Router) {}
 
   ngOnInit(): void {
-    this.minutas$ = this._minutaService.minutas$.pipe(
-      tap((data) => console.log(data))
-    );
+    this.minutas$ = this._minutaService.minutas$;
   }
 
-  editar() {
-    console.log('editando');
+  details(minutaID: string) {
+    console.log(minutaID);
+    this._router.navigate(['minuta/details', minutaID]);
   }
 }

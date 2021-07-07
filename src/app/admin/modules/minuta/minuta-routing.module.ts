@@ -6,8 +6,10 @@ import { ListMinutaComponent } from './components/list-minuta/list-minuta.compon
 import {
   tiposDeMinutaResolver,
   MinutasResolver,
+  MinutaResolver,
 } from './resolvers/minuta.resolver';
 import { RepeteableFieldComponent } from './components/repeteable-field/repeteable-field.component';
+import { DetailsMinutaComponent } from './components/details-minuta/details-minuta.component';
 
 const routes: Routes = [
   {
@@ -23,6 +25,11 @@ const routes: Routes = [
     path: 'listado',
     component: ListMinutaComponent,
     resolve: [MinutasResolver],
+  },
+  {
+    path: 'details/:id',
+    component: DetailsMinutaComponent,
+    resolve: [MinutaResolver],
   },
   { path: 'test', component: RepeteableFieldComponent },
 ];

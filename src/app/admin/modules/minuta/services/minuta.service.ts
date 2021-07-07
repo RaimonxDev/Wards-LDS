@@ -51,7 +51,8 @@ export class MinutaService {
       .get<Minuta[]>(`${this.siteUrl}/minutas`)
       .pipe(tap((minutas) => this._minutas.next(minutas)));
   }
-  getMinuta(id: string) {
+
+  getMinuta(id: string | null) {
     return this._http
       .get<Minuta>(`${this.siteUrl}/minutas/${id}`)
       .pipe(tap((resp) => this._minuta.next(resp)));
