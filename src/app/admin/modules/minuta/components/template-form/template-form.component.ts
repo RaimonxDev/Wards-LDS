@@ -79,6 +79,7 @@ export class TemplateFormComponent implements OnInit, AfterViewInit {
   initFormMinuta() {
     this.formMinuta = this._fb.group({
       tipos_de_minuta: ['', [Validators.required]],
+      completa: [false],
       barrio: [this._authService.barrioID],
       preside: ['Presiente Inzunza', [Validators.required]],
       dirige: ['Obispo Hernandez', [Validators.required]],
@@ -134,8 +135,13 @@ export class TemplateFormComponent implements OnInit, AfterViewInit {
   }
 
   guardarMinuta() {
-    console.log(this.formMinuta.value);
-    return;
+    if (
+      this.discursantesArr.length !== 0 &&
+      this.relevosArr.length !== 0 &&
+      this.sostenimientosArr.length !== 0
+    ) {
+      this.formMinuta.controls['completa'].setValue(true);
+    }
     this._minutaServices
       .createMinuta(this.formMinuta.value)
       .subscribe((resp) => {

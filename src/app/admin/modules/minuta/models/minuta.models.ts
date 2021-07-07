@@ -26,6 +26,7 @@ export interface Minuta {
   preludio_musical: string;
   fecha: Date;
   dirige: string;
+  preside: string;
   discursantes: Discursante[];
   relevos: Discursante[];
   sostenimientos: Discursante[];
@@ -35,6 +36,7 @@ export interface Minuta {
   barrio: Barrio;
   tipos_de_minuta: tipoMinutas;
   id: string;
+  completa: boolean;
 }
 
 export interface Barrio {
