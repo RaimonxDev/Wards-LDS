@@ -10,6 +10,7 @@ import {
   ActionForm,
   tipoMinutas,
   Discursante,
+  formControlRepeatable,
 } from '../../models/minuta.models';
 import { MinutaService } from '../../services/minuta.service';
 import { AlertService } from '../../../../../ui/alert/services/alert.service';
@@ -96,16 +97,35 @@ export class TemplateFormComponent implements OnInit, AfterViewInit {
     });
   }
 
-  processData(data: { form: any; type: repeatableFields }) {
+  processData(data: { form: formControlRepeatable; type: repeatableFields }) {
     if (data.type === 'relevos') {
-      this.relevosArr.push(this._fb.group(data.form));
+      const { nombre, llamamiento } = data.form;
+      this.relevosArr.push(
+        this._fb.group({
+          nombre: [nombre, [Validators.required]],
+          llamamiento: [llamamiento, [Validators.required]],
+        })
+      );
     }
     if (data.type === 'sostenimientos') {
-      this.sostenimientosArr.push(this._fb.group(data.form));
+      const { nombre, llamamiento } = data.form;
+      this.sostenimientosArr.push(
+        this._fb.group({
+          nombre: [nombre, [Validators.required]],
+          llamamiento: [llamamiento, [Validators.required]],
+        })
+      );
     }
 
     if (data.type === 'discursantes') {
-      this.discursantesArr.push(this._fb.group(data.form));
+      console.log(data.form, data.type);
+      const { nombre, tema } = data.form;
+      this.discursantesArr.push(
+        this._fb.group({
+          nombre: [nombre, [Validators.required]],
+          tema: [tema, [Validators.required]],
+        })
+      );
     }
   }
 

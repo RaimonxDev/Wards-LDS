@@ -3,6 +3,16 @@ export type ActionForm = 'crear' | 'editar';
 // Tipado para añadir campos repeteables en las minutas
 export type repeatableFields = 'discursantes' | 'sostenimientos' | 'relevos';
 
+export interface formControlRepeatable {
+  nombre: string;
+  tema?: string;
+  llamamiento?: string;
+}
+export interface ControlName {
+  form: formControlRepeatable;
+  type: repeatableFields;
+}
+
 // Response petition HTTP
 export interface Minuta {
   _id: string;

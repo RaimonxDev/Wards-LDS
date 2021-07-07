@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { repeatableFields } from '../../models/minuta.models';
 
@@ -30,23 +37,26 @@ export class RepeteableFieldComponent implements OnInit {
   constructor(private _fb: FormBuilder) {}
 
   ngOnInit(): void {
-    // fix error. No entra el if
     if (this.controlName === 'discursantes') {
       this.formRepeatable = this._fb.group({
         nombre: ['', Validators.required],
         tema: ['', Validators.required],
       });
     }
-
-    this.formRepeatable = this._fb.group({
-      nombre: ['', Validators.required],
-      llamamiento: ['', Validators.required],
-    });
+    if (
+      this.controlName === 'relevos' ||
+      this.controlName === 'sostenimientos'
+    ) {
+      this.formRepeatable = this._fb.group({
+        nombre: ['', Validators.required],
+        llamamiento: ['', Validators.required],
+      });
+    }
   }
 
   getErrorMessage(field: string) {
     return (
-      this.formRepeatable.controls[field].hasError('required') &&
+      this.formRepeatable.controls[field].errors &&
       this.formRepeatable.controls[field].touched
     );
   }
@@ -54,7 +64,8 @@ export class RepeteableFieldComponent implements OnInit {
   addForm() {
     this.data.emit({
       form: this.formRepeatable.value,
-      type: `${this.controlName}`,
+      type: this.controlName,
     });
+    this.formRepeatable.reset();
   }
 }
