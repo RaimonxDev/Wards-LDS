@@ -37,7 +37,7 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-
+          <!-- Preside -->
           <mat-form-field appearance="outline">
             <mat-label>Preside</mat-label>
             <input
@@ -46,7 +46,7 @@
               placeholder="Placeholder"
             />
           </mat-form-field>
-
+          <!-- Dirige -->
           <mat-form-field appearance="outline">
             <mat-label>Dirige</mat-label>
             <input
@@ -55,7 +55,7 @@
               placeholder="Placeholder"
             />
           </mat-form-field>
-
+          <!-- Fecha de Reunion -->
           <mat-form-field appearance="outline">
             <mat-label>Fecha de Reunion</mat-label>
             <input formControlName="fecha" matInput [matDatepicker]="picker" />
@@ -65,7 +65,7 @@
             ></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
-
+          <!-- Reconocimientos -->
           <mat-form-field appearance="outline">
             <mat-label>Reconocimientos</mat-label>
             <textarea
@@ -200,7 +200,7 @@
           <!-- listado de relevos -->
           <ng-container formArrayName="relevos">
             <div
-              *ngFor="let discursante of relevosArr.controls; let i = index"
+              *ngFor="let relevo of relevosArr.controls; let i = index"
               class="
                 mt-1
                 sm:mt-0 sm:col-span-2 sm:col-start-2 sm:col-end-4

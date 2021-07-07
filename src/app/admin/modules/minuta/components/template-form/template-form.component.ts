@@ -9,8 +9,8 @@ import {
 import {
   ActionForm,
   tipoMinutas,
-  Discursante,
   formControlRepeatable,
+  Minuta,
 } from '../../models/minuta.models';
 import { MinutaService } from '../../services/minuta.service';
 import { AlertService } from '../../../../../ui/alert/services/alert.service';
@@ -24,6 +24,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'template-form',
@@ -39,6 +40,8 @@ export class TemplateFormComponent implements OnInit, AfterViewInit {
   // Variables
   tipoMinuta!: Observable<tipoMinutas[]>;
   formMinuta!: FormGroup;
+  // Para el modo de editar obtenemos la minuta actual y crearemos el form
+  minuta$!: Observable<Minuta>;
 
   // Getters and Setters
   get discursantesArr() {
@@ -66,12 +69,18 @@ export class TemplateFormComponent implements OnInit, AfterViewInit {
 
     this.initFormMinuta();
     if (this.ActionForm === 'crear') {
-      // Formulario Vacio
-      // this.formMinuta.patchValue({});
+      this.formMinuta.reset();
     }
     if (this.ActionForm === 'editar') {
       // Data a editar
-      // this.formMinuta.patchValue({})
+      this._minutaServices.minuta$.subscribe((data) => {
+        this.formMinuta.patchValue(data);
+
+        // Seteamos los array
+        this.pacthArrayValue(data.relevos, 'relevos');
+        this.pacthArrayValue(data.sostenimientos, 'sostenimientos');
+        this.pacthArrayValue(data.discursantes, 'discursantes');
+      });
     }
   }
   ngAfterViewInit() {}
@@ -81,20 +90,20 @@ export class TemplateFormComponent implements OnInit, AfterViewInit {
       tipos_de_minuta: ['', [Validators.required]],
       completa: [false],
       barrio: [this._authService.barrioID],
-      preside: ['Presiente Inzunza', [Validators.required]],
-      dirige: ['Obispo Hernandez', [Validators.required]],
+      preside: ['', [Validators.required]],
+      dirige: ['', [Validators.required]],
       fecha: ['', [Validators.required]],
-      preludioMusica: ['Himno 1'],
-      reconocimientos: ['reconocimientos 1'],
-      anuncios: ['reconocimientos 2'],
-      primer_himno: ['himno2'],
-      primera_oracion: ['oracion'],
+      preludioMusica: [''],
+      reconocimientos: [''],
+      anuncios: [''],
+      primer_himno: [''],
+      primera_oracion: [''],
       relevos: this._fb.array([]),
       sostenimientos: this._fb.array([]),
-      himno_sacramental: ['himnos'],
+      himno_sacramental: [''],
       discursantes: this._fb.array([]),
-      ultimo_himno: ['himno himnoFinal'],
-      ultima_oracion: ['oracion final'],
+      ultimo_himno: [''],
+      ultima_oracion: [''],
     });
   }
 
@@ -130,11 +139,47 @@ export class TemplateFormComponent implements OnInit, AfterViewInit {
     }
   }
 
+  pacthArrayValue(data: any[], field: repeatableFields) {
+    if (field === 'relevos') {
+      data.forEach((value) => {
+        this.relevosArr.push(
+          this._fb.group({
+            nombre: [value.nombre, [Validators.required]],
+            llamamiento: [value.llamamiento, [Validators.required]],
+          })
+        );
+      });
+    }
+
+    if (field === 'sostenimientos') {
+      data.forEach((value) => {
+        this.sostenimientosArr.push(
+          this._fb.group({
+            nombre: [value.nombre, [Validators.required]],
+            llamamiento: [value.llamamiento, [Validators.required]],
+          })
+        );
+      });
+    }
+
+    if (field === 'discursantes') {
+      data.forEach((value) => {
+        this.discursantesArr.push(
+          this._fb.group({
+            nombre: [value.nombre, [Validators.required]],
+            tema: [value.tema, [Validators.required]],
+          })
+        );
+      });
+    }
+  }
+
   addAnuncios() {
     return null;
   }
 
   guardarMinuta() {
+    // Comprobrar si todos los campos requeridos en la minuta estan completos
     if (
       this.discursantesArr.length !== 0 &&
       this.relevosArr.length !== 0 &&

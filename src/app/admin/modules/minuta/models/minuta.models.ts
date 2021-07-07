@@ -4,10 +4,14 @@ export type ActionForm = 'crear' | 'editar';
 export type repeatableFields = 'discursantes' | 'sostenimientos' | 'relevos';
 
 export interface formControlRepeatable {
+  _id: string;
+  __v: number;
+  id: string;
   nombre: string;
   tema?: string;
   llamamiento?: string;
 }
+
 export interface ControlName {
   form: formControlRepeatable;
   type: repeatableFields;
@@ -27,9 +31,10 @@ export interface Minuta {
   fecha: Date;
   dirige: string;
   preside: string;
-  discursantes: Discursante[];
-  relevos: Discursante[];
-  sostenimientos: Discursante[];
+  reconocimientos: string;
+  discursantes: formControlRepeatable[];
+  relevos: formControlRepeatable[];
+  sostenimientos: formControlRepeatable[];
   createdAt: Date;
   updatedAt: Date;
   __v: number;
@@ -60,13 +65,4 @@ export interface tipoMinutas {
   __v: number;
   id: string;
   minuta?: string;
-}
-
-export interface Discursante {
-  _id: string;
-  nombre: string;
-  tema?: string;
-  __v: number;
-  id: string;
-  llamamiento?: string;
 }
