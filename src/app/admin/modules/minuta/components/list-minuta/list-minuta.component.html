@@ -1,15 +1,16 @@
 <!-- This example requires Tailwind CSS v2.0+ -->
-<div class="bg-white max-w-2xl shadow overflow-hidden sm:rounded-md">
+<div class="bg-white max-w-7xl shadow overflow-hidden sm:rounded-md">
   <ul class="divide-y divide-gray-200">
-    <li>
+    <li *ngFor="let minuta of minutas$ | async as minutas">
       <a (click)="editar()" class="block hover:bg-gray-50">
         <div class="px-4 py-4 sm:px-6">
           <div class="flex items-center justify-between">
-            <p class="text-sm font-medium text-indigo-600 truncate">
-              Reunion Sacramental
+            <p class="text-sm font-medium text-indigo-600 truncate capitalize">
+              {{ minuta.tipos_de_minuta.minuta }}
             </p>
             <div class="ml-2 flex-shrink-0 flex">
               <p
+                *ngIf="minuta.completa"
                 class="
                   px-2
                   inline-flex
@@ -22,6 +23,21 @@
                 "
               >
                 Completo
+              </p>
+              <p
+                *ngIf="!minuta.completa"
+                class="
+                  px-2
+                  inline-flex
+                  text-xs
+                  leading-5
+                  font-semibold
+                  rounded-full
+                  bg-red-100
+                  text-red-800
+                "
+              >
+                Incompleta
               </p>
             </div>
           </div>
@@ -40,7 +56,7 @@
                     d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"
                   />
                 </svg>
-                Quien preside
+                {{ minuta.preside }}
               </p>
               <p
                 class="
@@ -65,7 +81,7 @@
                     clip-rule="evenodd"
                   />
                 </svg>
-                Dirige
+                {{ minuta.dirige }}
               </p>
             </div>
             <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
@@ -85,7 +101,9 @@
               </svg>
               <p>
                 Fecha
-                <time datetime="2020-01-07">January 7, 2020</time>
+                <time datetime="2020-01-07">{{
+                  minuta.fecha | date: "d/M/yy, h:mm a"
+                }}</time>
               </p>
             </div>
           </div>
