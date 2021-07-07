@@ -49,9 +49,11 @@
     >
   </mat-form-field>
   <button
-    [disabled]="formRepeatable.invalid"
     (click)="addForm()"
     type="button"
+    [ngClass]="{
+      'bg-gray-500': formRepeatable.invalid
+    }"
     class="
       w-auto
       inline-flex
