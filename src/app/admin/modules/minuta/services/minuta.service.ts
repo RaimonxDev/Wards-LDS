@@ -17,11 +17,11 @@ export class MinutaService {
 
   // Getters and Setters
   // @ts-ignore
-  public get minutas$(): Observable<any[]> {
+  public get minutas$(): Observable<Minuta[]> {
     return this._minutas.asObservable();
   }
-  public get minuta$(): Observable<any> {
-    return this._minutas.asObservable();
+  public get minuta$(): Observable<Minuta> {
+    return this._minuta.asObservable();
   }
   public get tiposDeMinuta$(): Observable<any> {
     return this._tiposDeMinuta.asObservable();
@@ -51,7 +51,7 @@ export class MinutaService {
       .get<Minuta[]>(`${this.siteUrl}/minutas`)
       .pipe(tap((minutas) => this._minutas.next(minutas)));
   }
-  getMinta(id: string) {
+  getMinuta(id: string) {
     return this._http
       .get<Minuta>(`${this.siteUrl}/minutas/${id}`)
       .pipe(tap((resp) => this._minuta.next(resp)));
