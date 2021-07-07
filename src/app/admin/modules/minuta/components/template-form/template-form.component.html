@@ -1,5 +1,6 @@
 <form
   [formGroup]="formMinuta"
+  autocomplete="off"
   class="max-w-7xl space-y-8 divide-y divide-gray-200"
 >
   <div class="space-y-8 divide-y divide-gray-200 sm:space-y-5">
@@ -204,7 +205,8 @@
                 mt-1
                 sm:mt-0 sm:col-span-2 sm:col-start-2 sm:col-end-4
                 gap-2
-                sm:space-x-2
+                border-t-2 border-gray-300
+                pt-4
               "
             >
               <ng-container [formGroupName]="i">
@@ -212,7 +214,7 @@
                 <div class="w-1 h-full rounded-sm"></div>
                 <mat-form-field
                   appearance="outline"
-                  class="w-full sm:w-2/5 ml-2"
+                  class="w-full sm:w-2/5 mr-2"
                 >
                   <input
                     formControlName="nombre"
@@ -221,10 +223,7 @@
                   />
                 </mat-form-field>
                 <!-- llamamiento a relavar -->
-                <mat-form-field
-                  appearance="outline"
-                  class="w-3/4 sm:w-2/5 ml-2"
-                >
+                <mat-form-field appearance="outline" class="w-3/4 sm:w-2/5">
                   <input
                     formControlName="llamamiento"
                     matInput
@@ -272,6 +271,7 @@
             </div>
           </ng-container>
         </div>
+
         <!-- Sostenimientos -->
         <div
           class="
@@ -325,7 +325,7 @@
                 <!-- nombre del hermano a sostener -->
                 <mat-form-field
                   appearance="outline"
-                  class="w-full sm:w-2/5 mb-5 md:mb-0 ml-2"
+                  class="w-full sm:w-2/5 mb-5 md:mb-0"
                 >
                   <input
                     formControlName="nombre"
@@ -336,7 +336,7 @@
                 <!-- llamamiento a sosteienr  -->
                 <mat-form-field
                   appearance="outline"
-                  class="w-3/4 sm:w-2/5 mb-5 md:mb-0 ml-2"
+                  class="w-3/4 sm:w-2/5 mb-5 md:mb-0"
                 >
                   <input
                     formControlName="llamamiento"
@@ -573,7 +573,7 @@
   </div>
 
   <div class="pt-5">
-    <div class="flex justify-end">
+    <div class="flex justify-end space-x-4">
       <button
         type="button"
         class="
@@ -587,10 +587,7 @@
           font-medium
           text-gray-700
           hover:bg-gray-50
-          focus:outline-none
-          focus:ring-2
-          focus:ring-offset-2
-          focus:ring-indigo-500
+          focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500
         "
       >
         Cancel
@@ -598,10 +595,30 @@
       <button
         [disabled]="formMinuta.invalid"
         (click)="guardarMinuta()"
+        [ngClass]="{
+          'bg-gray-500 text-gray-50 cursor-not-allowed hover:bg-gray-500':
+            formMinuta.invalid
+        }"
         type="submit"
-        mat-raised-button
-        color="primary"
-        class="pl-2"
+        class="
+          inline-flex
+          items-center
+          px-3
+          py-2
+          border border-transparent
+          text-sm
+          leading-4
+          font-medium
+          rounded-md
+          shadow-sm
+          text-white
+          bg-indigo-600
+          hover:bg-indigo-700
+          focus:outline-none
+          focus:ring-2
+          focus:ring-offset-2
+          focus:ring-indigo-500
+        "
       >
         Guardar Minuta
       </button>

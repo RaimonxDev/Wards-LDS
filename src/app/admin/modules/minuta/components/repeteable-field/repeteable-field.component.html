@@ -1,12 +1,10 @@
 <form
+  autocomplete="off"
   [formGroup]="formRepeatable"
   class="mt-1 sm:mt-0 sm:col-start-2 sm:col-end-4 gap-2 sm:space-x-2"
 >
   <!-- nombre-->
-  <mat-form-field
-    appearance="outline"
-    class="w-full sm:w-2/5 mb-5 md:mb-0 ml-2"
-  >
+  <mat-form-field appearance="outline" class="w-full sm:w-2/5 mb-5 md:mb-0">
     <input
       class=""
       formControlName="nombre"
@@ -22,7 +20,7 @@
   <mat-form-field
     *ngIf="controlName === 'discursantes'"
     appearance="outline"
-    class="w-3/4 sm:w-2/5 mb-5 md:mb-0 ml-2"
+    class="w-3/4 sm:w-2/5 mb-5 md:mb-0"
   >
     <input
       formControlName="tema"
@@ -37,7 +35,7 @@
   <mat-form-field
     *ngIf="controlName !== 'discursantes'"
     appearance="outline"
-    class="w-3/4 sm:w-2/5 mb-5 md:mb-0 ml-2"
+    class="w-3/4 sm:w-2/5 mb-5 md:mb-0"
   >
     <input
       formControlName="llamamiento"
@@ -49,10 +47,11 @@
     >
   </mat-form-field>
   <button
+    [disabled]="formRepeatable.invalid"
     (click)="addForm()"
     type="button"
     [ngClass]="{
-      'bg-gray-500': formRepeatable.invalid
+      'bg-gray-500 hover:bg-gray-500 cursor-not-allowed': formRepeatable.invalid
     }"
     class="
       w-auto
