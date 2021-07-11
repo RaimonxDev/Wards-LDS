@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Minuta, tipoMinutas } from '../../models/minuta.models';
+import {
+  formControlRepeatable,
+  Minuta,
+  repeatableFields,
+  tipoMinutas,
+} from '../../models/minuta.models';
 import { MinutaService } from '../../services/minuta.service';
 import { tap } from 'rxjs/operators';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -14,6 +19,7 @@ import { AuthService } from 'src/app/core/auth/services/auth.service';
 })
 export class DetailsMinutaComponent implements OnInit {
   minuta$!: Observable<Minuta>;
+  currentMinuta!: Minuta;
   tipoMinuta!: Observable<tipoMinutas[]>;
 
   formMinuta!: FormGroup;
@@ -41,7 +47,7 @@ export class DetailsMinutaComponent implements OnInit {
     this.initFormMinuta();
 
     this.minuta$ = this._minutaServices.minuta$.pipe(
-      tap((data) => console.log(data))
+      tap((minuta) => (this.currentMinuta = minuta))
     );
   }
 
@@ -69,6 +75,105 @@ export class DetailsMinutaComponent implements OnInit {
 
   editMode() {
     this.editForm = !this.editForm;
-    console.log(this.editForm);
+    // console.log(this.editForm);
+    if (this.editForm) {
+      this.formMinuta.patchValue(this.currentMinuta);
+      // Seteamos los array
+      this.pacthArrayValue(this.currentMinuta.relevos, 'relevos');
+      this.pacthArrayValue(this.currentMinuta.sostenimientos, 'sostenimientos');
+      this.pacthArrayValue(this.currentMinuta.discursantes, 'discursantes');
+    }
+    if (!this.editForm) {
+      this.formMinuta.reset();
+
+      // limpiamos los valores
+      this.discursantesArr.clear();
+      this.relevosArr.clear();
+      this.discursantesArr.clear();
+    }
+  }
+
+  updateMinuta() {
+    console.log('update');
+  }
+  cancelEditionForm() {
+    this.editForm = false;
+    console.log('cancel');
+  }
+
+  processData(data: { form: formControlRepeatable; type: repeatableFields }) {
+    if (data.type === 'relevos') {
+      const { nombre, llamamiento } = data.form;
+      this.relevosArr.push(
+        this._fb.group({
+          nombre: [nombre, [Validators.required]],
+          llamamiento: [llamamiento, [Validators.required]],
+        })
+      );
+    }
+    if (data.type === 'sostenimientos') {
+      const { nombre, llamamiento } = data.form;
+      this.sostenimientosArr.push(
+        this._fb.group({
+          nombre: [nombre, [Validators.required]],
+          llamamiento: [llamamiento, [Validators.required]],
+        })
+      );
+    }
+
+    if (data.type === 'discursantes') {
+      const { nombre, tema } = data.form;
+      this.discursantesArr.push(
+        this._fb.group({
+          nombre: [nombre, [Validators.required]],
+          tema: [tema, [Validators.required]],
+        })
+      );
+    }
+  }
+
+  pacthArrayValue(data: any[], field: repeatableFields) {
+    if (field === 'relevos') {
+      data.forEach((value) => {
+        this.relevosArr.push(
+          this._fb.group({
+            nombre: [value.nombre, [Validators.required]],
+            llamamiento: [value.llamamiento, [Validators.required]],
+          })
+        );
+      });
+    }
+
+    if (field === 'sostenimientos') {
+      data.forEach((value) => {
+        this.sostenimientosArr.push(
+          this._fb.group({
+            nombre: [value.nombre, [Validators.required]],
+            llamamiento: [value.llamamiento, [Validators.required]],
+          })
+        );
+      });
+    }
+
+    if (field === 'discursantes') {
+      data.forEach((value) => {
+        this.discursantesArr.push(
+          this._fb.group({
+            nombre: [value.nombre, [Validators.required]],
+            tema: [value.tema, [Validators.required]],
+          })
+        );
+      });
+    }
+  }
+
+  eliminarDiscursante(index: number) {
+    this.discursantesArr.removeAt(index);
+  }
+  eliminarRelevo(index: number) {
+    this.relevosArr.removeAt(index);
+  }
+  eliminarSostenimiento(index: number) {
+    this.sostenimientosArr.removeAt(index);
   }
 }

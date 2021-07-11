@@ -12,7 +12,12 @@ module.exports = {
     },
     darkMode: 'class', // or 'media' or 'class'
     theme: {
-      extend: {},
+      extend: {
+        gridTemplateColumns: {
+          // Complex site-specific column configuration
+         'minuta': '1.25rem repeat(2, 1fr)',
+        }
+      },
     },
     variants: {
       extend: {},

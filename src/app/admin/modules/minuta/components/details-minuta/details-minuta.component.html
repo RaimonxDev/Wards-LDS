@@ -1,4 +1,8 @@
 <!-- <template-form [ActionForm]="'editar'"></template-form> -->
+<pre>
+  {{ formMinuta.status | json }}
+</pre>
+
 <ng-container *ngIf="minuta$ | async as minuta">
   <div [formGroup]="formMinuta" class="min-h-screen">
     <main class="py-10">
@@ -40,7 +44,9 @@
             md:mt-0 md:flex-row md:space-x-3
           "
         >
+          <!-- editar -->
           <button
+            *ngIf="!editForm"
             (click)="editMode()"
             type="button"
             class="
@@ -65,6 +71,63 @@
             "
           >
             Editar
+          </button>
+          <!-- cancelar cambios -->
+          <button
+            *ngIf="editForm"
+            (click)="cancelEditionForm()"
+            type="button"
+            class="
+              inline-flex
+              items-center
+              justify-center
+              px-4
+              py-2
+              border border-transparent
+              text-sm
+              font-medium
+              rounded-md
+              shadow-sm
+              text-white
+              bg-red-600
+              hover:bg-red-700
+              focus:outline-none
+              focus:ring-2
+              focus:ring-offset-2
+              focus:ring-offset-gray-100
+              focus:ring-red-500
+            "
+          >
+            Cancelar
+          </button>
+          <!-- Guardar Cambios -->
+          <button
+            *ngIf="editForm"
+            [disabled]="formMinuta.invalid"
+            (click)="updateMinuta()"
+            type="button"
+            class="
+              inline-flex
+              items-center
+              justify-center
+              px-4
+              py-2
+              border border-indigo-600
+              text-sm
+              font-medium
+              rounded-md
+              shadow-sm
+              text-indigo-700
+              bg-transparent
+              hover:bg-indio-700 hover:text-white
+              focus:outline-none
+              focus:ring-2
+              focus:ring-offset-2
+              focus:ring-offset-gray-100
+              focus:ring-indigo-500
+            "
+          >
+            Actualizar
           </button>
         </div>
       </div>
@@ -272,61 +335,205 @@
                     </dt>
                     <dd class="mt-1 text-sm text-gray-900">
                       <ul
-                        *ngIf="!editForm"
                         class="
                           border border-gray-200
                           rounded-md
                           divide-y divide-gray-200
                         "
                       >
-                        <li
-                          *ngFor="let discursante of minuta.discursantes"
-                          class="
-                            pl-3
-                            pr-4
-                            py-3
-                            grid grid-cols-3 grid-rows-2
-                            md:grid-rows-1
-                            items-center
-                            justify-between
-                            text-sm
-                          "
-                        >
-                          <!-- icon user -->
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="h-5 w-5 text-green-500"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
+                        <ng-container *ngIf="!editForm">
+                          <li
+                            *ngFor="let discursante of minuta.discursantes"
+                            class="
+                              pl-3
+                              pr-4
+                              py-3
+                              grid grid-cols-4 grid-rows-2
+                              sm:grid-rows-1 sm:grid-cols-minuta
+                              items-center
+                              justify-between
+                              text-sm
+                              auto-cols-fr
+                            "
                           >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
-                          </svg>
+                            <!-- icon user -->
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              class="
+                                h-6
+                                w-6
+                                sm:h-5 sm:w-5
+                                text-green-500
+                                flex-shrink-0
+                                row-span-2
+                                sm:row-span-1
+                                m-auto
+                                flex-none
+                              "
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                              />
+                            </svg>
 
-                          <div class="flex-1 flex items-center">
-                            <!-- nombre-->
-                            <span class="ml-2 flex-1 w-0 truncate">
-                              Nombre: {{ discursante.nombre }}
-                            </span>
-                          </div>
+                            <div
+                              class="flex items-center col-span-3 sm:col-span-1"
+                            >
+                              <!-- nombre-->
+                              <span class="ml-0 sm:ml-2 flex-1 w-0 truncate">
+                                Nombre: {{ discursante.nombre }}
+                              </span>
+                            </div>
 
-                          <!-- tema -->
-                          <div class="ml-4 flex-1">
-                            <span class="ml-2 flex-1 w-0 truncate">
-                              Tema: {{ discursante.tema }}
-                            </span>
-                          </div>
-                        </li>
+                            <!-- tema -->
+                            <div
+                              class="
+                                ml-0
+                                sm:ml-4
+                                col-start-2 col-end-4
+                                sm:col-span-1
+                              "
+                            >
+                              <span class="ml-0 sm:ml-2 flex-1 w-0 truncate">
+                                Tema: {{ discursante.tema }}
+                              </span>
+                            </div>
+                          </li>
+                        </ng-container>
+
+                        <app-repeteable-field
+                          *ngIf="editForm"
+                          [controlName]="'discursantes'"
+                        ></app-repeteable-field>
+
+                        <!-- listado de Discursantes -->
+
+                        <ng-container
+                          *ngIf="editForm"
+                          formArrayName="discursantes"
+                        >
+                          <li
+                            *ngFor="
+                              let discursante of discursantesArr.controls;
+                              let i = index
+                            "
+                            class="pl-3 pr-4 py-3 flex flex-col text-sm"
+                          >
+                            <ng-container [formGroupName]="i">
+                              <div class="flex-1 flex items-center space-x-4">
+                                <!-- Heroicon name: solid/paper-clip -->
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  class="
+                                    w-12
+                                    h-12
+                                    md:h-5 md:w-5
+                                    text-yellow-500
+                                  "
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                  />
+                                </svg>
+
+                                <div class="mt-1 -space-y-px">
+                                  <div class="flex space-x-2 flex-wrap">
+                                    <!-- Nombre -->
+                                    <div class="w-1/2 flex-1 min-w-0">
+                                      <input
+                                        type="text"
+                                        formControlName="nombre"
+                                        class="
+                                          focus:ring-indigo-500
+                                          focus:border-indigo-500
+                                          relative
+                                          block
+                                          w-full
+                                          bg-transparent
+                                          rounded-md
+                                          focus:z-10
+                                          sm:text-sm
+                                          border-gray-300
+                                        "
+                                        placeholder="Nombre"
+                                      />
+                                    </div>
+
+                                    <!-- tema -->
+                                    <ng-container>
+                                      <div class="flex-1 min-w-0">
+                                        <input
+                                          type="text"
+                                          formControlName="tema"
+                                          class="
+                                            focus:ring-indigo-500
+                                            focus:border-indigo-500
+                                            relative
+                                            block
+                                            w-full
+                                            rounded-md
+                                            bg-transparent
+                                            focus:z-10
+                                            sm:text-sm
+                                            border-gray-300
+                                          "
+                                          placeholder="Llamamiento"
+                                        />
+                                      </div>
+                                    </ng-container>
+                                  </div>
+                                </div>
+
+                                <button
+                                  (click)="eliminarDiscursante(i)"
+                                  type="button"
+                                  class="
+                                    inline-flex
+                                    items-center
+                                    border border-transparent
+                                    rounded-full
+                                    shadow-sm
+                                    text-white
+                                    bg-red-600
+                                    hover:bg-red-700
+                                    focus:outline-none
+                                    focus:ring-2
+                                    focus:ring-offset-2
+                                    focus:ring-red-500
+                                  "
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="h-5 w-5"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                  >
+                                    <path
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M18 12H6"
+                                    />
+                                  </svg>
+                                </button>
+                              </div>
+                            </ng-container>
+                          </li>
+                        </ng-container>
                       </ul>
-                      <app-repeteable-field
-                        [controlName]="'discursantes'"
-                        *ngIf="editForm"
-                      ></app-repeteable-field>
                     </dd>
                   </div>
                 </dl>
