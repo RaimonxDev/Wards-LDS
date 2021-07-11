@@ -96,35 +96,20 @@
                 <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
                   <!-- Preside -->
                   <div class="sm:col-span-1">
-                    <dt class="text-sm font-medium text-gray-500">
+                    <dt class="text-sm font-medium text-gray-500 capitalize">
                       Preside
                       <ng-container *ngIf="editForm">
                         <mat-form-field
-                          appearance="standard"
-                          [style.fontSize.px]="14"
+                          class="ml-4"
+                          appearance="outline"
+                          placeholder=""
                         >
-                          <input
-                            formControlName="preside"
-                            matInput
-                            placeholder="preside"
-                          />
+                          <input formControlName="preside" matInput />
                         </mat-form-field>
                       </ng-container>
                     </dt>
                     <dd *ngIf="!editForm" class="mt-1 text-sm text-gray-900">
                       {{ minuta.preside }}
-                    </dd>
-                    <dd *ngIf="editForm">
-                      <mat-form-field
-                        appearance="standard"
-                        [style.fontSize.px]="14"
-                      >
-                        <input
-                          formControlName="preside"
-                          matInput
-                          placeholder="preside"
-                        />
-                      </mat-form-field>
                     </dd>
                   </div>
 
@@ -152,7 +137,7 @@
                       </span>
                     </dd>
                   </div>
-
+                  <!-- Reconocimientos -->
                   <div class="sm:col-span-2">
                     <dt class="text-sm font-medium text-gray-500">
                       Reconocimientos
@@ -213,13 +198,13 @@
                                 d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                               />
                             </svg>
-                            <span class="ml-2 flex-1 w-0 truncate">
+                            <span class="ml-2 flex-1 w-0">
                               Nombre: {{ sostenimiento.nombre }}
                             </span>
                           </div>
 
                           <div class="ml-4 flex-1">
-                            <span class="ml-2 flex-1 w-0 truncate">
+                            <span class="ml-2 flex-1 w-0">
                               Llamamiento: {{ sostenimiento.llamamiento }}
                             </span>
                           </div>
@@ -287,6 +272,7 @@
                     </dt>
                     <dd class="mt-1 text-sm text-gray-900">
                       <ul
+                        *ngIf="!editForm"
                         class="
                           border border-gray-200
                           rounded-md
@@ -299,33 +285,37 @@
                             pl-3
                             pr-4
                             py-3
-                            flex
+                            grid grid-cols-3 grid-rows-2
+                            md:grid-rows-1
                             items-center
                             justify-between
                             text-sm
                           "
                         >
-                          <div class="w-0 flex-1 flex items-center">
-                            <!-- Heroicon name: solid/paper-clip -->
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              class="h-5 w-5 text-green-500"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                              />
-                            </svg>
+                          <!-- icon user -->
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-5 w-5 text-green-500"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                          </svg>
+
+                          <div class="flex-1 flex items-center">
+                            <!-- nombre-->
                             <span class="ml-2 flex-1 w-0 truncate">
                               Nombre: {{ discursante.nombre }}
                             </span>
                           </div>
 
+                          <!-- tema -->
                           <div class="ml-4 flex-1">
                             <span class="ml-2 flex-1 w-0 truncate">
                               Tema: {{ discursante.tema }}
@@ -333,6 +323,10 @@
                           </div>
                         </li>
                       </ul>
+                      <app-repeteable-field
+                        [controlName]="'discursantes'"
+                        *ngIf="editForm"
+                      ></app-repeteable-field>
                     </dd>
                   </div>
                 </dl>

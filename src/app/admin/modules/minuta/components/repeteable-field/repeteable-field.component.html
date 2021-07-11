@@ -1,86 +1,124 @@
-<form
-  autocomplete="off"
-  [formGroup]="formRepeatable"
-  class="mt-1 sm:mt-0 sm:col-start-2 sm:col-end-4 gap-2 sm:space-x-2"
->
-  <!-- nombre-->
-  <mat-form-field appearance="outline" class="w-full sm:w-2/5 mb-5 md:mb-0">
-    <input
-      class=""
-      formControlName="nombre"
-      matInput
-      placeholder="Nombre del Herman@"
-    />
-    <mat-error class="mt-5" *ngIf="getErrorMessage('nombre')"
-      >Campo Requerido</mat-error
-    >
-  </mat-form-field>
+<div class="sm:col-span-2" [formGroup]="formRepeatable">
+  <dd class="mt-1 text-sm text-gray-900">
+    <ul class="border border-gray-200 rounded-md divide-y divide-gray-200">
+      <li class="pl-3 pr-4 py-3 flex flex-col text-sm">
+        <div class="flex-1 flex items-center space-x-4">
+          <!-- Heroicon name: solid/paper-clip -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-12 h-12 md:h-5 md:w-5 text-gray-700"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
 
-  <!-- tema de discursante  -->
-  <mat-form-field
-    *ngIf="controlName === 'discursantes'"
-    appearance="outline"
-    class="w-3/4 sm:w-2/5 mb-5 md:mb-0"
-  >
-    <input
-      formControlName="tema"
-      matInput
-      placeholder="Llamamiento a relevar"
-    />
-    <mat-error class="mt-5" *ngIf="getErrorMessage('tema')"
-      >Campo Requerido</mat-error
-    >
-  </mat-form-field>
-  <!-- relevos o sostenimientos -->
-  <mat-form-field
-    *ngIf="controlName !== 'discursantes'"
-    appearance="outline"
-    class="w-3/4 sm:w-2/5 mb-5 md:mb-0"
-  >
-    <input
-      formControlName="llamamiento"
-      matInput
-      placeholder="Llamamiento a relevar"
-    />
-    <mat-error class="mt-5" *ngIf="getErrorMessage('llamamiento')"
-      >Campo Requerido</mat-error
-    >
-  </mat-form-field>
-  <button
-    [disabled]="formRepeatable.invalid"
-    (click)="addForm()"
-    type="button"
-    [ngClass]="{
-      'bg-gray-500 hover:bg-gray-500 cursor-not-allowed': formRepeatable.invalid
-    }"
-    class="
-      w-auto
-      inline-flex
-      items-center
-      p-1
-      ml-2
-      border border-transparent
-      rounded-full
-      shadow-sm
-      text-white
-      bg-green-600
-      hover:bg-green-700
-      focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500
-    "
-  >
-    <!-- Heroicon name: solid/plus -->
-    <svg
-      class="h-5 w-5"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 20 20"
-      fill="currentColor"
-      aria-hidden="true"
-    >
-      <path
-        fill-rule="evenodd"
-        d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-        clip-rule="evenodd"
-      />
-    </svg>
-  </button>
-</form>
+          <div class="mt-1 -space-y-px">
+            <div class="flex space-x-2 flex-wrap">
+              <!-- Nombre -->
+              <div class="w-1/2 flex-1 min-w-0">
+                <input
+                  type="text"
+                  formControlName="nombre"
+                  class="
+                    focus:ring-indigo-500 focus:border-indigo-500
+                    relative
+                    block
+                    w-full
+                    bg-transparent
+                    rounded-md
+                    focus:z-10
+                    sm:text-sm
+                    border-gray-300
+                  "
+                  placeholder="Nombre"
+                />
+              </div>
+              <!-- llamamiento -->
+              <ng-container *ngIf="controlName !== 'discursantes'">
+                <div class="flex-1 min-w-0">
+                  <input
+                    type="text"
+                    formControlName="llamamiento"
+                    class="
+                      focus:ring-indigo-500 focus:border-indigo-500
+                      relative
+                      block
+                      w-full
+                      rounded-md
+                      bg-transparent
+                      focus:z-10
+                      sm:text-sm
+                      border-gray-300
+                    "
+                    placeholder="Llamamiento"
+                  />
+                </div>
+              </ng-container>
+              <!-- tema -->
+              <ng-container *ngIf="controlName === 'discursantes'">
+                <div class="flex-1 min-w-0">
+                  <input
+                    type="text"
+                    formControlName="tema"
+                    class="
+                      focus:ring-indigo-500 focus:border-indigo-500
+                      relative
+                      block
+                      w-full
+                      rounded-md
+                      bg-transparent
+                      focus:z-10
+                      sm:text-sm
+                      border-gray-300
+                    "
+                    placeholder="Llamamiento"
+                  />
+                </div>
+              </ng-container>
+            </div>
+          </div>
+          <button
+            (click)="addForm()"
+            type="button"
+            class="
+              inline-flex
+              items-center
+              border border-transparent
+              rounded-full
+              shadow-sm
+              text-white
+              bg-indigo-600
+              hover:bg-indigo-700
+              focus:outline-none
+              focus:ring-2
+              focus:ring-offset-2
+              focus:ring-indigo-500
+            "
+          >
+            <!-- Heroicon name: solid/plus -->
+            <svg
+              class="h-5 w-5"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </button>
+        </div>
+      </li>
+    </ul>
+  </dd>
+</div>
