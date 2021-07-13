@@ -1,6 +1,7 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
+  ActionForm,
   formControlRepeatable,
   Minuta,
   repeatableFields,
@@ -18,6 +19,7 @@ import { AuthService } from 'src/app/core/auth/services/auth.service';
   styleUrls: ['./details-minuta.component.scss'],
 })
 export class DetailsMinutaComponent implements OnInit {
+  @Input() ActionForm!: ActionForm;
   @Output() DataForm = new EventEmitter<any>();
 
   minuta$!: Observable<Minuta>;
@@ -29,6 +31,7 @@ export class DetailsMinutaComponent implements OnInit {
   editForm: boolean = false;
 
   // Getters and Setters
+
   get discursantesArr() {
     return this.formMinuta.get('discursantes') as FormArray;
   }
@@ -48,9 +51,16 @@ export class DetailsMinutaComponent implements OnInit {
   ngOnInit(): void {
     this.initFormMinuta();
 
-    this.minuta$ = this._minutaServices.minuta$.pipe(
-      tap((minuta) => (this.currentMinuta = minuta))
-    );
+    if (this.ActionForm === 'crear') {
+      this.editForm = true;
+      this.formMinuta.reset();
+    }
+
+    if (this.ActionForm === 'editar') {
+      this.minuta$ = this._minutaServices.minuta$.pipe(
+        tap((minuta) => (this.currentMinuta = minuta))
+      );
+    }
   }
 
   initFormMinuta() {
@@ -77,7 +87,6 @@ export class DetailsMinutaComponent implements OnInit {
 
   editMode() {
     this.editForm = !this.editForm;
-    // console.log(this.editForm);
     if (this.editForm) {
       this.formMinuta.patchValue(this.currentMinuta);
       // Seteamos los array
@@ -89,18 +98,24 @@ export class DetailsMinutaComponent implements OnInit {
       this.formMinuta.reset();
 
       // limpiamos los valores
-      this.discursantesArr.clear();
-      this.relevosArr.clear();
-      this.discursantesArr.clear();
+      this.clearArraysForm();
     }
   }
 
   updateMinuta() {
-    console.log('update');
-    console.log(this.formMinuta.value);
+    const body = this.formMinuta.value;
+    return this._minutaServices
+      .updateMinuta(this.currentMinuta.id, body)
+      .pipe(tap((minuta) => this._minutaServices.refreshMinuta(minuta.id)))
+      .subscribe((resp) => console.log('update', resp));
+    // console.log(this.formMinuta.value);
   }
   cancelEditionForm() {
     this.editForm = false;
+    this.clearArraysForm();
+  }
+
+  clearArraysForm() {
     this.sostenimientosArr.clear();
     this.relevosArr.clear();
     this.discursantesArr.clear();
