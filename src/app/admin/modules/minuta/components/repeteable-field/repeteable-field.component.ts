@@ -62,10 +62,13 @@ export class RepeteableFieldComponent implements OnInit {
   }
 
   addForm() {
-    this.data.emit({
-      form: this.formRepeatable.value,
-      type: this.controlName,
-    });
-    this.formRepeatable.reset();
+    if (this.formRepeatable.valid) {
+      this.data.emit({
+        form: this.formRepeatable.value,
+        type: this.controlName,
+      });
+      this.formRepeatable.reset();
+    }
+    return this.formRepeatable.markAsTouched();
   }
 }
