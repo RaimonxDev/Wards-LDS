@@ -11,6 +11,8 @@ import { LayoutModule } from './layout/layout.module';
 import { NgProgressModule } from 'ngx-progressbar';
 import { NgProgressHttpModule } from 'ngx-progressbar/http';
 import { AlertModule } from './ui/alert/alert.module';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { InterceptorsTokenService } from './core/interceptors/token.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,7 +27,13 @@ import { AlertModule } from './ui/alert/alert.module';
     NgProgressHttpModule,
     AlertModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptorsTokenService,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
