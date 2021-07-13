@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   formControlRepeatable,
@@ -18,6 +18,8 @@ import { AuthService } from 'src/app/core/auth/services/auth.service';
   styleUrls: ['./details-minuta.component.scss'],
 })
 export class DetailsMinutaComponent implements OnInit {
+  @Output() DataForm = new EventEmitter<any>();
+
   minuta$!: Observable<Minuta>;
   currentMinuta!: Minuta;
   tipoMinuta!: Observable<tipoMinutas[]>;
@@ -95,13 +97,18 @@ export class DetailsMinutaComponent implements OnInit {
 
   updateMinuta() {
     console.log('update');
+    console.log(this.formMinuta.value);
   }
   cancelEditionForm() {
     this.editForm = false;
-    console.log('cancel');
+    this.sostenimientosArr.clear();
+    this.relevosArr.clear();
+    this.discursantesArr.clear();
   }
 
   processData(data: { form: formControlRepeatable; type: repeatableFields }) {
+    console.log(data);
+
     if (data.type === 'relevos') {
       const { nombre, llamamiento } = data.form;
       this.relevosArr.push(
