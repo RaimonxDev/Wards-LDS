@@ -50,16 +50,16 @@ export class DetailsMinutaComponent implements OnInit {
 
   ngOnInit(): void {
     this.initFormMinuta();
-
-    if (this.ActionForm === 'crear') {
-      this.editForm = true;
-      this.formMinuta.reset();
-    }
+    this.ActionForm = 'editar';
+    // if (this.ActionForm === 'crear') {
+    //   this.editForm = true;
+    //   this.formMinuta.reset();
+    // }
 
     if (this.ActionForm === 'editar') {
-      this.minuta$ = this._minutaServices.minuta$.pipe(
-        tap((minuta) => (this.currentMinuta = minuta))
-      );
+      this._minutaServices.minuta$.subscribe((minuta) => {
+        this.currentMinuta = minuta;
+      });
     }
   }
 
@@ -88,7 +88,10 @@ export class DetailsMinutaComponent implements OnInit {
   editMode() {
     this.editForm = !this.editForm;
     if (this.editForm) {
+      console.log('patch minuta', this.currentMinuta);
       this.formMinuta.patchValue(this.currentMinuta);
+      // Primero limpiamos los array de los antiguos valores para evitar duplicados en la vista
+      this.clearArraysForm();
       // Seteamos los array
       this.pacthArrayValue(this.currentMinuta.relevos, 'relevos');
       this.pacthArrayValue(this.currentMinuta.sostenimientos, 'sostenimientos');
@@ -106,10 +109,12 @@ export class DetailsMinutaComponent implements OnInit {
     const body = this.formMinuta.value;
     return this._minutaServices
       .updateMinuta(this.currentMinuta.id, body)
-      .pipe(tap((minuta) => this._minutaServices.refreshMinuta(minuta.id)))
-      .subscribe((resp) => console.log('update', resp));
-    // console.log(this.formMinuta.value);
+      .subscribe((resp) => {
+        this.editForm = false;
+        this.currentMinuta = resp;
+      });
   }
+
   cancelEditionForm() {
     this.editForm = false;
     this.clearArraysForm();
@@ -122,8 +127,6 @@ export class DetailsMinutaComponent implements OnInit {
   }
 
   processData(data: { form: formControlRepeatable; type: repeatableFields }) {
-    console.log(data);
-
     if (data.type === 'relevos') {
       const { nombre, llamamiento } = data.form;
       this.relevosArr.push(
