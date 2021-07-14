@@ -46,13 +46,13 @@ export class MinutaService {
   }
 
   // PETICIONES GET
-  private getMinutas() {
+  public getMinutas() {
     return this._http
       .get<Minuta[]>(`${this.siteUrl}/minutas`)
       .pipe(tap((minutas) => this._minutas.next(minutas)));
   }
 
-  private getMinuta(id: string | null) {
+  public getMinuta(id: string | null) {
     return this._http
       .get<Minuta>(`${this.siteUrl}/minutas/${id}`)
       .pipe(tap((resp) => this._minuta.next(resp)));
@@ -71,7 +71,7 @@ export class MinutaService {
   }
 
   updateMinuta(id: string, body: any): Observable<Minuta> {
-    return this._http.post<Minuta>(`${this.siteUrl}/minutas/${id}`, body);
+    return this._http.put<Minuta>(`${this.siteUrl}/minutas/${id}`, body);
   }
 
   deleteData() {}
