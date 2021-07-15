@@ -961,7 +961,7 @@
                   <!-- Guardar Cambios -->
                   <button
                     *ngIf="editForm"
-                    [disabled]="formMinuta.invalid"
+                    [disabled]="formMinuta.invalid && formMinuta.pristine"
                     (click)="updateMinuta()"
                     type="button"
                     class="

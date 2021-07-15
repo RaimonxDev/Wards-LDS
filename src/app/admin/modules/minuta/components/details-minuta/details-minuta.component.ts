@@ -61,6 +61,8 @@ export class DetailsMinutaComponent implements OnInit {
         this.currentMinuta = minuta;
       });
     }
+
+    console.log(this.formMinuta);
   }
 
   initFormMinuta() {
@@ -87,8 +89,8 @@ export class DetailsMinutaComponent implements OnInit {
 
   editMode() {
     this.editForm = !this.editForm;
+    console.log(this.formMinuta.pristine);
     if (this.editForm) {
-      console.log('patch minuta', this.currentMinuta);
       this.formMinuta.patchValue(this.currentMinuta);
       // Primero limpiamos los array de los antiguos valores para evitar duplicados en la vista
       this.clearArraysForm();
@@ -107,9 +109,12 @@ export class DetailsMinutaComponent implements OnInit {
 
   updateMinuta() {
     const body = this.formMinuta.value;
+    this.formMinuta.disable();
+
     return this._minutaServices
       .updateMinuta(this.currentMinuta.id, body)
       .subscribe((resp) => {
+        this.formMinuta.enable();
         this.editForm = false;
         this.currentMinuta = resp;
       });
