@@ -22,27 +22,28 @@ export class InterceptorsTokenService implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     let newReq = req.clone();
 
-    newReq = req.clone({
-      headers: req.headers.set(
-        'Authorization',
-        'Bearer ' + this._authService.accessToken
-      ),
-    });
-    // Response
-    return next.handle(newReq).pipe(
-      retry(3),
-      catchError((error) => {
-        // Catch "401 Unauthorized" responses
-        if (error instanceof HttpErrorResponse && error.status === 401) {
-          // Sign out
-          this._authService.signOut();
+    if (this._authService.isAuthenticated) {
+      newReq = req.clone({
+        headers: req.headers.set(
+          'Authorization',
+          'Bearer ' + this._authService.accessToken
+        ),
+      });
+      // Response
+      return next.handle(newReq).pipe(
+        catchError((error) => {
+          // Catch "401 Unauthorized" responses
+          if (error instanceof HttpErrorResponse && error.status === 401) {
+            // Sign out
+            // this._authService.signOut();
+            // Reload the app
+            // location.reload();
+          }
 
-          // Reload the app
-          location.reload();
-        }
-
-        return throwError(error);
-      })
-    );
+          return throwError(error);
+        })
+      );
+    }
+    return next.handle(req);
   }
 }

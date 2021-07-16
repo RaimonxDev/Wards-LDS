@@ -43,6 +43,10 @@ export class AuthService {
     return JSON.parse(localStorage.getItem('barrio') ?? '');
   }
 
+  get isAuthenticated() {
+    return this._authenticated;
+  }
+
   constructor(
     private _httpClient: HttpClient,
     private _userService: UserService
