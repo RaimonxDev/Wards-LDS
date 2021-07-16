@@ -76,7 +76,6 @@ export class MinutaService {
       tap(() =>
         this._alert.opendAlert('Actualizado', 'Operacion Exitosa', 'success')
       ),
-      retry(3),
       catchError((error) => {
         this._alert.opendAlert('UPS', 'Algo ha fallado', 'error');
         return throwError('No se pudo actualizar');

@@ -8,7 +8,7 @@ import {
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthService } from '../auth/services/auth.service';
-import { catchError } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
 @Injectable({
@@ -30,6 +30,7 @@ export class InterceptorsTokenService implements HttpInterceptor {
     });
     // Response
     return next.handle(newReq).pipe(
+      retry(3),
       catchError((error) => {
         // Catch "401 Unauthorized" responses
         if (error instanceof HttpErrorResponse && error.status === 401) {
