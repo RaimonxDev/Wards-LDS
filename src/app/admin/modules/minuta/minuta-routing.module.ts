@@ -24,7 +24,7 @@ const routes: Routes = [
   {
     path: 'listado',
     component: ListMinutaComponent,
-    resolve: [MinutasResolver],
+    resolve: [MinutasResolver, tiposDeMinutaResolver],
   },
   {
     path: 'details/:id',
