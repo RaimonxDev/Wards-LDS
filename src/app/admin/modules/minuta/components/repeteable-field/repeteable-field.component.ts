@@ -42,37 +42,6 @@ export class RepeteableFieldComponent implements OnInit {
       nombre: ['', [Validators.minLength(5)]],
       details: ['', [Validators.minLength(5)]],
     });
-    // console.log(this.formRepeatable);
-    // combineLatest([
-    //   this.nombreValue.valueChanges,
-    //   this.detailsValue.valueChanges,
-    // ])
-    //   .pipe(startWith(''))
-    //   .subscribe(([nombre, details]) => {
-    //     console.log('nombre', nombre);
-    //     console.log('tema', details);
-    //   });
-
-    // merge(
-    //   this.nombreValue.valueChanges,
-    //   this.detailsValue.valueChanges
-    // ).subscribe((resp) => {
-    //   console.log(resp);
-    //   this.activeButtonAddForm = false;
-    //   if (resp === '') {
-    //     this.activeButtonAddForm = false;
-    //   } else {
-    //     this.activeButtonAddForm = true;
-    //   }
-    // });
-
-    // this.nombreControl.valueChanges.subscribe((event) => {
-    //   if (event === '' || event === null) {
-    //     this.activeButtonAddForm = false;
-    //   } else {
-    //     this.activeButtonAddForm = true;
-    //   }
-    // });
   }
 
   getErrorMessage(field: string) {
