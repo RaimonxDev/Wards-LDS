@@ -1,5 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Observable } from 'rxjs';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  OnDestroy,
+} from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import {
   ActionForm,
   formControlRepeatable,
@@ -18,19 +25,21 @@ import { AuthService } from 'src/app/core/auth/services/auth.service';
   templateUrl: './details-minuta.component.html',
   styleUrls: ['./details-minuta.component.scss'],
 })
-export class DetailsMinutaComponent implements OnInit {
+export class DetailsMinutaComponent implements OnInit, OnDestroy {
   @Input() ActionForm!: ActionForm;
   @Output() DataForm = new EventEmitter<any>();
 
   minuta$!: Observable<Minuta>;
   currentMinuta!: Minuta;
-  tipoMinuta!: Observable<tipoMinutas[]>;
+  tipoMinuta: tipoMinutas[] = [];
 
   formMinuta!: FormGroup;
 
   editForm: boolean = false;
 
   // Getters and Setters
+
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
 
   get discursantesArr() {
     return this.formMinuta.get('discursantes') as FormArray;
@@ -50,6 +59,11 @@ export class DetailsMinutaComponent implements OnInit {
 
   ngOnInit(): void {
     this.initFormMinuta();
+
+    this._minutaServices.tiposDeMinuta$.subscribe(
+      (value) => (this.tipoMinuta = value)
+    );
+
     this.ActionForm = 'editar';
     // if (this.ActionForm === 'crear') {
     //   this.editForm = true;
@@ -59,6 +73,7 @@ export class DetailsMinutaComponent implements OnInit {
     if (this.ActionForm === 'editar') {
       this._minutaServices.minuta$.subscribe((minuta) => {
         this.currentMinuta = minuta;
+        console.log('minuta', minuta);
       });
     }
 
@@ -210,5 +225,10 @@ export class DetailsMinutaComponent implements OnInit {
   }
   eliminarSostenimiento(index: number) {
     this.sostenimientosArr.removeAt(index);
+  }
+
+  ngOnDestroy() {
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
   }
 }
