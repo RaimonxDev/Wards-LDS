@@ -8,8 +8,7 @@ export interface formControlRepeatable {
   __v: number;
   id: string;
   nombre: string;
-  tema?: string;
-  llamamiento?: string;
+  details: string;
 }
 
 export interface ControlName {

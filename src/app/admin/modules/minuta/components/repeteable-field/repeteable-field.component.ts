@@ -10,6 +10,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { combineLatest, merge } from 'rxjs';
 import { debounceTime, mapTo, startWith } from 'rxjs/operators';
 import { repeatableFields } from '../../models/minuta.models';
+import { AlertService } from '../../../../../ui/alert/services/alert.service';
 
 @Component({
   selector: 'app-repeteable-field',
@@ -27,42 +28,36 @@ export class RepeteableFieldComponent implements OnInit {
 
   // Getters and Setters
 
-  get nombreControl() {
+  get nombreValue() {
     return this.formRepeatable.controls['nombre'];
   }
-  get temaControl() {
-    return this.formRepeatable.controls['tema'];
-  }
-  get llamamientoControl() {
-    return this.formRepeatable.controls['llamamiento'];
+  get detailsValue() {
+    return this.formRepeatable.controls['details'];
   }
 
-  constructor(private _fb: FormBuilder) {}
+  constructor(private _fb: FormBuilder, private _aler: AlertService) {}
 
   ngOnInit(): void {
     this.formRepeatable = this._fb.group({
       nombre: ['', [Validators.minLength(5)]],
-      tema: ['', [Validators.minLength(5)]],
-      llamamiento: ['', [Validators.minLength(5)]],
+      details: ['', [Validators.minLength(5)]],
     });
     // console.log(this.formRepeatable);
     // combineLatest([
-    //   this.nombreControl.valueChanges,
-    //   this.temaControl.valueChanges,
-    //   this.llamamientoControl.valueChanges,
+    //   this.nombreValue.valueChanges,
+    //   this.detailsValue.valueChanges,
     // ])
     //   .pipe(startWith(''))
-    //   .subscribe(([a, b, c]) => {
-    //     console.log('nombre', a);
-    //     console.log('tema', b);
-    //     console.log('llama', c);
+    //   .subscribe(([nombre, details]) => {
+    //     console.log('nombre', nombre);
+    //     console.log('tema', details);
     //   });
 
     // merge(
-    //   this.nombreControl.valueChanges.pipe(mapTo('nombre')),
-    //   this.temaControl?.valueChanges,
-    //   this.llamamientoControl?.valueChanges
+    //   this.nombreValue.valueChanges,
+    //   this.detailsValue.valueChanges
     // ).subscribe((resp) => {
+    //   console.log(resp);
     //   this.activeButtonAddForm = false;
     //   if (resp === '') {
     //     this.activeButtonAddForm = false;
@@ -88,13 +83,26 @@ export class RepeteableFieldComponent implements OnInit {
   }
 
   addForm() {
-    if (this.formRepeatable.valid) {
+    if (this.nombreValue.value === '') {
+      this._aler.opendAlert('Falta nombre', 'Agrege un nombre', 'warning');
+      return;
+    }
+
+    if (this.detailsValue.value === '') {
+      this._aler.opendAlert('Falta Detalles', 'Agrege los detalles', 'warning');
+      return;
+    }
+
+    if (this.nombreValue.value !== '' && this.detailsValue.value !== '') {
       this.data.emit({
         form: this.formRepeatable.value,
         type: this.controlName,
       });
       this.formRepeatable.reset();
+
+      // seteamos el los value para evitar BUG
+      this.nombreValue.setValue('');
+      this.detailsValue.setValue('');
     }
-    // return this.formRepeatable.markAsTouched();
   }
 }

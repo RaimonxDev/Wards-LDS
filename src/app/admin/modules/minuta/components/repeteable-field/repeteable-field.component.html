@@ -32,30 +32,17 @@
                 </mat-form-field>
               </div>
 
-              <!-- llamamiento -->
-              <ng-container *ngIf="controlName !== 'discursantes'">
-                <div class="w-full sm:w-1/2 flex-1 min-w-0">
-                  <mat-form-field
-                    class="w-full"
-                    appearance="outline"
-                    placeholder=""
-                  >
-                    <input formControlName="llamamiento" matInput />
-                  </mat-form-field>
-                </div>
-              </ng-container>
-              <!-- tema -->
-              <ng-container *ngIf="controlName === 'discursantes'">
-                <div class="w-full sm:w-1/2 flex-1 min-w-0">
-                  <mat-form-field
-                    class="w-full"
-                    appearance="outline"
-                    placeholder=""
-                  >
-                    <input formControlName="tema" matInput />
-                  </mat-form-field>
-                </div>
-              </ng-container>
+              <!-- Details -->
+
+              <div class="w-full sm:w-1/2 flex-1 min-w-0">
+                <mat-form-field
+                  class="w-full"
+                  appearance="outline"
+                  placeholder=""
+                >
+                  <input formControlName="details" matInput />
+                </mat-form-field>
+              </div>
             </div>
           </div>
 

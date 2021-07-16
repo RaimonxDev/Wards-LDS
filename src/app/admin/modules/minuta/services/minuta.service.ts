@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { catchError, retry, tap } from 'rxjs/operators';
 import { environment } from '../../../../../environments/environment';
 import { Minuta, tipoMinutas } from '../models/minuta.models';
+import { AlertService } from '../../../../ui/alert/services/alert.service';
 
 @Injectable({
   providedIn: 'root',
@@ -37,7 +38,7 @@ export class MinutaService {
   //   this._minutas.next(value);
   // }
 
-  constructor(private _http: HttpClient) {
+  constructor(private _http: HttpClient, private _alert: AlertService) {
     // Sets Behavior
     this._minutas = new BehaviorSubject<Minuta[]>([]);
     //@ts-ignore
@@ -71,7 +72,16 @@ export class MinutaService {
   }
 
   updateMinuta(id: string, body: any): Observable<Minuta> {
-    return this._http.put<Minuta>(`${this.siteUrl}/minutas/${id}`, body);
+    return this._http.put<Minuta>(`${this.siteUrl}/minutas/${id}`, body).pipe(
+      tap(() =>
+        this._alert.opendAlert('Actualizado', 'Operacion Exitosa', 'success')
+      ),
+      retry(3),
+      catchError((error) => {
+        this._alert.opendAlert('UPS', 'Algo ha fallado', 'error');
+        return throwError('No se pudo actualizar');
+      })
+    );
   }
 
   deleteData() {}

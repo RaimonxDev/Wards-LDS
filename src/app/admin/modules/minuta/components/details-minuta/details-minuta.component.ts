@@ -113,11 +113,16 @@ export class DetailsMinutaComponent implements OnInit {
 
     return this._minutaServices
       .updateMinuta(this.currentMinuta.id, body)
-      .subscribe((resp) => {
-        this.formMinuta.enable();
-        this.editForm = false;
-        this.currentMinuta = resp;
-      });
+      .subscribe(
+        (resp) => {
+          this.formMinuta.enable();
+          this.editForm = false;
+          this.currentMinuta = resp;
+        },
+        (error) => {
+          this.formMinuta.enable();
+        }
+      );
   }
 
   cancelEditionForm() {
@@ -133,30 +138,30 @@ export class DetailsMinutaComponent implements OnInit {
 
   processData(data: { form: formControlRepeatable; type: repeatableFields }) {
     if (data.type === 'relevos') {
-      const { nombre, llamamiento } = data.form;
+      const { nombre, details } = data.form;
       this.relevosArr.push(
         this._fb.group({
           nombre: [nombre, [Validators.required]],
-          llamamiento: [llamamiento, [Validators.required]],
+          llamamiento: [details, [Validators.required]],
         })
       );
     }
     if (data.type === 'sostenimientos') {
-      const { nombre, llamamiento } = data.form;
+      const { nombre, details } = data.form;
       this.sostenimientosArr.push(
         this._fb.group({
           nombre: [nombre, [Validators.required]],
-          llamamiento: [llamamiento, [Validators.required]],
+          llamamiento: [details, [Validators.required]],
         })
       );
     }
 
     if (data.type === 'discursantes') {
-      const { nombre, tema } = data.form;
+      const { nombre, details } = data.form;
       this.discursantesArr.push(
         this._fb.group({
           nombre: [nombre, [Validators.required]],
-          tema: [tema, [Validators.required]],
+          tema: [details, [Validators.required]],
         })
       );
     }

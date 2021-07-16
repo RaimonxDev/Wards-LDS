@@ -109,31 +109,31 @@ export class TemplateFormComponent implements OnInit, AfterViewInit {
 
   processData(data: { form: formControlRepeatable; type: repeatableFields }) {
     if (data.type === 'relevos') {
-      const { nombre, llamamiento } = data.form;
+      const { nombre, details } = data.form;
       this.relevosArr.push(
         this._fb.group({
           nombre: [nombre, [Validators.required]],
-          llamamiento: [llamamiento, [Validators.required]],
+          llamamiento: [details, [Validators.required]],
         })
       );
     }
     if (data.type === 'sostenimientos') {
-      const { nombre, llamamiento } = data.form;
+      const { nombre, details } = data.form;
       this.sostenimientosArr.push(
         this._fb.group({
           nombre: [nombre, [Validators.required]],
-          llamamiento: [llamamiento, [Validators.required]],
+          llamamiento: [details, [Validators.required]],
         })
       );
     }
 
     if (data.type === 'discursantes') {
       console.log(data.form, data.type);
-      const { nombre, tema } = data.form;
+      const { nombre, details } = data.form;
       this.discursantesArr.push(
         this._fb.group({
           nombre: [nombre, [Validators.required]],
-          tema: [tema, [Validators.required]],
+          tema: [details, [Validators.required]],
         })
       );
     }
