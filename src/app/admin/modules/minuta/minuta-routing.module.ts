@@ -29,7 +29,7 @@ const routes: Routes = [
   {
     path: 'details/:id',
     component: DetailsMinutaComponent,
-    resolve: [MinutaResolver],
+    resolve: [MinutaResolver, tiposDeMinutaResolver],
   },
   { path: 'test', component: RepeteableFieldComponent },
 ];
