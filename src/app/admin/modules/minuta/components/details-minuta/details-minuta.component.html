@@ -1,7 +1,9 @@
 <!-- <template-form [ActionForm]="'editar'"></template-form> -->
-<pre>
+<!-- <pre>
   {{ formMinuta.status | json }}
-</pre>
+  {{ "presitine" }}----{{ formMinuta.pristine | json }}
+  {{ "dirty" }}-----{{ formMinuta.dirty | json }}
+</pre> -->
 
 <ng-container *ngIf="currentMinuta as minuta">
   <div [formGroup]="formMinuta" class="min-h-screen">
@@ -103,9 +105,14 @@
           <!-- Guardar Cambios -->
           <button
             *ngIf="editForm"
-            [disabled]="formMinuta.invalid"
+            [disabled]="formMinuta.invalid || !formMinuta.dirty"
             (click)="updateMinuta()"
+            [ngClass]="{
+              'hover:bg-indigo-700 hover:text-white':
+                formMinuta.valid && formMinuta.dirty
+            }"
             type="button"
+            mat-button
             class="
               inline-flex
               items-center
@@ -119,7 +126,6 @@
               shadow-sm
               text-indigo-700
               bg-transparent
-              hover:bg-indigo-700 hover:text-white
               focus:outline-none
               focus:ring-2
               focus:ring-offset-2

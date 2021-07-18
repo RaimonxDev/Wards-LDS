@@ -2,7 +2,10 @@
 <div class="bg-white max-w-7xl shadow overflow-hidden sm:rounded-md">
   <ul class="divide-y divide-gray-200">
     <li *ngFor="let minuta of minutas$ | async as minutas">
-      <a (click)="details(minuta.id)" class="block hover:bg-gray-50">
+      <a
+        (click)="details(minuta.id)"
+        class="block hover:bg-blue-50 cursor-pointer"
+      >
         <div class="px-4 py-4 sm:px-6">
           <div class="flex items-center justify-between">
             <p class="text-sm font-medium text-indigo-600 truncate capitalize">
