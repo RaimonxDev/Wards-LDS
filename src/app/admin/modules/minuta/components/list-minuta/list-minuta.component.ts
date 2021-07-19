@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Minuta } from '../../models/minuta.models';
 import { MinutaService } from '../../services/minuta.service';
-import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { AlertService } from '../../../../../ui/alert/services/alert.service';
 
 @Component({
   selector: 'app-list-minuta',
@@ -12,14 +12,21 @@ import { Router } from '@angular/router';
 })
 export class ListMinutaComponent implements OnInit {
   minutas$!: Observable<Minuta[]>;
-  constructor(private _minutaService: MinutaService, private _router: Router) {}
+  constructor(
+    private _minutaService: MinutaService,
+    private _router: Router,
+    private _alert: AlertService
+  ) {}
 
   ngOnInit(): void {
     this.minutas$ = this._minutaService.minutas$;
   }
 
-  details(minutaID: string) {
-    console.log(minutaID);
+  details(minutaID: string | undefined) {
+    if (minutaID === undefined) {
+      this._alert.opendAlert('Ups', 'Ha ucurrido un error', 'warning');
+      return;
+    }
     this._router.navigate(['minuta/details', minutaID]);
   }
 }

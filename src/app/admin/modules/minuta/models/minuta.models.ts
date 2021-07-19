@@ -18,15 +18,15 @@ export interface ControlName {
 
 // Response petition HTTP
 export interface Minuta {
-  _id: string;
-  published_at: Date;
-  anuncios: string;
-  ultima_oracion: string;
-  ultimo_himno: string;
-  himno_sacramental: string;
+  id?: string;
+  _id?: string;
+  barrio: Barrio;
+  preludio_musical: string;
+  tipos_de_minuta: tipoMinutas;
   primera_oracion: string;
   primer_himno: string;
-  preludio_musical: string;
+  anuncios: string;
+  himno_sacramental: string;
   fecha: Date;
   dirige: string;
   preside: string;
@@ -34,34 +34,36 @@ export interface Minuta {
   discursantes: formControlRepeatable[];
   relevos: formControlRepeatable[];
   sostenimientos: formControlRepeatable[];
-  createdAt: Date;
-  updatedAt: Date;
-  __v: number;
-  barrio: Barrio;
-  tipos_de_minuta: tipoMinutas;
-  id: string;
+  ultima_oracion: string;
+  ultimo_himno: string;
   completa: boolean;
+  createdAt?: Date;
+  published_at?: Date;
+  updatedAt?: Date;
+  __v?: number;
 }
 
 export interface Barrio {
-  _id: string;
+  _id?: string;
+  id?: string;
   nombre?: string;
-  ubicacion?: string;
-  published_at: Date;
-  createdAt: Date;
-  updatedAt: Date;
-  __v: number;
-  id: string;
   minuta?: string;
+  ubicacion?: string;
+  published_at?: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
+  __v?: number;
 }
+
+// Para evitar problemas con InitialData se colocan todos los campos como opcionales
 export interface tipoMinutas {
-  _id: string;
+  _id?: string;
   nombre?: string;
   ubicacion?: string;
-  published_at: Date;
-  createdAt: Date;
-  updatedAt: Date;
-  __v: number;
-  id: string;
+  published_at?: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
+  __v?: number;
+  id?: string;
   minuta?: string;
 }

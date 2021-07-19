@@ -1,627 +1,1370 @@
-<form
-  [formGroup]="formMinuta"
-  autocomplete="off"
-  class="max-w-7xl space-y-8 divide-y divide-gray-200"
->
-  <div class="space-y-8 divide-y divide-gray-200 sm:space-y-5">
-    <div>
-      <div>
-        <h3 class="text-lg leading-6 font-medium text-gray-900">
-          Direccion de la Reunion
-        </h3>
-        <p class="mt-1 max-w-2xl text-sm text-gray-500">
-          Lideres quienes dirigen la siguiente region.
-        </p>
-      </div>
-      <div class="mt-6 sm:mt-5 space-y-6 sm:space-y-5">
-        <div
-          class="
-            grid
-            md:grid-cols-4 md:gap-4 md:items-start md:border-t
-            sm:border-gray-200
-            md:pt-5
-            space-y-6
-            md:space-y-0
-          "
-        >
-          <!-- tipo de reunion  -->
-          <mat-form-field appearance="outline">
-            <mat-label>Tipo de Reunion</mat-label>
-            <mat-select class="capitalize" formControlName="tipos_de_minuta">
-              <mat-option
-                class="capitalize"
-                *ngFor="let type of tipoMinuta | async; let i = index"
-                [value]="type.id"
-              >
-                {{ type.minuta }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <!-- Preside -->
-          <mat-form-field appearance="outline">
-            <mat-label>Preside</mat-label>
-            <input
-              formControlName="preside"
-              matInput
-              placeholder="Placeholder"
-            />
-          </mat-form-field>
-          <!-- Dirige -->
-          <mat-form-field appearance="outline">
-            <mat-label>Dirige</mat-label>
-            <input
-              formControlName="dirige"
-              matInput
-              placeholder="Placeholder"
-            />
-          </mat-form-field>
-          <!-- Fecha de Reunion -->
-          <mat-form-field appearance="outline">
-            <mat-label>Fecha de Reunion</mat-label>
-            <input formControlName="fecha" matInput [matDatepicker]="picker" />
-            <mat-datepicker-toggle
-              matSuffix
-              [for]="picker"
-            ></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-          <!-- Reconocimientos -->
-          <mat-form-field appearance="outline">
-            <mat-label>Reconocimientos</mat-label>
-            <textarea
-              formControlName="reconocimientos"
-              matInput
-              placeholder="Placeholder"
-            ></textarea>
-          </mat-form-field>
-        </div>
-      </div>
-    </div>
+<pre>
+  {{ this.formMinuta.status | json }}
+</pre>
 
-    <div class="pt-8 space-y-6 sm:pt-10 sm:space-y-5">
-      <div>
-        <h3 class="text-lg leading-6 font-medium text-gray-900">Reunion</h3>
-        <p class="mt-1 max-w-2xl text-sm text-gray-500">
-          Informacion general de la reunion
-        </p>
-      </div>
-      <div class="space-y-6 sm:space-y-5">
-        <div
-          class="
-            sm:grid
-            sm:grid-cols-2
-            sm:gap-4
-            sm:items-start
-            sm:border-t
-            sm:border-gray-200
-            sm:pt-5
-            space-y-6
-            md:space-y-0
-          "
-        >
-          <!-- Primera oracion -->
-          <div>
-            <label
-              for="first_name"
-              class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
-            >
-              Primera Oracion
-              <!-- Primera Oracion -->
-            </label>
-            <div class="mt-1 sm:mt-0 sm:col-span-2">
-              <mat-form-field class="w-3/4" appearance="outline">
-                <input
-                  formControlName="primera_oracion"
-                  matInput
-                  placeholder="Placeholder"
-                />
-              </mat-form-field>
-            </div>
-          </div>
-
-          <!-- Primer Himno -->
-          <div>
-            <label
-              for="last_name"
-              class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
-            >
-              Primer Himno
-            </label>
-            <div class="mt-1 sm:mt-0 sm:col-span-2">
-              <mat-form-field class="w-3/4" appearance="outline">
-                <input
-                  formControlName="primer_himno"
-                  matInput
-                  placeholder="Placeholder"
-                />
-              </mat-form-field>
-            </div>
-          </div>
-        </div>
-
-        <!-- Anuncios -->
-        <div
-          class="
-            sm:grid
-            sm:grid-cols-3
-            sm:gap-4
-            sm:items-start
-            sm:border-t
-            sm:border-gray-200
-            sm:pt-5
-          "
-        >
-          <label
-            for="email"
-            class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
-          >
-            Anuncios
-          </label>
-          <div class="mt-1 sm:mt-0 sm:col-span-2">
-            <mat-form-field class="w-full">
-              <textarea formControlName="anuncios" matInput></textarea>
-            </mat-form-field>
-          </div>
-        </div>
-        <!-- Relevos -->
-        <div
-          class="
-            sm:grid
-            sm:grid-cols-3
-            sm:gap-4
-            sm:items-start
-            sm:border-t
-            sm:border-gray-200
-            sm:pt-5
-          "
-        >
-          <label
-            class="
-              block
-              text-sm
-              font-medium
-              text-gray-700
-              sm:mt-px sm:pt-2
-              row-span-full
-            "
-          >
-            Relevos
-          </label>
-          <!-- Relevos -->
-          <div
-            class="mt-1 sm:mt-0 sm:col-start-2 sm:col-end-4 gap-2 sm:space-x-2"
-          >
-            <app-repeteable-field
-              [controlName]="'relevos'"
-              (data)="processData($event)"
-            ></app-repeteable-field>
-          </div>
-
-          <!-- listado de relevos -->
-          <ng-container formArrayName="relevos">
-            <div
-              *ngFor="let relevo of relevosArr.controls; let i = index"
-              class="
-                mt-1
-                sm:mt-0 sm:col-span-2 sm:col-start-2 sm:col-end-4
-                gap-2
-                border-t-2 border-gray-300
-                pt-4
-              "
-            >
-              <ng-container [formGroupName]="i">
-                <!-- nombre del relevo -->
-                <div class="w-1 h-full rounded-sm"></div>
-                <mat-form-field
-                  appearance="outline"
-                  class="w-full sm:w-2/5 mr-2"
-                >
-                  <input
-                    formControlName="nombre"
-                    matInput
-                    placeholder="Nombre del Herman@"
-                  />
-                </mat-form-field>
-                <!-- llamamiento a relavar -->
-                <mat-form-field appearance="outline" class="w-3/4 sm:w-2/5">
-                  <input
-                    formControlName="llamamiento"
-                    matInput
-                    placeholder="Llamamiento a relevar"
-                  />
-                </mat-form-field>
-                <button
-                  (click)="eliminarRelevo(i)"
-                  type="button"
-                  class="
-                    w-auto
-                    inline-flex
-                    items-center
-                    p-1
-                    ml-2
-                    border border-transparent
-                    rounded-full
-                    shadow-sm
-                    text-white
-                    bg-red-600
-                    hover:bg-red-700
-                    focus:outline-none
-                    focus:ring-2
-                    focus:ring-offset-2
-                    focus:ring-red-500
-                  "
-                >
-                  <!-- Heroicon name: solid/plus -->
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M18 12H6"
-                    />
-                  </svg>
-                </button>
-              </ng-container>
-            </div>
-          </ng-container>
-        </div>
-
-        <!-- Sostenimientos -->
-        <div
-          class="
-            sm:grid
-            sm:grid-cols-3
-            sm:gap-4
-            sm:items-start
-            sm:border-t
-            sm:border-gray-200
-            sm:pt-5
-          "
-        >
-          <label
-            class="
-              block
-              text-sm
-              font-medium
-              text-gray-700
-              sm:mt-px sm:pt-2
-              row-span-full
-            "
-          >
-            Sostenimientos
-          </label>
-          <!-- Sostenimientos -->
-          <div
-            class="mt-1 sm:mt-0 sm:col-start-2 sm:col-end-4 gap-2 sm:space-x-2"
-          >
-            <app-repeteable-field
-              [controlName]="'sostenimientos'"
-              (data)="processData($event)"
-            ></app-repeteable-field>
-          </div>
-          <!-- listado de Sostenimientos -->
-          <ng-container formArrayName="sostenimientos">
-            <div
-              *ngFor="
-                let discursante of sostenimientosArr.controls;
-                let i = index
-              "
-              class="
-                mt-1
-                sm:mt-0 sm:col-span-2 sm:col-start-2 sm:col-end-4
-                gap-2
-                sm:space-x-2
-                border-t-2 border-gray-300
-                pt-4
-              "
-            >
-              <ng-container [formGroupName]="i">
-                <!-- nombre del hermano a sostener -->
-                <mat-form-field
-                  appearance="outline"
-                  class="w-full sm:w-2/5 mb-5 md:mb-0"
-                >
-                  <input
-                    formControlName="nombre"
-                    matInput
-                    placeholder="Nombre de Herman@"
-                  />
-                </mat-form-field>
-                <!-- llamamiento a sosteienr  -->
-                <mat-form-field
-                  appearance="outline"
-                  class="w-3/4 sm:w-2/5 mb-5 md:mb-0"
-                >
-                  <input
-                    formControlName="llamamiento"
-                    matInput
-                    placeholder="Llamamiento a sostener"
-                  />
-                </mat-form-field>
-                <button
-                  (click)="eliminarSostenimiento(i)"
-                  type="button"
-                  class="
-                    w-auto
-                    inline-flex
-                    items-center
-                    p-1
-                    ml-2
-                    border border-transparent
-                    rounded-full
-                    shadow-sm
-                    text-white
-                    bg-red-600
-                    hover:bg-red-700
-                    focus:outline-none
-                    focus:ring-2
-                    focus:ring-offset-2
-                    focus:ring-red-500
-                  "
-                >
-                  <!-- Heroicon name: solid/plus -->
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M18 12H6"
-                    />
-                  </svg>
-                </button>
-              </ng-container>
-            </div>
-          </ng-container>
-        </div>
-        <!-- himno Sacramental -->
-        <div
-          class="
-            sm:grid
-            sm:grid-cols-3
-            sm:gap-4
-            sm:items-start
-            sm:border-t
-            sm:border-gray-200
-            sm:pt-5
-          "
-        >
-          <label
-            class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
-          >
-            Himno Sacramental
-          </label>
-          <div class="mt-1 sm:mt-0 sm:col-span-2">
-            <mat-form-field appearance="outline" class="w-1/2">
-              <input
-                formControlName="himno_sacramental"
-                matInput
-                placeholder="Placeholder"
-              />
-            </mat-form-field>
-          </div>
-        </div>
-
-        <!-- Discursantes -->
-        <div
-          class="
-            sm:grid
-            sm:grid-cols-3
-            sm:gap-4
-            sm:items-start
-            sm:border-t
-            sm:border-gray-200
-            sm:pt-5
-          "
-        >
-          <label
-            class="
-              block
-              text-sm
-              font-medium
-              text-gray-700
-              sm:mt-px sm:pt-2
-              row-span-full
-            "
-          >
-            Discursantes
-          </label>
-          <!-- Compos Discursantes -->
-
-          <div
-            class="mt-1 sm:mt-0 sm:col-start-2 sm:col-end-4 gap-2 sm:space-x-2"
-          >
-            <app-repeteable-field
-              [controlName]="'discursantes'"
-              (data)="processData($event)"
-            ></app-repeteable-field>
-          </div>
-
-          <!-- listado de los discursantes -->
-          <ng-container formArrayName="discursantes">
-            <div
-              *ngFor="
-                let discursante of discursantesArr.controls;
-                let i = index
-              "
-              class="
-                mt-1
-                sm:mt-0 sm:col-span-2 sm:col-start-2 sm:col-end-4
-                gap-2
-                sm:space-x-2
-                border-t-2 border-gray-300
-                pt-4
-              "
-            >
-              <ng-container [formGroupName]="i">
-                <!-- nombre discursante -->
-                <mat-form-field appearance="outline" class="w-full sm:w-2/5">
-                  <input
-                    formControlName="nombre"
-                    matInput
-                    placeholder="Nombre Discursante"
-                  />
-                </mat-form-field>
-                <!-- tema discursante  -->
-                <mat-form-field appearance="outline" class="w-3/4 sm:w-2/5">
-                  <input formControlName="tema" matInput placeholder="Tema" />
-                </mat-form-field>
-                <button
-                  (click)="eliminarDiscursante(i)"
-                  type="button"
-                  class="
-                    w-auto
-                    inline-flex
-                    items-center
-                    p-1
-                    ml-2
-                    border border-transparent
-                    rounded-full
-                    shadow-sm
-                    text-white
-                    bg-red-600
-                    hover:bg-red-700
-                    focus:outline-none
-                    focus:ring-2
-                    focus:ring-offset-2
-                    focus:ring-red-500
-                  "
-                >
-                  <!-- Heroicon name: solid/plus -->
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M18 12H6"
-                    />
-                  </svg>
-                </button>
-              </ng-container>
-            </div>
-          </ng-container>
-        </div>
-
-        <!-- Ultima oracion oracion y ultimo himno -->
-        <div
-          class="
-            sm:grid
-            sm:grid-cols-2
-            sm:gap-4
-            sm:items-start
-            sm:border-t
-            sm:border-gray-200
-            sm:pt-5
-          "
-        >
-          <div>
-            <label
-              for="first_name"
-              class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
-            >
-              Ultima Oracion
-            </label>
-            <div class="mt-1 sm:mt-0 sm:col-span-2">
-              <mat-form-field class="w-3/4" appearance="outline">
-                <input
-                  formControlName="ultima_oracion"
-                  matInput
-                  placeholder="Placeholder"
-                />
-              </mat-form-field>
-            </div>
-          </div>
-
-          <!-- Himno Final -->
-          <div>
-            <label
-              for="last_name"
-              class="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
-            >
-              Himno Final
-            </label>
-            <div class="mt-1 sm:mt-0 sm:col-span-2">
-              <mat-form-field class="w-3/4" appearance="outline">
-                <input
-                  formControlName="ultimo_himno"
-                  matInput
-                  placeholder="Placeholder"
-                />
-              </mat-form-field>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="pt-5">
-    <div class="flex justify-end space-x-4">
-      <button
-        type="button"
+<ng-container>
+  <div [formGroup]="formMinuta" class="min-h-screen">
+    <main class="py-10">
+      <!-- Page header -->
+      <div
         class="
-          bg-white
-          py-2
+          max-w-3xl
+          mx-auto
           px-4
-          border border-gray-300
-          rounded-md
-          shadow-sm
-          text-sm
-          font-medium
-          text-gray-700
-          hover:bg-gray-50
-          focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500
+          sm:px-6
+          md:flex md:items-center md:justify-between md:space-x-5
+          lg:max-w-7xl lg:px-8
         "
       >
-        Cancel
-      </button>
-      <button
-        [disabled]="formMinuta.invalid"
-        (click)="guardarMinuta()"
-        [ngClass]="{
-          'bg-gray-500 text-gray-50 cursor-not-allowed hover:bg-gray-500':
-            formMinuta.invalid
-        }"
-        type="submit"
+        <div class="flex items-center">
+          <div>
+            <ng-container *ngIf="!editForm; else editTiposMinuta">
+              <h1 class="text-2xl font-bold text-gray-900 capitalize">
+                {{ minuta.tipos_de_minuta.minuta }}
+              </h1>
+            </ng-container>
+            <ng-template #editTiposMinuta>
+              <mat-form-field appearance="outline">
+                <mat-label>Tipo de Reunion</mat-label>
+                <mat-select
+                  class="capitalize"
+                  formControlName="tipos_de_minuta"
+                >
+                  <mat-option
+                    class="capitalize"
+                    *ngFor="let type of tipoMinuta | async; let i = index"
+                    [value]="type.id"
+                  >
+                    {{ type.minuta }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </ng-template>
+
+            <ng-container *ngIf="!editForm; else crearFecha">
+              <p class="text-sm font-medium text-gray-500 mt-4">
+                Fecha de Reunion:
+                <!-- cambiar datatime statico a dinamico -->
+                <time datetime="2020-08-25">{{
+                  minuta.fecha | date: "d/M/yy, h:mm a"
+                }}</time>
+              </p>
+            </ng-container>
+
+            <ng-template #crearFecha>
+              <mat-form-field appearance="outline">
+                <mat-label>Fecha de Reunion</mat-label>
+                <input
+                  formControlName="fecha"
+                  matInput
+                  [matDatepicker]="picker"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </ng-template>
+          </div>
+        </div>
+        <div
+          class="
+            mt-6
+            flex flex-col-reverse
+            justify-stretch
+            space-y-4 space-y-reverse
+            sm:flex-row-reverse
+            sm:justify-end
+            sm:space-x-reverse
+            sm:space-y-0
+            sm:space-x-3
+            md:mt-0 md:flex-row md:space-x-3
+          "
+        >
+          <!-- editar -->
+          <button
+            *ngIf="!editForm"
+            (click)="editMode()"
+            type="button"
+            class="
+              inline-flex
+              items-center
+              justify-center
+              px-4
+              py-2
+              border border-transparent
+              text-sm
+              font-medium
+              rounded-md
+              shadow-sm
+              text-white
+              bg-indigo-600
+              hover:bg-blue-700
+              focus:outline-none
+              focus:ring-2
+              focus:ring-offset-2
+              focus:ring-offset-gray-100
+              focus:ring-blue-500
+            "
+          >
+            Editar
+          </button>
+          <!-- cancelar cambios -->
+          <button
+            *ngIf="editForm && ActionForm === 'editar'"
+            (click)="cancelEditionForm()"
+            type="button"
+            class="
+              inline-flex
+              items-center
+              justify-center
+              px-4
+              py-2
+              border border-transparent
+              text-sm
+              font-medium
+              rounded-md
+              shadow-sm
+              text-white
+              bg-red-600
+              hover:bg-red-700
+              focus:outline-none
+              focus:ring-2
+              focus:ring-offset-2
+              focus:ring-offset-gray-100
+              focus:ring-red-500
+            "
+          >
+            Cancelar
+          </button>
+          <!-- cancelar creacion de minuta-->
+          <button
+            *ngIf="editForm && ActionForm === 'crear'"
+            (click)="backToList()"
+            type="button"
+            class="
+              inline-flex
+              items-center
+              justify-center
+              px-4
+              py-2
+              border border-transparent
+              text-sm
+              font-medium
+              rounded-md
+              shadow-sm
+              text-white
+              bg-red-600
+              hover:bg-red-700
+              focus:outline-none
+              focus:ring-2
+              focus:ring-offset-2
+              focus:ring-offset-gray-100
+              focus:ring-red-500
+            "
+          >
+            Cancelar
+          </button>
+
+          <!-- Button para crear y actualizar -->
+          <!-- Guardar Cambios -->
+          <button
+            *ngIf="editForm && ActionForm === 'editar'"
+            [disabled]="formMinuta.invalid || !formMinuta.dirty"
+            (click)="updateMinuta()"
+            [ngClass]="{
+              'hover:bg-indigo-700 hover:text-white':
+                formMinuta.valid && formMinuta.dirty
+            }"
+            type="button"
+            mat-button
+            class="
+              inline-flex
+              items-center
+              justify-center
+              px-4
+              py-2
+              border border-indigo-600
+              text-sm
+              font-medium
+              rounded-md
+              shadow-sm
+              text-indigo-700
+              bg-transparent
+              focus:outline-none
+              focus:ring-2
+              focus:ring-offset-2
+              focus:ring-offset-gray-100
+              focus:ring-indigo-500
+            "
+          >
+            Actualizar
+          </button>
+          <!-- crear Minuta -->
+          <button
+            *ngIf="editForm && ActionForm === 'crear'"
+            [disabled]="formMinuta.invalid"
+            (click)="createMinuta()"
+            [ngClass]="{
+              'hover:bg-indigo-700 hover:text-white':
+                formMinuta.valid && formMinuta.dirty
+            }"
+            type="button"
+            mat-button
+            class="
+              inline-flex
+              items-center
+              justify-center
+              px-4
+              py-2
+              border border-indigo-600
+              text-sm
+              font-medium
+              rounded-md
+              shadow-sm
+              text-indigo-700
+              bg-transparent
+              focus:outline-none
+              focus:ring-2
+              focus:ring-offset-2
+              focus:ring-offset-gray-100
+              focus:ring-indigo-500
+            "
+          >
+            Crear
+          </button>
+        </div>
+      </div>
+
+      <div
         class="
-          inline-flex
-          items-center
-          px-3
-          py-2
-          border border-transparent
-          text-sm
-          leading-4
-          font-medium
-          rounded-md
-          shadow-sm
-          text-white
-          bg-indigo-600
-          hover:bg-indigo-700
-          focus:outline-none
-          focus:ring-2
-          focus:ring-offset-2
-          focus:ring-indigo-500
+          mt-8
+          max-w-3xl
+          mx-auto
+          grid grid-cols-1
+          gap-6
+          sm:px-6
+          lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3
         "
       >
-        Guardar Minuta
-      </button>
-    </div>
+        <div class="space-y-6 lg:col-start-1 lg:col-span-2">
+          <!-- Description list-->
+          <section aria-labelledby="applicant-information-title">
+            <div class="bg-white shadow sm:rounded-lg">
+              <div class="px-4 py-5 sm:px-6">
+                <h2
+                  id="applicant-information-title"
+                  class="text-lg leading-6 font-medium text-gray-900"
+                >
+                  Apertura
+                </h2>
+              </div>
+              <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+                <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+                  <!-- Preside -->
+                  <div class="sm:col-span-1">
+                    <dt class="text-sm font-medium text-gray-500 capitalize">
+                      Preside
+                      <ng-container *ngIf="editForm">
+                        <mat-form-field
+                          class="ml-4"
+                          appearance="outline"
+                          placeholder=""
+                        >
+                          <input formControlName="preside" matInput />
+                        </mat-form-field>
+                      </ng-container>
+                    </dt>
+                    <dd *ngIf="!editForm" class="mt-1 text-sm text-gray-900">
+                      {{ minuta.preside }}
+                    </dd>
+                  </div>
+
+                  <!-- Dirige -->
+                  <div class="sm:col-span-1">
+                    <dt class="text-sm font-medium text-gray-500">
+                      Dirige
+                      <ng-container *ngIf="editForm">
+                        <mat-form-field
+                          class="ml-4"
+                          appearance="outline"
+                          placeholder=""
+                        >
+                          <input formControlName="dirige" matInput />
+                        </mat-form-field>
+                      </ng-container>
+                    </dt>
+                    <dd *ngIf="!editForm" class="mt-1 text-sm text-gray-900">
+                      {{ minuta.dirige }}
+                    </dd>
+                  </div>
+                  <!-- Anuncios -->
+                  <div class="sm:col-span-1">
+                    <dt class="text-sm font-medium text-gray-500">
+                      Anuncios
+                      <ng-container *ngIf="editForm">
+                        <mat-form-field
+                          class="ml-4"
+                          appearance="outline"
+                          placeholder=""
+                        >
+                          <input formControlName="anuncios" matInput />
+                        </mat-form-field>
+                      </ng-container>
+                    </dt>
+
+                    <dd *ngIf="!editForm" class="mt-1 text-sm text-gray-900">
+                      <span *ngIf="minuta.anuncios !== ''">
+                        {{ minuta.anuncios }}
+                      </span>
+                      <span
+                        *ngIf="
+                          minuta.anuncios === '' || minuta.anuncios === null
+                        "
+                      >
+                        Sin Anuncios
+                      </span>
+                    </dd>
+                  </div>
+                  <!-- Reconocimientos -->
+                  <div class="sm:col-span-1">
+                    <dt class="text-sm font-medium text-gray-500">
+                      Reconocimientos
+                      <ng-container *ngIf="editForm">
+                        <mat-form-field
+                          class="ml-4"
+                          appearance="outline"
+                          placeholder=""
+                        >
+                          <input formControlName="reconocimientos" matInput />
+                        </mat-form-field>
+                      </ng-container>
+                    </dt>
+
+                    <dd *ngIf="!editForm" class="mt-1 text-sm text-gray-900">
+                      <span *ngIf="minuta.reconocimientos !== ''">
+                        {{ minuta.reconocimientos }}
+                      </span>
+                      <span
+                        *ngIf="
+                          minuta.reconocimientos === '' ||
+                          minuta.reconocimientos === null
+                        "
+                      >
+                        Solo Obispado Presente
+                      </span>
+                    </dd>
+                  </div>
+                  <!-- Sostenimientos -->
+                  <div class="sm:col-span-2">
+                    <dt class="text-sm font-medium text-gray-500">
+                      Sostenimientos
+                    </dt>
+                    <dd class="mt-1 text-sm text-gray-900">
+                      <ul
+                        class="
+                          border border-gray-200
+                          rounded-md
+                          divide-y divide-gray-200
+                        "
+                      >
+                        <ng-container *ngIf="!editForm">
+                          <li
+                            *ngFor="let sostenimiento of minuta.sostenimientos"
+                            class="
+                              pl-3
+                              pr-4
+                              py-3
+                              grid grid-cols-4 grid-rows-2
+                              sm:grid-rows-1 sm:grid-cols-minuta
+                              items-center
+                              justify-between
+                              text-sm
+                              auto-cols-fr
+                            "
+                          >
+                            <!-- icon user -->
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              class="
+                                h-6
+                                w-6
+                                sm:h-5 sm:w-5
+                                text-blue-500
+                                flex-shrink-0
+                                row-span-2
+                                sm:row-span-1
+                                m-auto
+                                flex-none
+                              "
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                              />
+                            </svg>
+
+                            <div
+                              class="flex items-center col-span-3 sm:col-span-1"
+                            >
+                              <!-- nombre-->
+                              <span class="ml-0 sm:ml-2 flex-1 w-0 truncate">
+                                Nombre: {{ sostenimiento.nombre }}
+                              </span>
+                            </div>
+
+                            <!-- tema -->
+                            <div
+                              class="
+                                ml-0
+                                sm:ml-4
+                                col-start-2 col-end-4
+                                sm:col-span-1
+                              "
+                            >
+                              <span class="ml-0 sm:ml-2 flex-1 w-0 truncate">
+                                Llamamiento: {{ sostenimiento.details }}
+                              </span>
+                            </div>
+                          </li>
+                        </ng-container>
+
+                        <ng-container
+                          *ngIf="
+                            minuta.sostenimientos.length === 0 &&
+                            sostenimientosArr.length === 0
+                          "
+                        >
+                          <h1 class="text-gray-800 mx-auto p-2">
+                            Sin Sostenimientos que anunciar
+                          </h1>
+                        </ng-container>
+
+                        <app-repeteable-field
+                          *ngIf="editForm"
+                          [controlName]="'sostenimientos'"
+                          (data)="processData($event)"
+                        ></app-repeteable-field>
+
+                        <!-- listado de sostenimientos -->
+                        <ng-container
+                          *ngIf="editForm"
+                          formArrayName="sostenimientos"
+                        >
+                          <li
+                            *ngFor="
+                              let sostenimiento of sostenimientosArr.controls;
+                              let i = index
+                            "
+                            class="pl-3 pr-4 py-3 flex flex-col text-sm"
+                          >
+                            <ng-container [formGroupName]="i">
+                              <div class="flex-1 flex items-center space-x-4">
+                                <!-- Heroicon name: solid/paper-clip -->
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  class="w-12 h-12 md:h-5 md:w-5 text-blue-500"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                  />
+                                </svg>
+
+                                <div class="mt-1 -space-y-px">
+                                  <div class="flex space-x-2 flex-wrap">
+                                    <!-- Nombre -->
+                                    <div class="w-1/2 flex-1 min-w-0">
+                                      <input
+                                        type="text"
+                                        formControlName="nombre"
+                                        class="
+                                          focus:ring-indigo-500
+                                          focus:border-indigo-500
+                                          relative
+                                          block
+                                          w-full
+                                          bg-transparent
+                                          rounded-md
+                                          focus:z-10
+                                          sm:text-sm
+                                          border-gray-300
+                                        "
+                                        placeholder="Nombre"
+                                      />
+                                    </div>
+
+                                    <!-- llamamiento -->
+                                    <ng-container>
+                                      <div class="flex-1 min-w-0">
+                                        <input
+                                          type="text"
+                                          formControlName="llamamiento"
+                                          class="
+                                            focus:ring-indigo-500
+                                            focus:border-indigo-500
+                                            relative
+                                            block
+                                            w-full
+                                            rounded-md
+                                            bg-transparent
+                                            focus:z-10
+                                            sm:text-sm
+                                            border-gray-300
+                                          "
+                                          placeholder="Llamamiento"
+                                        />
+                                      </div>
+                                    </ng-container>
+                                  </div>
+                                </div>
+
+                                <button
+                                  (click)="eliminarSostenimiento(i)"
+                                  type="button"
+                                  class="
+                                    inline-flex
+                                    items-center
+                                    border border-transparent
+                                    rounded-full
+                                    shadow-sm
+                                    text-white
+                                    bg-red-600
+                                    hover:bg-red-700
+                                    focus:outline-none
+                                    focus:ring-2
+                                    focus:ring-offset-2
+                                    focus:ring-red-500
+                                  "
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="h-5 w-5"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                  >
+                                    <path
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M18 12H6"
+                                    />
+                                  </svg>
+                                </button>
+                              </div>
+                            </ng-container>
+                          </li>
+                        </ng-container>
+                      </ul>
+                    </dd>
+                  </div>
+                  <!-- Relevos -->
+                  <div class="sm:col-span-2">
+                    <dt class="text-sm font-medium text-gray-500">Relevos</dt>
+                    <dd class="mt-1 text-sm text-gray-900">
+                      <ul
+                        class="
+                          border border-gray-200
+                          rounded-md
+                          divide-y divide-gray-200
+                        "
+                      >
+                        <ng-container *ngIf="!editForm">
+                          <li
+                            *ngFor="let relevo of minuta.relevos"
+                            class="
+                              pl-3
+                              pr-4
+                              py-3
+                              grid grid-cols-4 grid-rows-2
+                              sm:grid-rows-1 sm:grid-cols-minuta
+                              items-center
+                              justify-between
+                              text-sm
+                              auto-cols-fr
+                            "
+                          >
+                            <!-- icon user -->
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              class="
+                                h-6
+                                w-6
+                                sm:h-5 sm:w-5
+                                text-red-500
+                                flex-shrink-0
+                                row-span-2
+                                sm:row-span-1
+                                m-auto
+                                flex-none
+                              "
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                              />
+                            </svg>
+
+                            <div
+                              class="flex items-center col-span-3 sm:col-span-1"
+                            >
+                              <!-- nombre-->
+                              <span class="ml-0 sm:ml-2 flex-1 w-0 truncate">
+                                Nombre: {{ relevo.nombre }}
+                              </span>
+                            </div>
+
+                            <!-- tema -->
+                            <div
+                              class="
+                                ml-0
+                                sm:ml-4
+                                col-start-2 col-end-4
+                                sm:col-span-1
+                              "
+                            >
+                              <span class="ml-0 sm:ml-2 flex-1 w-0 truncate">
+                                Tema: {{ relevo.details }}
+                              </span>
+                            </div>
+                          </li>
+                        </ng-container>
+                        <ng-container
+                          *ngIf="
+                            minuta.relevos.length === 0 &&
+                            relevosArr.length === 0
+                          "
+                        >
+                          <h1 class="text-gray-800 mx-auto p-2">
+                            Sin Relevos que anunciar
+                          </h1>
+                        </ng-container>
+
+                        <app-repeteable-field
+                          *ngIf="editForm"
+                          [controlName]="'relevos'"
+                          (data)="processData($event)"
+                        ></app-repeteable-field>
+
+                        <!-- listado de relevos -->
+
+                        <ng-container *ngIf="editForm" formArrayName="relevos">
+                          <li
+                            *ngFor="
+                              let relevo of relevosArr.controls;
+                              let i = index
+                            "
+                            class="pl-3 pr-4 py-3 flex flex-col text-sm"
+                          >
+                            <ng-container [formGroupName]="i">
+                              <div class="flex-1 flex items-center space-x-4">
+                                <!-- Heroicon name: solid/paper-clip -->
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  class="w-12 h-12 md:h-5 md:w-5 text-red-500"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                  />
+                                </svg>
+
+                                <div class="mt-1 -space-y-px">
+                                  <div class="flex space-x-2 flex-wrap">
+                                    <!-- Nombre -->
+                                    <div class="w-1/2 flex-1 min-w-0">
+                                      <input
+                                        type="text"
+                                        formControlName="nombre"
+                                        class="
+                                          focus:ring-indigo-500
+                                          focus:border-indigo-500
+                                          relative
+                                          block
+                                          w-full
+                                          bg-transparent
+                                          rounded-md
+                                          focus:z-10
+                                          sm:text-sm
+                                          border-gray-300
+                                        "
+                                        placeholder="Nombre"
+                                      />
+                                    </div>
+
+                                    <!-- llamamiento -->
+                                    <ng-container>
+                                      <div class="flex-1 min-w-0">
+                                        <input
+                                          type="text"
+                                          formControlName="llamamiento"
+                                          class="
+                                            focus:ring-indigo-500
+                                            focus:border-indigo-500
+                                            relative
+                                            block
+                                            w-full
+                                            rounded-md
+                                            bg-transparent
+                                            focus:z-10
+                                            sm:text-sm
+                                            border-gray-300
+                                          "
+                                          placeholder="Llamamiento"
+                                        />
+                                      </div>
+                                    </ng-container>
+                                  </div>
+                                </div>
+
+                                <button
+                                  (click)="eliminarRelevo(i)"
+                                  type="button"
+                                  class="
+                                    inline-flex
+                                    items-center
+                                    border border-transparent
+                                    rounded-full
+                                    shadow-sm
+                                    text-white
+                                    bg-red-600
+                                    hover:bg-red-700
+                                    focus:outline-none
+                                    focus:ring-2
+                                    focus:ring-offset-2
+                                    focus:ring-red-500
+                                  "
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="h-5 w-5"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                  >
+                                    <path
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M18 12H6"
+                                    />
+                                  </svg>
+                                </button>
+                              </div>
+                            </ng-container>
+                          </li>
+                        </ng-container>
+                      </ul>
+                    </dd>
+                  </div>
+                  <!-- Discursantes -->
+                  <div class="sm:col-span-2">
+                    <dt class="text-sm font-medium text-gray-500">
+                      Discursantes
+                    </dt>
+                    <dd class="mt-1 text-sm text-gray-900">
+                      <ul
+                        class="
+                          border border-gray-200
+                          rounded-md
+                          divide-y divide-gray-200
+                        "
+                      >
+                        <ng-container *ngIf="!editForm">
+                          <li
+                            *ngFor="let discursante of minuta.discursantes"
+                            class="
+                              pl-3
+                              pr-4
+                              py-3
+                              grid grid-cols-4 grid-rows-2
+                              sm:grid-rows-1 sm:grid-cols-minuta
+                              items-center
+                              justify-between
+                              text-sm
+                              auto-cols-fr
+                            "
+                          >
+                            <!-- icon user -->
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              class="
+                                h-6
+                                w-6
+                                sm:h-5 sm:w-5
+                                text-green-500
+                                flex-shrink-0
+                                row-span-2
+                                sm:row-span-1
+                                m-auto
+                                flex-none
+                              "
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                              />
+                            </svg>
+
+                            <div
+                              class="flex items-center col-span-3 sm:col-span-1"
+                            >
+                              <!-- nombre-->
+                              <span class="ml-0 sm:ml-2 flex-1 w-0 truncate">
+                                Nombre: {{ discursante.nombre }}
+                              </span>
+                            </div>
+
+                            <!-- tema -->
+                            <div
+                              class="
+                                ml-0
+                                sm:ml-4
+                                col-start-2 col-end-4
+                                sm:col-span-1
+                              "
+                            >
+                              <span class="ml-0 sm:ml-2 flex-1 w-0 truncate">
+                                Tema: {{ discursante.details }}
+                              </span>
+                            </div>
+                          </li>
+                        </ng-container>
+
+                        <app-repeteable-field
+                          *ngIf="editForm"
+                          [controlName]="'discursantes'"
+                          (data)="processData($event)"
+                        ></app-repeteable-field>
+
+                        <!-- listado de Discursantes -->
+
+                        <ng-container
+                          *ngIf="editForm"
+                          formArrayName="discursantes"
+                        >
+                          <li
+                            *ngFor="
+                              let discursante of discursantesArr.controls;
+                              let i = index
+                            "
+                            class="pl-3 pr-4 py-3 flex flex-col text-sm"
+                          >
+                            <ng-container [formGroupName]="i">
+                              <div
+                                class="
+                                  flex-1 flex flex-col
+                                  sm:flex-row
+                                  items-center
+                                  md:space-x-4
+                                "
+                              >
+                                <!-- ICON USER -->
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  class="
+                                    w-12
+                                    h-12
+                                    md:h-6 md:w-6
+                                    mr-0
+                                    sm:mr-2
+                                    md:mr-0
+                                    text-green-700
+                                  "
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                  />
+                                </svg>
+
+                                <div class="mt-1 -space-y-px w-full mb-2">
+                                  <div
+                                    class="
+                                      flex flex-col
+                                      sm:flex-row sm:space-x-2
+                                      flex-wrap
+                                    "
+                                  >
+                                    <!-- Nombre -->
+                                    <div class="w-full sm:w-1/2 flex-1 min-w-0">
+                                      <mat-form-field
+                                        class="w-full"
+                                        appearance="outline"
+                                        placeholder=""
+                                      >
+                                        <input
+                                          formControlName="nombre"
+                                          matInput
+                                        />
+                                      </mat-form-field>
+                                    </div>
+                                    <!-- tema -->
+
+                                    <div class="w-full sm:w-1/2 flex-1 min-w-0">
+                                      <mat-form-field
+                                        class="w-full"
+                                        appearance="outline"
+                                        placeholder=""
+                                      >
+                                        <input
+                                          formControlName="tema"
+                                          matInput
+                                        />
+                                      </mat-form-field>
+                                    </div>
+                                  </div>
+                                </div>
+                                <button
+                                  (click)="eliminarDiscursante(i)"
+                                  type="button"
+                                  class="
+                                    inline-flex
+                                    items-center
+                                    border border-transparent
+                                    rounded-full
+                                    shadow-sm
+                                    ml-0
+                                    sm:ml-2
+                                    md:ml-0
+                                    text-white
+                                    bg-red-600
+                                    hover:bg-red-700
+                                    focus:outline-none
+                                    focus:ring-2
+                                    focus:ring-offset-2
+                                    focus:ring-red-500
+                                  "
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="h-6 w-6"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                  >
+                                    <path
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M18 12H6"
+                                    />
+                                  </svg>
+                                </button>
+                              </div>
+                            </ng-container>
+                          </li>
+                        </ng-container>
+                      </ul>
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+              <div>
+                <div
+                  class="
+                    py-6
+                    flex flex-col-reverse
+                    justify-stretch
+                    space-y-4 space-y-reverse
+                    justify-center
+                    sm:flex-row-reverse
+                    sm:space-x-reverse
+                    sm:space-y-0
+                    sm:space-x-3
+                    md:mt-0 md:flex-row md:space-x-3
+                  "
+                >
+                  <!-- editar -->
+                  <button
+                    *ngIf="!editForm"
+                    (click)="editMode()"
+                    type="button"
+                    class="
+                      inline-flex
+                      items-center
+                      justify-center
+                      px-4
+                      py-2
+                      border border-transparent
+                      text-sm
+                      font-medium
+                      rounded-md
+                      shadow-sm
+                      text-white
+                      bg-indigo-600
+                      hover:bg-blue-700
+                      focus:outline-none
+                      focus:ring-2
+                      focus:ring-offset-2
+                      focus:ring-offset-gray-100
+                      focus:ring-blue-500
+                    "
+                  >
+                    Editar
+                  </button>
+                  <!-- cancelar cambios -->
+                  <button
+                    *ngIf="editForm"
+                    (click)="cancelEditionForm()"
+                    type="button"
+                    class="
+                      inline-flex
+                      items-center
+                      justify-center
+                      px-4
+                      py-2
+                      border border-transparent
+                      text-sm
+                      font-medium
+                      rounded-md
+                      shadow-sm
+                      text-white
+                      bg-red-600
+                      hover:bg-red-700
+                      focus:outline-none
+                      focus:ring-2
+                      focus:ring-offset-2
+                      focus:ring-offset-gray-100
+                      focus:ring-red-500
+                    "
+                  >
+                    Cancelar
+                  </button>
+                  <!-- Guardar Cambios -->
+                  <button
+                    *ngIf="editForm"
+                    [disabled]="formMinuta.invalid && formMinuta.pristine"
+                    (click)="updateMinuta()"
+                    type="button"
+                    class="
+                      inline-flex
+                      items-center
+                      justify-center
+                      px-4
+                      py-2
+                      border border-indigo-600
+                      text-sm
+                      font-medium
+                      rounded-md
+                      shadow-sm
+                      text-indigo-700
+                      bg-transparent
+                      hover:bg-indigo-700 hover:text-white
+                      focus:outline-none
+                      focus:ring-2
+                      focus:ring-offset-2
+                      focus:ring-offset-gray-100
+                      focus:ring-indigo-500
+                    "
+                  >
+                    Actualizar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <section class="lg:col-start-3 lg:col-span-1">
+          <!-- Oraciones y himnos de apertura -->
+          <div class="bg-white shadow sm:rounded-lg sm:overflow-hidden">
+            <div class="divide-y divide-gray-200">
+              <div class="px-4 py-3 sm:px-6">
+                <h2 id="notes-title" class="text-lg font-medium text-gray-900">
+                  Oraciones y Himnos de Apertura
+                </h2>
+              </div>
+              <div class="sm:col-span-2">
+                <dd class="text-sm text-gray-900">
+                  <ul class="divide-y divide-gray-200">
+                    <!-- primer himno -->
+                    <li
+                      class="
+                        pl-3
+                        pr-4
+                        py-3
+                        flex
+                        items-center
+                        justify-between
+                        text-sm
+                      "
+                    >
+                      <div class="w-0 flex-1 flex flex-wrap items-center">
+                        <!-- Heroicon name: solid/music -->
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="h-5 w-5 text-blue-700"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A4.369 4.369 0 005 14c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V7.82l8-1.6v5.894A4.37 4.37 0 0015 12c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V3z"
+                          />
+                        </svg>
+                        <span class="ml-2 flex-1 w-0 truncate">
+                          Primer Himno:
+                          <ng-container *ngIf="!editForm">
+                            {{ minuta.primer_himno }}
+                          </ng-container>
+                        </span>
+
+                        <ng-container *ngIf="editForm">
+                          <mat-form-field
+                            class="ml-4 w-full"
+                            appearance="outline"
+                            placeholder=""
+                          >
+                            <input formControlName="primer_himno" matInput />
+                          </mat-form-field>
+                        </ng-container>
+                      </div>
+                    </li>
+                    <!-- Primera oracion -->
+                    <li
+                      class="
+                        pl-3
+                        pr-4
+                        py-3
+                        flex
+                        items-center
+                        justify-between
+                        text-sm
+                      "
+                    >
+                      <div class="w-0 flex-1 flex flex-wrap items-center">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="h-5 w-5 text-blue-700"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                        <span class="ml-2 flex-1 w-0 truncate">
+                          Primera Oracion:
+                          <ng-container *ngIf="!editForm">
+                            {{ minuta.primera_oracion }}
+                          </ng-container>
+                        </span>
+
+                        <ng-container *ngIf="editForm">
+                          <mat-form-field
+                            class="ml-4 w-full"
+                            appearance="outline"
+                            placeholder=""
+                          >
+                            <input formControlName="primera_oracion" matInput />
+                          </mat-form-field>
+                        </ng-container>
+                      </div>
+                    </li>
+                    <!-- Himno Sacramental -->
+                    <li
+                      class="
+                        pl-3
+                        pr-4
+                        py-3
+                        flex
+                        items-center
+                        justify-between
+                        text-sm
+                      "
+                    >
+                      <div class="w-0 flex-1 flex flex-wrap items-center">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="h-5 w-5 text-blue-700"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                          />
+                        </svg>
+                        <span class="ml-2 flex-1 w-0 truncate">
+                          Himno Sacramental:
+                          <ng-container *ngIf="!editForm">
+                            {{ minuta.himno_sacramental }}
+                          </ng-container>
+                        </span>
+
+                        <ng-container *ngIf="editForm">
+                          <mat-form-field
+                            class="ml-4 w-full"
+                            appearance="outline"
+                            placeholder=""
+                          >
+                            <input
+                              formControlName="himno_sacramental"
+                              matInput
+                            />
+                          </mat-form-field>
+                        </ng-container>
+                      </div>
+                    </li>
+                  </ul>
+                </dd>
+              </div>
+            </div>
+          </div>
+
+          <section class="mt-6">
+            <!-- Oraciones y himnos de cierre -->
+            <div class="bg-white shadow sm:rounded-lg sm:overflow-hidden">
+              <div class="divide-y divide-gray-200">
+                <div class="px-4 py-3 sm:px-6">
+                  <h2
+                    id="notes-title"
+                    class="text-lg font-medium text-gray-900"
+                  >
+                    Oraciones y Himnos de Cierre
+                  </h2>
+                </div>
+                <div class="sm:col-span-2">
+                  <dd class="text-sm text-gray-900">
+                    <ul class="divide-y divide-gray-200">
+                      <!-- Ultimo Himno -->
+                      <li
+                        class="
+                          pl-3
+                          pr-4
+                          py-3
+                          flex
+                          items-center
+                          justify-between
+                          text-sm
+                        "
+                      >
+                        <div class="w-0 flex-1 flex-wrap flex items-center">
+                          <!-- Heroicon name: solid/music -->
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-5 w-5 text-yellow-500"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A4.369 4.369 0 005 14c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V7.82l8-1.6v5.894A4.37 4.37 0 0015 12c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V3z"
+                            />
+                          </svg>
+
+                          <span class="ml-2 flex-1 w-0 truncate">
+                            Ultimo Himno:
+                            <ng-container *ngIf="!editForm">
+                              {{ minuta.ultimo_himno }}
+                            </ng-container>
+                          </span>
+
+                          <ng-container *ngIf="editForm">
+                            <mat-form-field
+                              class="ml-4 w-full"
+                              appearance="outline"
+                              placeholder=""
+                            >
+                              <input formControlName="ultimo_himno" matInput />
+                            </mat-form-field>
+                          </ng-container>
+                        </div>
+                      </li>
+                      <!-- Ultima oracion  -->
+                      <li
+                        class="
+                          pl-3
+                          pr-4
+                          py-3
+                          flex
+                          items-center
+                          justify-between
+                          text-sm
+                        "
+                      >
+                        <div class="w-0 flex-1 flex flex-wrap items-center">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-5 w-5 text-yellow-500"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                          </svg>
+                          <span class="ml-2 flex-1 w-0 truncate">
+                            Ultima Oracion:
+                            <ng-container *ngIf="!editForm">
+                              {{ minuta.ultima_oracion }}
+                            </ng-container>
+                          </span>
+
+                          <ng-container *ngIf="editForm">
+                            <mat-form-field
+                              class="ml-4 w-full"
+                              appearance="outline"
+                              placeholder=""
+                            >
+                              <input
+                                formControlName="ultima_oracion"
+                                matInput
+                              />
+                            </mat-form-field>
+                          </ng-container>
+                        </div>
+                      </li>
+                    </ul>
+                  </dd>
+                </div>
+              </div>
+            </div>
+          </section>
+        </section>
+      </div>
+    </main>
   </div>
-</form>
+</ng-container>

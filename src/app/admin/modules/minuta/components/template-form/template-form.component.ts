@@ -1,11 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   ActionForm,
   tipoMinutas,
@@ -15,35 +8,54 @@ import {
 import { MinutaService } from '../../services/minuta.service';
 import { AlertService } from '../../../../../ui/alert/services/alert.service';
 import { AuthService } from '../../../../../core/auth/services/auth.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { repeatableFields } from '../../models/minuta.models';
-import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import { tap } from 'rxjs/operators';
+import { OnDestroy } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { mapTo, takeUntil } from 'rxjs/operators';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'template-form',
   templateUrl: './template-form.component.html',
   styleUrls: ['./template-form.component.scss'],
 })
-export class TemplateFormComponent implements OnInit, AfterViewInit {
-  // Outpus Inputs
+export class TemplateFormComponent implements OnInit, OnDestroy {
   @Input() ActionForm!: ActionForm;
-
   @Output() DataForm = new EventEmitter<any>();
 
-  // Variables
-  tipoMinuta!: Observable<tipoMinutas[]>;
-  formMinuta!: FormGroup;
-  // Para el modo de editar obtenemos la minuta actual y crearemos el form
   minuta$!: Observable<Minuta>;
+  minuta!: Minuta;
+
+  initialData: Minuta = {
+    anuncios: '',
+    ultima_oracion: '',
+    ultimo_himno: '',
+    himno_sacramental: '',
+    primera_oracion: '',
+    primer_himno: '',
+    preludio_musical: '',
+    fecha: new Date(),
+    dirige: '',
+    preside: 'Ramon',
+    reconocimientos: '',
+    discursantes: [],
+    relevos: [],
+    sostenimientos: [],
+    barrio: {},
+    tipos_de_minuta: {},
+    completa: false,
+  };
+  tipoMinuta!: Observable<tipoMinutas[]>;
+
+  formMinuta!: FormGroup;
+
+  editForm: boolean = false;
 
   // Getters and Setters
+
+  private _unsubscribeAll: Subject<any> = new Subject<any>();
+
   get discursantesArr() {
     return this.formMinuta.get('discursantes') as FormArray;
   }
@@ -53,37 +65,39 @@ export class TemplateFormComponent implements OnInit, AfterViewInit {
   get sostenimientosArr() {
     return this.formMinuta.get('sostenimientos') as FormArray;
   }
-
-  getAnyField(field: string) {
-    return this.formMinuta.get(`${field}`);
-  }
-
   constructor(
-    private _fb: FormBuilder,
     private _minutaServices: MinutaService,
+    private _fb: FormBuilder,
     private _alert: AlertService,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _router: Router,
+    private _acRouter: ActivatedRoute
   ) {}
+
   ngOnInit(): void {
+    this.initFormMinuta();
+
     this.tipoMinuta = this._minutaServices.tiposDeMinuta$;
 
-    this.initFormMinuta();
+    // this.ActionForm = 'editar';
     if (this.ActionForm === 'crear') {
-      this.formMinuta.reset();
+      this.editForm = true;
+      this._minutaServices.minuta$
+        .pipe(mapTo(this.initialData), takeUntil(this._unsubscribeAll))
+        .subscribe((minuta) => {
+          this.minuta = minuta;
+        });
     }
-    if (this.ActionForm === 'editar') {
-      // Data a editar
-      this._minutaServices.minuta$.subscribe((data) => {
-        this.formMinuta.patchValue(data);
 
-        // Seteamos los array
-        this.pacthArrayValue(data.relevos, 'relevos');
-        this.pacthArrayValue(data.sostenimientos, 'sostenimientos');
-        this.pacthArrayValue(data.discursantes, 'discursantes');
-      });
+    if (this.ActionForm === 'editar') {
+      this._minutaServices.minuta$
+        .pipe(takeUntil(this._unsubscribeAll))
+        .subscribe((minuta) => {
+          this.minuta = minuta;
+        });
     }
+    console.log(this.ActionForm);
   }
-  ngAfterViewInit() {}
 
   initFormMinuta() {
     this.formMinuta = this._fb.group({
@@ -107,6 +121,79 @@ export class TemplateFormComponent implements OnInit, AfterViewInit {
     });
   }
 
+  editMode() {
+    this.editForm = !this.editForm;
+    console.log(this.formMinuta.pristine);
+    if (this.editForm) {
+      this.formMinuta.patchValue(this.minuta);
+      // Primero limpiamos los array de los antiguos valores para evitar duplicados en la vista
+      this.clearArraysForm();
+      // Seteamos los array
+      this.pacthArrayValue(this.minuta.relevos, 'relevos');
+      this.pacthArrayValue(this.minuta.sostenimientos, 'sostenimientos');
+      this.pacthArrayValue(this.minuta.discursantes, 'discursantes');
+    }
+    if (!this.editForm) {
+      this.formMinuta.reset();
+
+      // limpiamos los valores
+      this.clearArraysForm();
+    }
+  }
+  createMinuta() {
+    console.log(this.formMinuta.value);
+    this.formMinuta.disable();
+
+    this._minutaServices.createMinuta(this.formMinuta.value).subscribe(
+      (resp) => {
+        console.log(resp);
+        this.formMinuta.enable();
+        this.formMinuta.reset();
+        this.clearArraysForm();
+        this._alert.opendAlert(
+          'Creado',
+          'Se creo correctamente la minuta',
+          'success'
+        );
+      },
+      (error) => {
+        this.formMinuta.enable();
+      }
+    );
+  }
+  updateMinuta() {
+    const body = this.formMinuta.value;
+    this.formMinuta.disable();
+
+    return this._minutaServices.updateMinuta(this.minuta.id, body).subscribe(
+      (resp) => {
+        this.formMinuta.enable();
+        this.editForm = false;
+        this.minuta = resp;
+      },
+      (error) => {
+        this.formMinuta.enable();
+      }
+    );
+  }
+
+  cancelEditionForm() {
+    this.editForm = false;
+    this.clearArraysForm();
+  }
+
+  clearArraysForm() {
+    this.sostenimientosArr.clear();
+    this.relevosArr.clear();
+    this.discursantesArr.clear();
+  }
+
+  // ultils
+  backToList() {
+    const route = this._acRouter;
+    // Go to the parent route
+    this._router.navigate(['../'], { relativeTo: route });
+  }
   processData(data: { form: formControlRepeatable; type: repeatableFields }) {
     if (data.type === 'relevos') {
       const { nombre, details } = data.form;
@@ -128,7 +215,6 @@ export class TemplateFormComponent implements OnInit, AfterViewInit {
     }
 
     if (data.type === 'discursantes') {
-      console.log(data.form, data.type);
       const { nombre, details } = data.form;
       this.discursantesArr.push(
         this._fb.group({
@@ -173,26 +259,14 @@ export class TemplateFormComponent implements OnInit, AfterViewInit {
       });
     }
   }
-
-  addAnuncios() {
-    return null;
-  }
-
-  guardarMinuta() {
-    // Comprobrar si todos los campos requeridos en la minuta estan completos
-    if (
-      this.discursantesArr.length !== 0 &&
-      this.relevosArr.length !== 0 &&
-      this.sostenimientosArr.length !== 0
-    ) {
-      this.formMinuta.controls['completa'].setValue(true);
+  notEditing() {
+    if (this.ActionForm === 'editar' && this.editForm === false) {
+      return true;
     }
-    this._minutaServices
-      .createMinuta(this.formMinuta.value)
-      .subscribe((resp) => {
-        console.log(resp);
-        this._alert.opendAlert('Creado', '', 'success');
-      });
+    if (this.ActionForm === 'crear' && this.editForm === true) {
+      return false;
+    }
+    return false;
   }
 
   eliminarDiscursante(index: number) {
@@ -203,5 +277,10 @@ export class TemplateFormComponent implements OnInit, AfterViewInit {
   }
   eliminarSostenimiento(index: number) {
     this.sostenimientosArr.removeAt(index);
+  }
+
+  ngOnDestroy() {
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
   }
 }

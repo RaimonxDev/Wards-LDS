@@ -68,10 +68,19 @@ export class MinutaService {
 
   // CRUD
   createMinuta(body: any) {
-    return this._http.post(`${this.siteUrl}/minutas`, body);
+    return this._http.post(`${this.siteUrl}/minutas`, body).pipe(
+      catchError((error) => {
+        this._alert.opendAlert('UPS', 'No se pudo crear', 'error');
+        return throwError('No se pudo crear la minuta');
+      })
+    );
   }
 
-  updateMinuta(id: string, body: any): Observable<Minuta> {
+  updateMinuta(id: string | undefined, body: any): Observable<Minuta> {
+    if (id === undefined) {
+      return throwError('ID NO VALIDO');
+    }
+
     return this._http.put<Minuta>(`${this.siteUrl}/minutas/${id}`, body).pipe(
       tap(() =>
         this._alert.opendAlert('Actualizado', 'Operacion Exitosa', 'success')
