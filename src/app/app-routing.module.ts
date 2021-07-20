@@ -5,6 +5,9 @@ import { LayoutComponent } from './layout/layout.component';
 import { NoAuthGuard } from './core/auth/guards/no-guard.guard';
 
 const routes: Routes = [
+  // Ruta principal
+  { path: '', pathMatch: 'full', redirectTo: 'home' },
+
   {
     path: 'signed-in-redirect',
     pathMatch: 'full',
