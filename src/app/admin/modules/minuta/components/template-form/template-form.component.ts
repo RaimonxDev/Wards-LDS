@@ -9,7 +9,10 @@ import { MinutaService } from '../../services/minuta.service';
 import { AlertService } from '../../../../../ui/alert/services/alert.service';
 import { AuthService } from '../../../../../core/auth/services/auth.service';
 import { Observable, Subject } from 'rxjs';
-import { repeatableFields } from '../../models/minuta.models';
+import {
+  repeatableFields,
+  dataEmitRepetableForm,
+} from '../../models/minuta.models';
 import { OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { mapTo, takeUntil } from 'rxjs/operators';
@@ -28,25 +31,25 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
   minuta!: Minuta;
 
   initialData: Minuta = {
+    tipos_de_minuta: {},
+    barrio: {},
     anuncios: '',
-    ultima_oracion: '',
-    ultimo_himno: '',
-    himno_sacramental: '',
+    preside: '',
+    dirige: '',
+    reconocimientos: '',
+    fecha: new Date(),
     primera_oracion: '',
     primer_himno: '',
     preludio_musical: '',
-    fecha: new Date(),
-    dirige: '',
-    preside: 'Ramon',
-    reconocimientos: '',
-    discursantes: [],
+    himno_sacramental: '',
     relevos: [],
     sostenimientos: [],
-    barrio: {},
-    tipos_de_minuta: {},
+    discursantes: [],
+    ultima_oracion: '',
+    ultimo_himno: '',
     completa: false,
   };
-  tipoMinuta!: Observable<tipoMinutas[]>;
+  tipoMinuta$!: Observable<tipoMinutas[]>;
 
   formMinuta!: FormGroup;
 
@@ -65,6 +68,11 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
   get sostenimientosArr() {
     return this.formMinuta.get('sostenimientos') as FormArray;
   }
+
+  get tiposDeMinuta() {
+    return this.formMinuta.get('tipos_de_minuta');
+  }
+
   constructor(
     private _minutaServices: MinutaService,
     private _fb: FormBuilder,
@@ -77,7 +85,7 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initFormMinuta();
 
-    this.tipoMinuta = this._minutaServices.tiposDeMinuta$;
+    this.tipoMinuta$ = this._minutaServices.tiposDeMinuta$;
 
     // this.ActionForm = 'editar';
     if (this.ActionForm === 'crear') {
@@ -96,7 +104,6 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
           this.minuta = minuta;
         });
     }
-    console.log(this.ActionForm);
   }
 
   initFormMinuta() {
@@ -123,9 +130,13 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
 
   editMode() {
     this.editForm = !this.editForm;
-    console.log(this.formMinuta.pristine);
+    console.log(this.minuta);
+
     if (this.editForm) {
       this.formMinuta.patchValue(this.minuta);
+      // Seteamos por default el id de la minuta actual
+      this.tiposDeMinuta?.setValue(this.minuta.tipos_de_minuta.id);
+
       // Primero limpiamos los array de los antiguos valores para evitar duplicados en la vista
       this.clearArraysForm();
       // Seteamos los array
@@ -136,14 +147,12 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
     if (!this.editForm) {
       this.formMinuta.reset();
 
-      // limpiamos los valores
+      // limpiamos los valores del array
       this.clearArraysForm();
     }
   }
   createMinuta() {
-    console.log(this.formMinuta.value);
     this.formMinuta.disable();
-
     this._minutaServices.createMinuta(this.formMinuta.value).subscribe(
       (resp) => {
         console.log(resp);
@@ -164,7 +173,6 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
   updateMinuta() {
     const body = this.formMinuta.value;
     this.formMinuta.disable();
-
     return this._minutaServices.updateMinuta(this.minuta.id, body).subscribe(
       (resp) => {
         this.formMinuta.enable();
@@ -194,13 +202,13 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
     // Go to the parent route
     this._router.navigate(['../'], { relativeTo: route });
   }
-  processData(data: { form: formControlRepeatable; type: repeatableFields }) {
+  processData(data: dataEmitRepetableForm) {
     if (data.type === 'relevos') {
       const { nombre, details } = data.form;
       this.relevosArr.push(
         this._fb.group({
           nombre: [nombre, [Validators.required]],
-          llamamiento: [details, [Validators.required]],
+          details: [details, [Validators.required]],
         })
       );
     }
@@ -209,7 +217,7 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
       this.sostenimientosArr.push(
         this._fb.group({
           nombre: [nombre, [Validators.required]],
-          llamamiento: [details, [Validators.required]],
+          details: [details, [Validators.required]],
         })
       );
     }
@@ -219,19 +227,19 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
       this.discursantesArr.push(
         this._fb.group({
           nombre: [nombre, [Validators.required]],
-          tema: [details, [Validators.required]],
+          details: [details, [Validators.required]],
         })
       );
     }
   }
 
-  pacthArrayValue(data: any[], field: repeatableFields) {
+  pacthArrayValue(data: formControlRepeatable[], field: repeatableFields) {
     if (field === 'relevos') {
       data.forEach((value) => {
         this.relevosArr.push(
           this._fb.group({
             nombre: [value.nombre, [Validators.required]],
-            llamamiento: [value.llamamiento, [Validators.required]],
+            details: [value.details, [Validators.required]],
           })
         );
       });
@@ -242,7 +250,7 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
         this.sostenimientosArr.push(
           this._fb.group({
             nombre: [value.nombre, [Validators.required]],
-            llamamiento: [value.llamamiento, [Validators.required]],
+            details: [value.details, [Validators.required]],
           })
         );
       });
@@ -253,7 +261,7 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
         this.discursantesArr.push(
           this._fb.group({
             nombre: [value.nombre, [Validators.required]],
-            tema: [value.tema, [Validators.required]],
+            details: [value.details, [Validators.required]],
           })
         );
       });

@@ -7,9 +7,10 @@ import {
   Output,
 } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { combineLatest, merge } from 'rxjs';
-import { debounceTime, mapTo, startWith } from 'rxjs/operators';
-import { repeatableFields } from '../../models/minuta.models';
+import {
+  repeatableFields,
+  dataEmitRepetableForm,
+} from '../../models/minuta.models';
 import { AlertService } from '../../../../../ui/alert/services/alert.service';
 
 @Component({
@@ -20,8 +21,8 @@ import { AlertService } from '../../../../../ui/alert/services/alert.service';
 export class RepeteableFieldComponent implements OnInit {
   @Input() controlName!: repeatableFields;
 
-  @Output() data: EventEmitter<{ form: any; type: repeatableFields }> =
-    new EventEmitter<{ form: any; type: repeatableFields }>();
+  @Output() data: EventEmitter<dataEmitRepetableForm> =
+    new EventEmitter<dataEmitRepetableForm>();
 
   formRepeatable!: FormGroup;
   activeButtonAddForm: boolean = false;

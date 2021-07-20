@@ -1,6 +1,6 @@
-<pre>
+<!-- <pre>
   {{ this.formMinuta.status | json }}
-</pre>
+</pre> -->
 
 <ng-container>
   <div [formGroup]="formMinuta" class="min-h-screen">
@@ -32,7 +32,7 @@
                 >
                   <mat-option
                     class="capitalize"
-                    *ngFor="let type of tipoMinuta | async; let i = index"
+                    *ngFor="let type of tipoMinuta$ | async; let i = index"
                     [value]="type.id"
                   >
                     {{ type.minuta }}
@@ -51,10 +51,27 @@
               </p>
             </ng-container>
 
+            <ng-container *ngIf="editForm">
+              <div class="flex flex-col mt-8">
+                <span class="font-semibold mb-2">Minuta Completada</span>
+                <mat-slide-toggle
+                  [formControlName]="'completa'"
+                  [color]="'primary'"
+                >
+                  {{
+                    formMinuta.get("completa")?.value === true
+                      ? "Completada"
+                      : "Incompleta"
+                  }}
+                </mat-slide-toggle>
+              </div>
+            </ng-container>
+
             <ng-template #crearFecha>
               <mat-form-field appearance="outline">
                 <mat-label>Fecha de Reunion</mat-label>
-                <input
+                <!-- <input
+
                   formControlName="fecha"
                   matInput
                   [matDatepicker]="picker"
@@ -63,7 +80,8 @@
                   matSuffix
                   [for]="picker"
                 ></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
+                <mat-datepicker #picker></mat-datepicker> -->
+                <input matInput formControlName="fecha" type="datetime-local" />
               </mat-form-field>
             </ng-template>
           </div>
@@ -419,7 +437,7 @@
                               </span>
                             </div>
 
-                            <!-- tema -->
+                            <!-- details -->
                             <div
                               class="
                                 ml-0
@@ -510,7 +528,7 @@
                                       <div class="flex-1 min-w-0">
                                         <input
                                           type="text"
-                                          formControlName="llamamiento"
+                                          formControlName="details"
                                           class="
                                             focus:ring-indigo-500
                                             focus:border-indigo-500
@@ -631,7 +649,7 @@
                               </span>
                             </div>
 
-                            <!-- tema -->
+                            <!-- details -->
                             <div
                               class="
                                 ml-0
@@ -641,7 +659,7 @@
                               "
                             >
                               <span class="ml-0 sm:ml-2 flex-1 w-0 truncate">
-                                Tema: {{ relevo.details }}
+                                Llamamiento: {{ relevo.details }}
                               </span>
                             </div>
                           </li>
@@ -719,7 +737,7 @@
                                       <div class="flex-1 min-w-0">
                                         <input
                                           type="text"
-                                          formControlName="llamamiento"
+                                          formControlName="details"
                                           class="
                                             focus:ring-indigo-500
                                             focus:border-indigo-500
@@ -857,6 +875,16 @@
                             </div>
                           </li>
                         </ng-container>
+                        <ng-container
+                          *ngIf="
+                            minuta.discursantes.length === 0 &&
+                            discursantesArr.length === 0
+                          "
+                        >
+                          <h1 class="text-gray-800 mx-auto p-2">
+                            Sin Discursantes
+                          </h1>
+                        </ng-container>
 
                         <app-repeteable-field
                           *ngIf="editForm"
@@ -940,7 +968,7 @@
                                         placeholder=""
                                       >
                                         <input
-                                          formControlName="tema"
+                                          formControlName="details"
                                           matInput
                                         />
                                       </mat-form-field>
@@ -1006,93 +1034,7 @@
                     sm:space-x-3
                     md:mt-0 md:flex-row md:space-x-3
                   "
-                >
-                  <!-- editar -->
-                  <button
-                    *ngIf="!editForm"
-                    (click)="editMode()"
-                    type="button"
-                    class="
-                      inline-flex
-                      items-center
-                      justify-center
-                      px-4
-                      py-2
-                      border border-transparent
-                      text-sm
-                      font-medium
-                      rounded-md
-                      shadow-sm
-                      text-white
-                      bg-indigo-600
-                      hover:bg-blue-700
-                      focus:outline-none
-                      focus:ring-2
-                      focus:ring-offset-2
-                      focus:ring-offset-gray-100
-                      focus:ring-blue-500
-                    "
-                  >
-                    Editar
-                  </button>
-                  <!-- cancelar cambios -->
-                  <button
-                    *ngIf="editForm"
-                    (click)="cancelEditionForm()"
-                    type="button"
-                    class="
-                      inline-flex
-                      items-center
-                      justify-center
-                      px-4
-                      py-2
-                      border border-transparent
-                      text-sm
-                      font-medium
-                      rounded-md
-                      shadow-sm
-                      text-white
-                      bg-red-600
-                      hover:bg-red-700
-                      focus:outline-none
-                      focus:ring-2
-                      focus:ring-offset-2
-                      focus:ring-offset-gray-100
-                      focus:ring-red-500
-                    "
-                  >
-                    Cancelar
-                  </button>
-                  <!-- Guardar Cambios -->
-                  <button
-                    *ngIf="editForm"
-                    [disabled]="formMinuta.invalid && formMinuta.pristine"
-                    (click)="updateMinuta()"
-                    type="button"
-                    class="
-                      inline-flex
-                      items-center
-                      justify-center
-                      px-4
-                      py-2
-                      border border-indigo-600
-                      text-sm
-                      font-medium
-                      rounded-md
-                      shadow-sm
-                      text-indigo-700
-                      bg-transparent
-                      hover:bg-indigo-700 hover:text-white
-                      focus:outline-none
-                      focus:ring-2
-                      focus:ring-offset-2
-                      focus:ring-offset-gray-100
-                      focus:ring-indigo-500
-                    "
-                  >
-                    Actualizar
-                  </button>
-                </div>
+                ></div>
               </div>
             </div>
           </section>

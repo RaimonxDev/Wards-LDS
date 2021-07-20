@@ -4,14 +4,14 @@ export type ActionForm = 'crear' | 'editar';
 export type repeatableFields = 'discursantes' | 'sostenimientos' | 'relevos';
 
 export interface formControlRepeatable {
-  _id: string;
-  __v: number;
-  id: string;
   nombre: string;
   details: string;
+  id?: string;
+  _id?: string;
+  __v?: number;
 }
 
-export interface ControlName {
+export interface dataEmitRepetableForm {
   form: formControlRepeatable;
   type: repeatableFields;
 }
