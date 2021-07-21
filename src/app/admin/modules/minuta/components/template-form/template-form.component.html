@@ -16,15 +16,16 @@
           lg:max-w-7xl lg:px-8
         "
       >
-        <div class="flex items-center">
-          <div>
+        <div class="flex items-center w-full">
+          <div class="w-full max-w-3xl flex flex-col md:flex-row flex-wrap">
             <ng-container *ngIf="!editForm; else editTiposMinuta">
-              <h1 class="text-2xl font-bold text-gray-900 capitalize">
+              <h1 class="text-2xl w-full font-bold text-gray-900 capitalize">
                 {{ minuta.tipos_de_minuta.minuta }}
               </h1>
             </ng-container>
+
             <ng-template #editTiposMinuta>
-              <mat-form-field appearance="outline">
+              <mat-form-field class="flex-auto" appearance="outline">
                 <mat-label>Tipo de Reunion</mat-label>
                 <mat-select
                   class="capitalize"
@@ -42,7 +43,7 @@
             </ng-template>
 
             <ng-container *ngIf="!editForm; else crearFecha">
-              <p class="text-sm font-medium text-gray-500 mt-4">
+              <p class="text-sm font-medium text-gray-500 mt-4 lg:mt-0 w-full">
                 Fecha de Reunion:
                 <!-- cambiar datatime statico a dinamico -->
                 <time datetime="2020-08-25">{{
@@ -51,36 +52,12 @@
               </p>
             </ng-container>
 
-            <ng-container *ngIf="editForm">
-              <div class="flex flex-col mt-8">
-                <span class="font-semibold mb-2">Minuta Completada</span>
-                <mat-slide-toggle
-                  [formControlName]="'completa'"
-                  [color]="'primary'"
-                >
-                  {{
-                    formMinuta.get("completa")?.value === true
-                      ? "Completada"
-                      : "Incompleta"
-                  }}
-                </mat-slide-toggle>
-              </div>
-            </ng-container>
-
             <ng-template #crearFecha>
-              <mat-form-field appearance="outline">
+              <mat-form-field
+                appearance="outline"
+                class="flex-auto mt-4 lg:mt-0 lg:ml-2"
+              >
                 <mat-label>Fecha de Reunion</mat-label>
-                <!-- <input
-
-                  formControlName="fecha"
-                  matInput
-                  [matDatepicker]="picker"
-                />
-                <mat-datepicker-toggle
-                  matSuffix
-                  [for]="picker"
-                ></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker> -->
                 <input matInput formControlName="fecha" type="datetime-local" />
               </mat-form-field>
             </ng-template>
@@ -277,6 +254,21 @@
                 >
                   Apertura
                 </h2>
+                <ng-container *ngIf="editForm">
+                  <div class="flex flex-col mt-8">
+                    <span class="font-semibold mb-2">Minuta Completada</span>
+                    <mat-slide-toggle
+                      [formControlName]="'completa'"
+                      [color]="'primary'"
+                    >
+                      {{
+                        formMinuta.get("completa")?.value === true
+                          ? "Completada"
+                          : "Incompleta"
+                      }}
+                    </mat-slide-toggle>
+                  </div>
+                </ng-container>
               </div>
               <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
                 <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">

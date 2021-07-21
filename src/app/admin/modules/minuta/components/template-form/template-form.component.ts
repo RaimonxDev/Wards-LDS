@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import {
   ActionForm,
   tipoMinutas,
@@ -22,6 +23,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   selector: 'template-form',
   templateUrl: './template-form.component.html',
   styleUrls: ['./template-form.component.scss'],
+  providers: [DatePipe],
 })
 export class TemplateFormComponent implements OnInit, OnDestroy {
   @Input() ActionForm!: ActionForm;
@@ -73,13 +75,18 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
     return this.formMinuta.get('tipos_de_minuta');
   }
 
+  get getFecha() {
+    return this.formMinuta.get('fecha');
+  }
+
   constructor(
     private _minutaServices: MinutaService,
     private _fb: FormBuilder,
     private _alert: AlertService,
     private _authService: AuthService,
     private _router: Router,
-    private _acRouter: ActivatedRoute
+    private _acRouter: ActivatedRoute,
+    private datePipe: DatePipe
   ) {}
 
   ngOnInit(): void {
@@ -130,12 +137,25 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
 
   editMode() {
     this.editForm = !this.editForm;
-    console.log(this.minuta);
-
     if (this.editForm) {
       this.formMinuta.patchValue(this.minuta);
-      // Seteamos por default el id de la minuta actual
+
       this.tiposDeMinuta?.setValue(this.minuta.tipos_de_minuta.id);
+
+      // Seteamos la fecha
+      const date = this.minuta.fecha.toString();
+      const setDate = date.split('.');
+      // console.log(`${setDate[0]} GMT-04:00 `);
+
+      const transformData = this.datePipe.transform(date, 'medium');
+      // console.log('locateString', date);
+
+      console.log(transformData);
+
+      console.log(new Date(transformData as string).toISOString());
+      // Seteamos por default el id de la minuta actual
+
+      this.getFecha?.setValue(new Date(transformData as string).toISOString());
 
       // Primero limpiamos los array de los antiguos valores para evitar duplicados en la vista
       this.clearArraysForm();

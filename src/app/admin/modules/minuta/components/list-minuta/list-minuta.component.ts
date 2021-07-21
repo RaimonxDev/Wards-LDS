@@ -4,6 +4,7 @@ import { Minuta } from '../../models/minuta.models';
 import { MinutaService } from '../../services/minuta.service';
 import { Router } from '@angular/router';
 import { AlertService } from '../../../../../ui/alert/services/alert.service';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-list-minuta',
@@ -19,7 +20,9 @@ export class ListMinutaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.minutas$ = this._minutaService.minutas$;
+    this.minutas$ = this._minutaService.minutas$.pipe(
+      tap((resp) => console.log(resp))
+    );
   }
 
   details(minutaID: string | undefined) {
