@@ -1,4 +1,5 @@
 const { guessProductionMode } = require("@ngneat/tailwind");
+const colors = require('tailwindcss/colors')
 
 process.env.TAILWIND_MODE = guessProductionMode() ? 'build' : 'watch';
 
@@ -12,6 +13,21 @@ module.exports = {
     },
     darkMode: 'class', // or 'media' or 'class'
     theme: {
+      colors:{
+        primary: {
+          ...colors.sky,
+          DEFAULT: colors.sky[600]
+        },
+        indigo: colors.indigo,
+        transparent: 'transparent',
+      current: 'currentColor',
+      black: colors.black,
+      white: colors.white,
+      gray: colors.coolGray,
+      red: colors.rose,
+      yellow: colors.amber,
+      },
+
       extend: {
         gridTemplateColumns: {
           // Complex site-specific column configuration
