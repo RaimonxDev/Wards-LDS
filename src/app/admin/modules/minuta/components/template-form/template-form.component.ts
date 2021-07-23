@@ -140,7 +140,7 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
     this.editForm = !this.editForm;
     if (this.editForm) {
       this.formMinuta.patchValue(this.minuta);
-
+      // seteamos el ID para el select
       this.tiposDeMinuta?.setValue(this.minuta.tipos_de_minuta.id);
       // Seteamos la fecha
       this.getFecha?.setValue(setDateMinuta(this.minuta.fecha));
