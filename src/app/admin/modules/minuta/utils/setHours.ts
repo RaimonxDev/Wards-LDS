@@ -1,6 +1,6 @@
 import { subHours, formatISO, format } from 'date-fns';
 
-export function setDateMinuta(fechaDeMinuta: any, subHour: number = 4) {
+export function setDateMinuta(fechaDeMinuta: Date, subHour: number = 4) {
   // Eliminamos 000.Z de la fecha
   const dateToString = fechaDeMinuta.toString().split('.');
   // Formateamos a un formato ISO 8601
