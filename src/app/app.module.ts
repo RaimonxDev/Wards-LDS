@@ -13,6 +13,7 @@ import { NgProgressHttpModule } from 'ngx-progressbar/http';
 import { AlertModule } from './ui/alert/alert.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorsTokenService } from './core/interceptors/token.service';
+import { DateFnsModule } from 'ngx-date-fns';
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,6 +27,7 @@ import { InterceptorsTokenService } from './core/interceptors/token.service';
     NgProgressModule,
     NgProgressHttpModule,
     AlertModule,
+    DateFnsModule.forRoot(),
   ],
   providers: [
     {

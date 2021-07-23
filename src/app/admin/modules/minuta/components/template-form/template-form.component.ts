@@ -18,6 +18,8 @@ import { OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { mapTo, takeUntil } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
+import { subHours, formatISO } from 'date-fns';
+import { setDateMinuta } from '../../utils/setHours';
 
 @Component({
   selector: 'template-form',
@@ -85,8 +87,7 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
     private _alert: AlertService,
     private _authService: AuthService,
     private _router: Router,
-    private _acRouter: ActivatedRoute,
-    private datePipe: DatePipe
+    private _acRouter: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -141,21 +142,8 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
       this.formMinuta.patchValue(this.minuta);
 
       this.tiposDeMinuta?.setValue(this.minuta.tipos_de_minuta.id);
-
       // Seteamos la fecha
-      const date = this.minuta.fecha.toString();
-      const setDate = date.split('.');
-      // console.log(`${setDate[0]} GMT-04:00 `);
-
-      const transformData = this.datePipe.transform(date, 'medium');
-      // console.log('locateString', date);
-
-      console.log(transformData);
-
-      console.log(new Date(transformData as string).toISOString());
-      // Seteamos por default el id de la minuta actual
-
-      this.getFecha?.setValue(new Date(transformData as string).toISOString());
+      this.getFecha?.setValue(setDateMinuta(this.minuta.fecha));
 
       // Primero limpiamos los array de los antiguos valores para evitar duplicados en la vista
       this.clearArraysForm();

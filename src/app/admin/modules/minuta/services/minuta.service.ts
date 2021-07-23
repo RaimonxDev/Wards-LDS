@@ -93,12 +93,4 @@ export class MinutaService {
   }
 
   deleteData() {}
-
-  public refreshMinutas() {
-    return this.getMinutas();
-  }
-
-  public refreshMinuta(id: string) {
-    return this.getMinuta(id);
-  }
 }
