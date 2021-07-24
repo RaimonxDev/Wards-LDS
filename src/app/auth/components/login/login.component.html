@@ -1,7 +1,3 @@
-<pre>
-  {{ loginForm.value | json }}
-  <!-- {{ loginForm.get("email") }} -->
-</pre>
 <div class="min-h-screen bg-white flex">
   <div
     class="
@@ -211,7 +207,7 @@
                     <svg
                       *ngIf="passwordField.type === 'password'"
                       xmlns="http://www.w3.org/2000/svg"
-                      class="h-5 w-5 text-blue-500"
+                      class="h-5 w-5 text-primary"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -227,7 +223,7 @@
                     <svg
                       *ngIf="passwordField.type === 'text'"
                       xmlns="http://www.w3.org/2000/svg"
-                      class="h-5 w-5 text-blue-500"
+                      class="h-5 w-5 text-primary"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
