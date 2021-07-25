@@ -5,10 +5,8 @@ export type repeatableFields = 'discursantes' | 'sostenimientos' | 'relevos';
 
 export interface formControlRepeatable {
   nombre: string;
-  details: string;
+  detalles: string;
   id?: string;
-  _id?: string;
-  __v?: number;
 }
 
 export interface dataEmitRepetableForm {
@@ -19,7 +17,6 @@ export interface dataEmitRepetableForm {
 // Response petition HTTP
 export interface Minuta {
   id?: string;
-  _id?: string;
   barrio: Barrio;
   preludio_musical: string;
   tipos_de_minuta: tipoMinutas;
@@ -37,33 +34,28 @@ export interface Minuta {
   ultima_oracion: string;
   ultimo_himno: string;
   completa: boolean;
-  createdAt?: Date;
+  created_at?: Date;
   published_at?: Date;
-  updatedAt?: Date;
-  __v?: number;
+  updated_at?: Date;
 }
 
 export interface Barrio {
-  _id?: string;
   id?: string;
   nombre?: string;
   minuta?: string;
   ubicacion?: string;
   published_at?: Date;
-  createdAt?: Date;
-  updatedAt?: Date;
-  __v?: number;
+  created_at?: Date;
+  updated_at?: Date;
 }
 
 // Para evitar problemas con InitialData se colocan todos los campos como opcionales
 export interface tipoMinutas {
-  _id?: string;
-  nombre?: string;
+  id?: string;
+  type?: string;
   ubicacion?: string;
   published_at?: Date;
-  createdAt?: Date;
-  updatedAt?: Date;
-  __v?: number;
-  id?: string;
-  minuta?: string;
+  created_at?: Date;
+  updated_at?: Date;
+  minutas?: Minuta[];
 }

@@ -4,53 +4,45 @@ export interface User {
 }
 
 export interface UserInfo {
+  id: number;
   confirmed: boolean;
   blocked: boolean;
-  _id: string;
   username: string;
   email: string;
   provider: string;
-  createdAt: Date;
-  updatedAt: Date;
-  __v: number;
+  created_at: Date;
+  updated_at: Date;
   role: Role;
   barrio: Barrio;
-  id: string;
 }
 
 export interface Barrio {
-  _id: string;
+  id: number;
   nombre: string;
   ubicacion: string;
   published_at: Date;
-  createdAt: Date;
-  updatedAt: Date;
-  __v: number;
-  id: string;
+  created_at: Date;
+  updated_at: Date;
 }
 
 export interface Role {
-  _id: string;
+  id: number;
   name: string;
   description: string;
   type: string;
-  __v: number;
-  id: string;
 }
 // check user
 export interface CheckUser {
+  id: number;
   confirmed: boolean;
   blocked: boolean;
-  _id: string;
   username: string;
   email: string;
   provider: string;
-  createdAt: Date;
-  updatedAt: Date;
-  __v: number;
+  created_at: Date;
+  updated_at: Date;
   role: Role;
   barrio: string;
-  id: string;
 }
 
 // Invalid request User
