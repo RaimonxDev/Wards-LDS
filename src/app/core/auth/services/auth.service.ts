@@ -21,22 +21,24 @@ export class AuthService {
     localStorage.setItem('barrio', JSON.stringify(barrio));
   }
 
-  set barrioID(token: string) {
-    localStorage.setItem('barrio_id', token);
+  set barrioID(idBarrio: number) {
+    localStorage.setItem('barrio_id', JSON.stringify(idBarrio));
   }
 
-  set userID(idUser: string) {
-    localStorage.setItem('user_id', idUser);
+  set userID(idUser: number) {
+    localStorage.setItem('user_id', JSON.stringify(idUser));
   }
 
   get accessToken(): string {
     return localStorage.getItem('access_token') ?? '';
   }
-  get barrioID(): string {
-    return localStorage.getItem('barrio_id') ?? '';
+
+  // Parseamos el string a un numero la bases de datos devuelve un string
+  get barrioID(): number {
+    return parseInt(localStorage.getItem('barrio_id') as string) ?? -1;
   }
-  get userID(): string {
-    return localStorage.getItem('user_id') ?? '';
+  get userID(): number {
+    return parseInt(localStorage.getItem('user_id') as string) ?? -1;
   }
 
   get barrio(): Barrio {
@@ -103,13 +105,11 @@ export class AuthService {
           return of(false);
         }),
         switchMap((response: CheckUser) => {
+          console.log('check', response);
           // Comprobamos si el ID que recibimos es distinto al usuario anterior
-          if (
-            this.userID !== response.id ||
-            this.barrioID !== response.barrio
-          ) {
-            localStorage.clear();
+          if (this.userID !== response.id) {
             this._authenticated = false;
+            localStorage.clear();
             return of(false);
           }
           // Set the authenticated flag to true
