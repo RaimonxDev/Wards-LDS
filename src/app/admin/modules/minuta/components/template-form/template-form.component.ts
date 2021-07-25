@@ -212,30 +212,30 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
   }
   processData(data: dataEmitRepetableForm) {
     if (data.type === 'relevos') {
-      const { nombre, details } = data.form;
+      const { nombre, detalles } = data.form;
       this.relevosArr.push(
         this._fb.group({
           nombre: [nombre, [Validators.required]],
-          details: [details, [Validators.required]],
+          detalles: [detalles, [Validators.required]],
         })
       );
     }
     if (data.type === 'sostenimientos') {
-      const { nombre, details } = data.form;
+      const { nombre, detalles } = data.form;
       this.sostenimientosArr.push(
         this._fb.group({
           nombre: [nombre, [Validators.required]],
-          details: [details, [Validators.required]],
+          detalles: [detalles, [Validators.required]],
         })
       );
     }
 
     if (data.type === 'discursantes') {
-      const { nombre, details } = data.form;
+      const { nombre, detalles } = data.form;
       this.discursantesArr.push(
         this._fb.group({
           nombre: [nombre, [Validators.required]],
-          details: [details, [Validators.required]],
+          detalles: [detalles, [Validators.required]],
         })
       );
     }
@@ -247,7 +247,7 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
         this.relevosArr.push(
           this._fb.group({
             nombre: [value.nombre, [Validators.required]],
-            details: [value.details, [Validators.required]],
+            detalles: [value.detalles, [Validators.required]],
           })
         );
       });
@@ -258,7 +258,7 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
         this.sostenimientosArr.push(
           this._fb.group({
             nombre: [value.nombre, [Validators.required]],
-            details: [value.details, [Validators.required]],
+            detalles: [value.detalles, [Validators.required]],
           })
         );
       });
@@ -269,7 +269,7 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
         this.discursantesArr.push(
           this._fb.group({
             nombre: [value.nombre, [Validators.required]],
-            details: [value.details, [Validators.required]],
+            detalles: [value.detalles, [Validators.required]],
           })
         );
       });

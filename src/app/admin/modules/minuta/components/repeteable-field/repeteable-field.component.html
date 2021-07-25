@@ -40,7 +40,7 @@
                   appearance="outline"
                   placeholder=""
                 >
-                  <input formControlName="details" matInput />
+                  <input formControlName="detalles" matInput />
                 </mat-form-field>
               </div>
             </div>
@@ -82,11 +82,7 @@
         </div>
         <mat-error
           class="text-xs"
-          *ngIf="
-            getErrorMessage('nombre') ||
-            getErrorMessage('llamamiento') ||
-            getErrorMessage('tema')
-          "
+          *ngIf="getErrorMessage('nombre') || getErrorMessage('detalles')"
           >Campos requeridos
         </mat-error>
       </li>

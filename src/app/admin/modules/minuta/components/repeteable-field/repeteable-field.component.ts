@@ -32,8 +32,8 @@ export class RepeteableFieldComponent implements OnInit {
   get nombreValue() {
     return this.formRepeatable.controls['nombre'];
   }
-  get detailsValue() {
-    return this.formRepeatable.controls['details'];
+  get detallesValue() {
+    return this.formRepeatable.controls['detalles'];
   }
 
   constructor(private _fb: FormBuilder, private _aler: AlertService) {}
@@ -41,7 +41,7 @@ export class RepeteableFieldComponent implements OnInit {
   ngOnInit(): void {
     this.formRepeatable = this._fb.group({
       nombre: ['', [Validators.minLength(5)]],
-      details: ['', [Validators.minLength(5)]],
+      detalles: ['', [Validators.minLength(5)]],
     });
   }
 
@@ -58,12 +58,12 @@ export class RepeteableFieldComponent implements OnInit {
       return;
     }
 
-    if (this.detailsValue.value === '') {
+    if (this.detallesValue.value === '') {
       this._aler.opendAlert('Falta Detalles', 'Agrege los detalles', 'warning');
       return;
     }
 
-    if (this.nombreValue.value !== '' && this.detailsValue.value !== '') {
+    if (this.nombreValue.value !== '' && this.detallesValue.value !== '') {
       this.data.emit({
         form: this.formRepeatable.value,
         type: this.controlName,
@@ -72,7 +72,7 @@ export class RepeteableFieldComponent implements OnInit {
 
       // seteamos el los value para evitar BUG
       this.nombreValue.setValue('');
-      this.detailsValue.setValue('');
+      this.detallesValue.setValue('');
     }
   }
 }
