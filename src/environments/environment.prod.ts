@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  siteUrl: 'https://estacaosorno.cl',
+  siteUrl: 'https://api.estacaosorno.cl',
 };
