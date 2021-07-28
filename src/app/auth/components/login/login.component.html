@@ -153,7 +153,7 @@
         </ng-container>
 
         <div class="mt-6">
-          <form [formGroup]="loginForm">
+          <form [formGroup]="loginForm" autocomplete="off">
             <div>
               <label
                 for="email"
@@ -188,6 +188,7 @@
               <div class="mt-1">
                 <mat-form-field class="w-full" appearance="outline">
                   <input
+                    class=""
                     formControlName="password"
                     type="password"
                     matInput
@@ -258,7 +259,7 @@
               </div>
 
               <div class="text-sm">
-                <a class="font-medium text-indigo-600 hover:text-indigo-500">
+                <a class="font-medium text-primary-600 hover:text-primary-500">
                   Recuperar Contraseña?
                 </a>
               </div>
@@ -274,6 +275,7 @@
               >
                 Iniciar Session
               </button>
+              <!-- This example requires Tailwind CSS v2.0+ -->
             </div>
           </form>
         </div>
@@ -286,5 +288,15 @@
       src="https://assets.ldscdn.org/95/01/9501b44f6fcf73b8c58d98c9ea1a77c691afad31/concepcion_chile_temple.jpeg"
       alt="imagen-login"
     />
+  </div>
+</div>
+<!-- Barner -->
+<div class="fixed bottom-0 bg-primary-600">
+  <div class="w-screen mx-auto py-3 px-3 sm:px-6 lg:px-8">
+    <div class="text-center sm:px-16">
+      <p class="font-medium text-white">
+        <span class="text-primary-100"> Herramienta NO OFICIAL </span>
+      </p>
+    </div>
   </div>
 </div>

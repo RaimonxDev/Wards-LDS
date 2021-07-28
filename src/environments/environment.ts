@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  siteUrl: 'http://localhost:1338',
+  // siteUrl: 'http://localhost:1338',
+  siteUrl: 'https://api.estacaosorno.cl',
 };
 
 /*

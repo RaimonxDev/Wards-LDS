@@ -5,6 +5,7 @@ import { catchError, switchMap } from 'rxjs/operators';
 import { UserService } from '../../user/services/user.service';
 import { environment } from '../../../../environments/environment';
 import { User, Barrio, UserInfo, CheckUser } from '../../models/user.models';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthService {
@@ -51,7 +52,8 @@ export class AuthService {
 
   constructor(
     private _httpClient: HttpClient,
-    private _userService: UserService
+    private _userService: UserService,
+    private _router: Router
   ) {}
 
   signIn(credentials: {
@@ -105,7 +107,6 @@ export class AuthService {
           return of(false);
         }),
         switchMap((response: CheckUser) => {
-          console.log('check', response);
           // Comprobamos si el ID que recibimos es distinto al usuario anterior
           if (this.userID !== response.id) {
             this._authenticated = false;
@@ -114,14 +115,15 @@ export class AuthService {
           }
           // Set the authenticated flag to true
           this._authenticated = true;
-
+          // Actualiza la informacion del Usuario
+          // this._userService.user = response as UserInfo;
           // Return true
           return of(true);
         })
       );
   }
 
-  signOut(): Observable<any> {
+  logout(): Observable<any> {
     // Remove the access token from the local storage
     localStorage.clear();
 
@@ -129,6 +131,7 @@ export class AuthService {
     this._authenticated = false;
 
     // Return the observable
+    this._router.navigateByUrl('/login');
     return of(true);
   }
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject, BehaviorSubject, of, Subject } from 'rxjs';
-import { Barrio, UserInfo, User } from '../../models/user.models';
+import { Barrio, UserInfo, User, CheckUser } from '../../models/user.models';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +16,7 @@ export class UserService {
     this._user.next(value);
   }
 
-  get user$(): Observable<UserInfo> {
+  get user$(): Observable<UserInfo | CheckUser> {
     return this._user.asObservable();
   }
   set wardCurrentUser(value: Barrio) {
