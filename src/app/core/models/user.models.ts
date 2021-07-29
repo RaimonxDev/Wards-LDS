@@ -13,7 +13,7 @@ export interface UserInfo {
   created_at: Date;
   updated_at: Date;
   role: Role;
-  barrio: Barrio;
+  barrio?: Barrio;
 }
 
 export interface Barrio {
@@ -42,7 +42,7 @@ export interface CheckUser {
   created_at: Date;
   updated_at: Date;
   role: Role;
-  barrio: string;
+  barrio?: string;
 }
 
 // Invalid request User
