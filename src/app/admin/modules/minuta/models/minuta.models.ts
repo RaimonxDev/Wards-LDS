@@ -37,6 +37,7 @@ export interface Minuta {
   created_at?: Date;
   published_at?: Date;
   updated_at?: Date;
+  creada_por?: string;
 }
 
 export interface Barrio {
