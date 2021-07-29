@@ -16,7 +16,7 @@ export class UserService {
     this._user.next(value);
   }
 
-  get user$(): Observable<UserInfo | CheckUser> {
+  get user$(): Observable<UserInfo> {
     return this._user.asObservable();
   }
   set wardCurrentUser(value: Barrio) {
