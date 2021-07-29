@@ -18,8 +18,9 @@ import { OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { mapTo, takeUntil } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
-import { subHours, formatISO } from 'date-fns';
 import { setDateMinuta } from '../../utils/setHours';
+import { UserService } from '../../../../../core/user/services/user.service';
+import { UserInfo } from '../../../../../core/models/user.models';
 
 @Component({
   selector: 'template-form',
@@ -33,6 +34,8 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
 
   minuta$!: Observable<Minuta>;
   minuta!: Minuta;
+
+  user!: UserInfo;
 
   initialData: Minuta = {
     tipos_de_minuta: {},
@@ -52,6 +55,7 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
     ultima_oracion: '',
     ultimo_himno: '',
     completa: false,
+    creada_por: '',
   };
   tipoMinuta$!: Observable<tipoMinutas[]>;
 
@@ -80,12 +84,16 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
   get getFecha() {
     return this.formMinuta.get('fecha');
   }
+  get getcreadaPor() {
+    return this.formMinuta.get('creada_por');
+  }
 
   constructor(
     private _minutaServices: MinutaService,
     private _fb: FormBuilder,
     private _alert: AlertService,
     private _authService: AuthService,
+    private _userService: UserService,
     private _router: Router,
     private _acRouter: ActivatedRoute
   ) {}
@@ -94,6 +102,7 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
     this.initFormMinuta();
 
     this.tipoMinuta$ = this._minutaServices.tiposDeMinuta$;
+    this._userService.user$.subscribe((user) => (this.user = user));
 
     // this.ActionForm = 'editar';
     if (this.ActionForm === 'crear') {
@@ -102,6 +111,8 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
         .pipe(mapTo(this.initialData), takeUntil(this._unsubscribeAll))
         .subscribe((minuta) => {
           this.minuta = minuta;
+          // Seteamos el usuaro que esta creando la minuta
+          this.getcreadaPor?.setValue(this.user.username);
         });
     }
 
@@ -133,6 +144,7 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
       discursantes: this._fb.array([]),
       ultimo_himno: [''],
       ultima_oracion: [''],
+      creada_por: [''],
     });
   }
 
@@ -144,7 +156,6 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
       this.tiposDeMinuta?.setValue(this.minuta.tipos_de_minuta.id);
       // Seteamos la fecha
       this.getFecha?.setValue(setDateMinuta(this.minuta.fecha));
-
       // Primero limpiamos los array de los antiguos valores para evitar duplicados en la vista
       this.clearArraysForm();
       // Seteamos los array
@@ -161,6 +172,9 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
   }
   createMinuta() {
     this.formMinuta.disable();
+
+    console.log(this.formMinuta.value);
+    return;
     this._minutaServices.createMinuta(this.formMinuta.value).subscribe(
       (resp) => {
         console.log(resp);
