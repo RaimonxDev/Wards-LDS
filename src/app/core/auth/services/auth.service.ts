@@ -71,10 +71,10 @@ export class AuthService {
         switchMap((response: User) => {
           // Store the access token in the local storage
           this.accessToken = response.jwt;
-          this.barrioID = response.user.barrio.id;
+          this.barrioID = response.user.barrio!.id;
 
           this.userID = response.user.id;
-          this.barrio = response.user.barrio;
+          this.barrio = response.user.barrio as Barrio;
 
           // Set the authenticated flag to true
           this._authenticated = true;
@@ -82,7 +82,7 @@ export class AuthService {
           // Actualiza la informacion del Usuario
           this._userService.user = response.user;
           // Actualizamos el barrio
-          this._userService.wardCurrentUser = response.user.barrio;
+          this._userService.wardCurrentUser = response.user.barrio as Barrio;
 
           // Return a new observable with the response
           return of(response);
@@ -116,7 +116,8 @@ export class AuthService {
           // Set the authenticated flag to true
           this._authenticated = true;
           // Actualiza la informacion del Usuario
-          // this._userService.user = response as UserInfo;
+          this._userService.user = response as UserInfo;
+          console.log('auth', response);
           // Return true
           return of(true);
         })
