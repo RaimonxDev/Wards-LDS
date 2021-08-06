@@ -27,7 +27,7 @@ import { DateFnsModule } from 'ngx-date-fns';
     NgProgressModule,
     NgProgressHttpModule,
     AlertModule,
-    DateFnsModule.forRoot(),
+    // DateFnsModule.forRoot(),
   ],
   providers: [
     {
