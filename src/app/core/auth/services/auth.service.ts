@@ -117,7 +117,6 @@ export class AuthService {
           this._authenticated = true;
           // Actualiza la informacion del Usuario
           this._userService.user = response as UserInfo;
-          console.log('auth', response);
           // Return true
           return of(true);
         })
