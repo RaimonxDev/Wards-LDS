@@ -18,17 +18,21 @@ import { OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { mapTo, takeUntil } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
-import { setDateMinuta } from '../../utils/setHours';
+import { addOneDay, MY_DATE_FORMATS } from '../../utils/setDates';
 import { UserService } from '../../../../../core/user/services/user.service';
 import { UserInfo } from '../../../../../core/models/user.models';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogContentComponent } from '../../../../../ui/dialog/components/dialog-content/dialog-content.component';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
 
 @Component({
   selector: 'template-form',
   templateUrl: './template-form.component.html',
   styleUrls: ['./template-form.component.scss'],
-  providers: [DatePipe],
+  providers: [
+    DatePipe,
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+  ],
 })
 export class TemplateFormComponent implements OnInit, OnDestroy {
   @Input() ActionForm!: ActionForm;
@@ -160,8 +164,7 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
       // seteamos el ID para el select
       this.tiposDeMinuta?.setValue(this.minuta.tipos_de_minuta.id);
       // Seteamos la fecha
-      // console.log(this.minuta.fecha);
-      // this.getFecha?.setValue(this.minuta.fecha);
+      this.getFecha?.setValue(addOneDay(this.minuta.fecha));
       // Primero limpiamos los array de los antiguos valores para evitar duplicados en la vista
       this.clearArraysForm();
       // Seteamos los array
