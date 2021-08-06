@@ -16,7 +16,7 @@ export interface dataEmitRepetableForm {
 
 // Response petition HTTP
 export interface Minuta {
-  id?: string;
+  id: string;
   barrio: Barrio;
   preludio_musical: string;
   tipos_de_minuta: tipoMinutas;
@@ -38,6 +38,7 @@ export interface Minuta {
   published_at?: Date;
   updated_at?: Date;
   creada_por?: string;
+  hora?: string;
 }
 
 export interface Barrio {
