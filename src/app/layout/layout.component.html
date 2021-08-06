@@ -4,7 +4,7 @@
       #matDrawer
       class="flex-auto w-64"
       #drawer
-      [opened]
+      [opened]="mobileQuery.matches ? 'false' : 'true'"
       [mode]="mobileQuery.matches ? 'over' : 'side'"
     >
       <app-sidebar></app-sidebar>

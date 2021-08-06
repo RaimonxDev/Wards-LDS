@@ -20,9 +20,7 @@ export class ListMinutaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.minutas$ = this._minutaService.minutas$.pipe(
-      tap((resp) => console.log(resp))
-    );
+    this.minutas$ = this._minutaService.minutas$;
   }
 
   details(minutaID: string | undefined) {
