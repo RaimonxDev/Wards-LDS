@@ -21,6 +21,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { setDateMinuta } from '../../utils/setHours';
 import { UserService } from '../../../../../core/user/services/user.service';
 import { UserInfo } from '../../../../../core/models/user.models';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogContentComponent } from '../../../../../ui/dialog/components/dialog-content/dialog-content.component';
 
 @Component({
   selector: 'template-form',
@@ -38,6 +40,7 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
   user!: UserInfo;
 
   initialData: Minuta = {
+    id: '',
     tipos_de_minuta: {},
     barrio: {},
     anuncios: '',
@@ -95,7 +98,8 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
     private _authService: AuthService,
     private _userService: UserService,
     private _router: Router,
-    private _acRouter: ActivatedRoute
+    private _acRouter: ActivatedRoute,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -133,6 +137,7 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
       preside: ['', [Validators.required]],
       dirige: ['', [Validators.required]],
       fecha: ['', [Validators.required]],
+      hora: ['', [Validators.required]],
       preludioMusica: [''],
       reconocimientos: [''],
       anuncios: [''],
@@ -155,7 +160,8 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
       // seteamos el ID para el select
       this.tiposDeMinuta?.setValue(this.minuta.tipos_de_minuta.id);
       // Seteamos la fecha
-      this.getFecha?.setValue(setDateMinuta(this.minuta.fecha));
+      // console.log(this.minuta.fecha);
+      // this.getFecha?.setValue(this.minuta.fecha);
       // Primero limpiamos los array de los antiguos valores para evitar duplicados en la vista
       this.clearArraysForm();
       // Seteamos los array
@@ -172,9 +178,6 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
   }
   createMinuta() {
     this.formMinuta.disable();
-
-    console.log(this.formMinuta.value);
-    return;
     this._minutaServices.createMinuta(this.formMinuta.value).subscribe(
       (resp) => {
         console.log(resp);
@@ -182,7 +185,7 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
         this.formMinuta.reset();
         this.clearArraysForm();
         this._alert.opendAlert(
-          'Creado',
+          'Minuta creada',
           'Se creo correctamente la minuta',
           'success'
         );
@@ -207,6 +210,39 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
     );
   }
 
+  deleteMinuta(id: string) {
+    this._minutaServices.deleteMinuta(id.toString()).subscribe((resp) => {
+      console.log(resp);
+      this._alert.opendAlert(
+        'Minuta Eliminada',
+        'Sastifactoriamente',
+        'warning'
+      );
+      this._router.navigate(['minuta/listado']);
+    });
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(DialogContentComponent, {
+      data: {
+        title: 'Seguro que desea eliminar esta Minuta',
+        message: 'Tenga en cuenta que esta accion es irreversible',
+        buttonAccept: 'Eliminar Minuta',
+        buttonDecline: 'Cancelar',
+      },
+    });
+
+    // Manually restore focus to the menu trigger since the element that
+    // opens the dialog won't be in the DOM any more when the dialog closes.
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === false || undefined) {
+        return;
+      }
+      if (result) {
+        this.deleteMinuta(this.minuta.id);
+      }
+    });
+  }
   cancelEditionForm() {
     this.editForm = false;
     this.clearArraysForm();
@@ -219,8 +255,10 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
   }
 
   // ultils
-  backToList() {
+  backToList(url?: string) {
     const route = this._acRouter;
+
+    console.log(route);
     // Go to the parent route
     this._router.navigate(['../'], { relativeTo: route });
   }

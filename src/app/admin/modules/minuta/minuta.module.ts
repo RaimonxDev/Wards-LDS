@@ -11,6 +11,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { RepeteableFieldComponent } from './components/repeteable-field/repeteable-field.component';
 import { DetailsMinutaComponent } from './components/details-minuta/details-minuta.component';
 
+// Angular material
+import { MatMenuModule } from '@angular/material/menu';
+import { DialogModule } from 'src/app/ui/dialog/dialog.module';
+
 @NgModule({
   declarations: [
     MinutaComponent,
@@ -25,6 +29,8 @@ import { DetailsMinutaComponent } from './components/details-minuta/details-minu
     HttpClientModule,
     MinutaRoutingModule,
     EssentialReactiveFormModule,
+    MatMenuModule,
+    DialogModule,
   ],
 })
 export class MinutaModule {}

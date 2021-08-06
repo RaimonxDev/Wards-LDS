@@ -92,5 +92,17 @@ export class MinutaService {
     );
   }
 
-  deleteData() {}
+  deleteMinuta(id: string) {
+    return this._http.delete(`${this.siteUrl}/minutas/${id}`).pipe(
+      catchError((error) => {
+        this._alert.opendAlert(
+          'Error al eliminar',
+          'Minuta no existe',
+          'error',
+          6000
+        );
+        return throwError('No se pudo eliminar la minuta');
+      })
+    );
+  }
 }
