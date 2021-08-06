@@ -11,6 +11,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
+import { MomentDateModule } from '@angular/material-moment-adapter';
 @NgModule({
   declarations: [],
   imports: [
@@ -26,6 +27,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatIconModule,
     MatButtonModule,
     MatSelectModule,
+    MomentDateModule,
   ],
   exports: [
     ReactiveFormsModule,
@@ -39,6 +41,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatIconModule,
     MatButtonModule,
     MatSelectModule,
+    MomentDateModule,
   ],
 })
 export class EssentialReactiveFormModule {}
