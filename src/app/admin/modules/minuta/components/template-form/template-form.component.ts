@@ -18,7 +18,7 @@ import { OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { mapTo, takeUntil } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
-import { addOneDay, MY_DATE_FORMATS } from '../../utils/setDates';
+import { addOneDay, MY_DATE_FORMATS, formatTime } from '../../utils/setDates';
 import { UserService } from '../../../../../core/user/services/user.service';
 import { UserInfo } from '../../../../../core/models/user.models';
 import { MatDialog } from '@angular/material/dialog';
@@ -91,6 +91,9 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
   get getFecha() {
     return this.formMinuta.get('fecha');
   }
+  get getHora() {
+    return this.formMinuta.get('hora');
+  }
   get getcreadaPor() {
     return this.formMinuta.get('creada_por');
   }
@@ -111,7 +114,6 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
 
     this.tipoMinuta$ = this._minutaServices.tiposDeMinuta$;
     this._userService.user$.subscribe((user) => (this.user = user));
-
     // this.ActionForm = 'editar';
     if (this.ActionForm === 'crear') {
       this.editForm = true;
@@ -159,6 +161,7 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
 
   editMode() {
     this.editForm = !this.editForm;
+
     if (this.editForm) {
       this.formMinuta.patchValue(this.minuta);
       // seteamos el ID para el select
@@ -174,13 +177,15 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
     }
     if (!this.editForm) {
       this.formMinuta.reset();
-
       // limpiamos los valores del array
       this.clearArraysForm();
     }
   }
   createMinuta() {
     this.formMinuta.disable();
+    // añadimos los milisegundos para que nuestro backend lo acepte sin problemas
+    this.getHora?.setValue(formatTime(this.getHora?.value));
+
     this._minutaServices.createMinuta(this.formMinuta.value).subscribe(
       (resp) => {
         console.log(resp);
@@ -199,6 +204,8 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
     );
   }
   updateMinuta() {
+    this.getHora?.setValue(formatTime(this.getHora?.value));
+
     const body = this.formMinuta.value;
     this.formMinuta.disable();
     return this._minutaServices.updateMinuta(this.minuta.id, body).subscribe(

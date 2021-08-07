@@ -16,3 +16,8 @@ export const MY_DATE_FORMATS = {
     monthYearA11yLabel: 'MMMM YYYY',
   },
 };
+
+export function formatTime(hora: Date) {
+  const formatTime = `${hora}:00`;
+  return formatTime;
+}
