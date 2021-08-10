@@ -18,7 +18,12 @@ import { OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { mapTo, takeUntil } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
-import { addOneDay, MY_DATE_FORMATS, formatTime } from '../../utils/setDates';
+import {
+  addOneDay,
+  MY_DATE_FORMATS,
+  formatTime,
+  distanceDate,
+} from '../../utils/setDates';
 import { UserService } from '../../../../../core/user/services/user.service';
 import { UserInfo } from '../../../../../core/models/user.models';
 import { MatDialog } from '@angular/material/dialog';
@@ -42,6 +47,7 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
   minuta!: Minuta;
 
   user!: UserInfo;
+  minutaActualizada!: string | boolean;
 
   initialData: Minuta = {
     id: '',
@@ -63,6 +69,7 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
     ultimo_himno: '',
     completa: false,
     creada_por: '',
+    actualizada_por: '',
   };
   tipoMinuta$!: Observable<tipoMinutas[]>;
 
@@ -156,6 +163,7 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
       ultimo_himno: [''],
       ultima_oracion: [''],
       creada_por: [''],
+      actualizada_por: [''],
     });
   }
 
@@ -163,6 +171,11 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
     this.editForm = !this.editForm;
 
     if (this.editForm) {
+      this.minutaActualizada = distanceDate(
+        this.minuta?.created_at,
+        this.minuta?.updated_at
+      ) as string;
+
       this.formMinuta.patchValue(this.minuta);
       // seteamos el ID para el select
       this.tiposDeMinuta?.setValue(this.minuta.tipos_de_minuta.id);
@@ -272,6 +285,7 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
     // Go to the parent route
     this._router.navigate(['../'], { relativeTo: route });
   }
+
   processData(data: dataEmitRepetableForm) {
     if (data.type === 'relevos') {
       const { nombre, detalles } = data.form;
