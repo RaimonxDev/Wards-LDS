@@ -14,6 +14,8 @@ import { AlertModule } from './ui/alert/alert.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorsTokenService } from './core/interceptors/token.service';
 import { DateFnsModule } from 'ngx-date-fns';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [AppComponent],
@@ -27,6 +29,12 @@ import { DateFnsModule } from 'ngx-date-fns';
     NgProgressModule,
     NgProgressHttpModule,
     AlertModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the app is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
     // DateFnsModule.forRoot(),
   ],
   providers: [
