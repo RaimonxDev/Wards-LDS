@@ -39,6 +39,7 @@ export interface Minuta {
   updated_at?: Date;
   creada_por?: string;
   hora?: string;
+  actualizada: boolean;
   actualizada_por?: string;
 }
 
