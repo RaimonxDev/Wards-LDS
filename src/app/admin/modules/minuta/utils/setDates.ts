@@ -1,4 +1,4 @@
-import { addDays } from 'date-fns';
+import { addDays, formatDistance } from 'date-fns';
 
 export function addOneDay(fecha: Date) {
   const oneDayMore = addDays(new Date(fecha), 1);
@@ -20,4 +20,11 @@ export const MY_DATE_FORMATS = {
 export function formatTime(hora: Date) {
   const formatTime = `${hora}:00`;
   return formatTime;
+}
+
+export function minutaIsUpdated(updated_at: Date | undefined): string {
+  const diffDate = formatDistance(new Date(updated_at as Date), new Date(), {
+    includeSeconds: true,
+  });
+  return diffDate;
 }

@@ -18,7 +18,12 @@ import { OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { mapTo, takeUntil } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
-import { addOneDay, MY_DATE_FORMATS, formatTime } from '../../utils/setDates';
+import {
+  addOneDay,
+  MY_DATE_FORMATS,
+  formatTime,
+  minutaIsUpdated,
+} from '../../utils/setDates';
 import { UserService } from '../../../../../core/user/services/user.service';
 import { UserInfo } from '../../../../../core/models/user.models';
 import { MatDialog } from '@angular/material/dialog';
@@ -42,6 +47,7 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
   minuta!: Minuta;
 
   user!: UserInfo;
+  minutaActualizada!: string;
 
   initialData: Minuta = {
     id: '',
@@ -63,6 +69,8 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
     ultimo_himno: '',
     completa: false,
     creada_por: '',
+    actualizada: false,
+    actualizada_por: '',
   };
   tipoMinuta$!: Observable<tipoMinutas[]>;
 
@@ -84,10 +92,10 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
     return this.formMinuta.get('sostenimientos') as FormArray;
   }
 
+  // CONTROLS FORM
   get tiposDeMinuta() {
     return this.formMinuta.get('tipos_de_minuta');
   }
-
   get getFecha() {
     return this.formMinuta.get('fecha');
   }
@@ -96,6 +104,12 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
   }
   get getcreadaPor() {
     return this.formMinuta.get('creada_por');
+  }
+  get getActualizadaPor() {
+    return this.formMinuta.get('actualizada_por');
+  }
+  get getActualizada() {
+    return this.formMinuta.get('actualizada');
   }
 
   constructor(
@@ -120,7 +134,10 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
       this._minutaServices.minuta$
         .pipe(mapTo(this.initialData), takeUntil(this._unsubscribeAll))
         .subscribe((minuta) => {
+          // Comprobamos si la minuta ha sido actualizada
+
           this.minuta = minuta;
+
           // Seteamos el usuaro que esta creando la minuta
           this.getcreadaPor?.setValue(this.user.username);
         });
@@ -133,6 +150,8 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
           this.minuta = minuta;
         });
     }
+    // Verficamos si la minuta esta actualizada
+    this.minutaActualizada = minutaIsUpdated(this.minuta?.updated_at) as string;
   }
 
   initFormMinuta() {
@@ -156,6 +175,8 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
       ultimo_himno: [''],
       ultima_oracion: [''],
       creada_por: [''],
+      actualizada: false,
+      actualizada_por: [''],
     });
   }
 
@@ -205,6 +226,8 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
   }
   updateMinuta() {
     this.getHora?.setValue(formatTime(this.getHora?.value));
+    this.getActualizadaPor?.setValue(this.user.username);
+    this.getActualizada?.setValue(true);
 
     const body = this.formMinuta.value;
     this.formMinuta.disable();
@@ -213,6 +236,10 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
         this.formMinuta.enable();
         this.editForm = false;
         this.minuta = resp;
+
+        this.minutaActualizada = minutaIsUpdated(
+          this.minuta?.updated_at
+        ) as string;
       },
       (error) => {
         this.formMinuta.enable();
@@ -272,6 +299,7 @@ export class TemplateFormComponent implements OnInit, OnDestroy {
     // Go to the parent route
     this._router.navigate(['../'], { relativeTo: route });
   }
+
   processData(data: dataEmitRepetableForm) {
     if (data.type === 'relevos') {
       const { nombre, detalles } = data.form;

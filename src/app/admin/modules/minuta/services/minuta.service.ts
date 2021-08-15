@@ -49,7 +49,11 @@ export class MinutaService {
   // PETICIONES GET
   public getMinutas() {
     return this._http
-      .get<Minuta[]>(`${this.siteUrl}/minutas`)
+      .get<Minuta[]>(`${this.siteUrl}/minutas`, {
+        params: {
+          _sort: 'fecha:DESC',
+        },
+      })
       .pipe(tap((minutas) => this._minutas.next(minutas)));
   }
 
