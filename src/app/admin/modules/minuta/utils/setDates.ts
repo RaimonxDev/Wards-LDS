@@ -22,26 +22,9 @@ export function formatTime(hora: Date) {
   return formatTime;
 }
 
-export function distanceDate(
-  create_at: Date | undefined,
-  update_at: Date | undefined
-): string | boolean {
-  if (create_at === undefined && update_at === undefined) {
-    return false;
-  }
-
-  if (create_at === update_at) {
-    return false;
-  }
-
-  const diffDate = formatDistance(
-    new Date(create_at as Date),
-    new Date(update_at as Date),
-    {
-      includeSeconds: true,
-    }
-  );
-  console.log(diffDate);
-
+export function minutaIsUpdated(updated_at: Date | undefined): string {
+  const diffDate = formatDistance(new Date(updated_at as Date), new Date(), {
+    includeSeconds: true,
+  });
   return diffDate;
 }

@@ -35,7 +35,7 @@
             <div class="flex items-center">
               <ng-container *ngIf="!editForm; else editTiposMinuta">
                 <h1 class="text-2xl w-full font-bold text-gray-900 capitalize">
-                  {{ minuta.tipos_de_minuta.type }}
+                  {{ minuta.tipos_de_minuta?.type }}
                 </h1>
               </ng-container>
 
@@ -294,22 +294,96 @@
                 </ng-container>
 
                 <ng-container *ngIf="ActionForm !== 'crear'">
-                  <p id="applicant-information-title" class="mt-4">
+                  <span
+                    class="
+                      inline-flex
+                      items-center
+                      px-2.5
+                      py-0.5
+                      rounded-md
+                      text-sm
+                      font-medium
+                      text-green-800
+                      mb-2
+                    "
+                  >
+                    <svg
+                      class="-ml-0.5 mr-1.5 h-2 w-2 text-green-400"
+                      fill="currentColor"
+                      viewBox="0 0 8 8"
+                    >
+                      <circle cx="4" cy="4" r="3" />
+                    </svg>
                     Creada Por:
-                    <span class="text-gray-800">
-                      {{ minuta.creada_por }}
-                    </span>
+
+                    {{ minuta.creada_por }}
+                  </span>
+                </ng-container>
+                <br />
+                <ng-container
+                  *ngIf="minuta.actualizada === true; else fechaDeCreacion"
+                >
+                  <span
+                    class="
+                      inline-flex
+                      items-center
+                      px-2.5
+                      py-0.5
+                      rounded-md
+                      text-sm
+                      font-medium
+                      text-indigo-800
+                    "
+                  >
+                    <svg
+                      class="-ml-0.5 mr-1.5 h-2 w-2 text-indigo-400"
+                      fill="currentColor"
+                      viewBox="0 0 8 8"
+                    >
+                      <circle cx="4" cy="4" r="3" />
+                    </svg>
+                    Actualizada {{ minutaActualizada }} ago,
+                  </span>
+                  <p
+                    class="
+                      inline-flex
+                      items-center
+                      px-2.5
+                      py-0.5
+                      rounded-md
+                      text-sm
+                      font-medium
+                      text-indigo-800
+                    "
+                  >
+                    Por:
+                    {{ minuta.actualizada_por }}
                   </p>
                 </ng-container>
 
-                <ng-container
-                  *ngIf="minutaActualizada !== false && ActionForm !== 'crear'"
-                >
-                  <p class="text-sm text-gray-700 mt-4">
-                    Ultima actualizacion:
-                    <span class="italic"> {{ minutaActualizada }} ago </span>
-                  </p>
-                </ng-container>
+                <ng-template #fechaDeCreacion>
+                  <span
+                    class="
+                      inline-flex
+                      items-center
+                      px-3
+                      py-0.5
+                      rounded-full
+                      text-sm
+                      font-medium
+                      text-indigo-800
+                    "
+                  >
+                    <svg
+                      class="-ml-1 mr-1.5 h-2 w-2 text-indigo-400"
+                      fill="currentColor"
+                      viewBox="0 0 8 8"
+                    >
+                      <circle cx="4" cy="4" r="3" />
+                    </svg>
+                    Fecha de creacion: {{ minuta.created_at | date: "d/M/yy" }}
+                  </span>
+                </ng-template>
               </div>
               <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
                 <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
